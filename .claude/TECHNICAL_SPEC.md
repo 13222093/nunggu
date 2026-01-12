@@ -18,7 +18,7 @@
                 ┌─────────────┴─────────────┐
                 ▼                           ▼
 ┌──────────────────────────┐   ┌───────────────────────────┐
-│  SMART CONTRACTS (Base)  │   │  BACKEND (FastAPI/Railway)│
+│  SMART CONTRACTS (Base)  │   │  BACKEND (Bun/Elysia)     │
 │  - NUNGGUVault           │   │  - RFQ Service            │
 │  - Position Management   │   │  - Price Monitor          │
 │  - Premium Distribution  │   │  - AI Optimizer           │

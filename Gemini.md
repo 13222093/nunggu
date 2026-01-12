@@ -10,7 +10,7 @@ NUNGGU is a DeFi application built for the Base Indonesia Hackathon (Thetanuts T
 - **Blockchain:** Base L2
 - **Smart Contracts:** Solidity (Hardhat)
 - **Frontend:** Next.js 14, Tailwind, OnchainKit (Coinbase Smart Wallet)
-- **Backend:** FastAPI (Python) or Express (Node.js)
+- **Backend:** Bun (TypeScript) using ElysiaJS
 - **Integrations:**
     - **Thetanuts V4:** RFQ System for options liquidity.
     - **Aave V3:** Yield generation on collateral.
@@ -19,8 +19,8 @@ NUNGGU is a DeFi application built for the Base Indonesia Hackathon (Thetanuts T
 
 ## Architecture
 - **`contracts/`**: Contains `NUNGGUVault.sol` which manages user positions, collateral, and interactions with Thetanuts and Aave.
-- **`backend/`** (Planned): Handles RFQ quoting, price monitoring, and AI strike optimization.
-- **`client/`** (Planned): React/Next.js SPA for the user interface.
+- **`backend/`**: Bun-based service for RFQ quoting, real-time event listening (viem), and AI strike optimization.
+- **`client/`**: Next.js SPA for the user interface.
 - **Documentation:** See `.claude/` directory for detailed specs, checklists, and guides.
 
 ## Key Features
@@ -42,4 +42,4 @@ NUNGGU is a DeFi application built for the Base Indonesia Hackathon (Thetanuts T
 ## Important Workflows
 - **Frontend:** `npm run dev` (in client dir)
 - **Contracts:** `npx hardhat test`, `npx hardhat run scripts/deploy.ts` (in contracts dir)
-- **Backend:** `uvicorn main:app --reload` (in backend dir)
+- **Backend:** `bun dev` or `bun src/index.ts` (in backend dir)
