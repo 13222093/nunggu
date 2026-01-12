@@ -2,6 +2,7 @@ import { Elysia } from 'elysia';
 import { cors } from '@elysiajs/cors';
 import { rfqRouter } from './routers/rfq';
 import { aiRouter } from './routers/ai';
+import { positionsRouter } from './routers/positions';
 import { startEventListener } from './services/listener';
 
 const app = new Elysia()
@@ -11,6 +12,7 @@ const app = new Elysia()
     app
       .use(rfqRouter)
       .use(aiRouter)
+      .use(positionsRouter)
   )
   .listen(process.env.PORT || 8000);
 
