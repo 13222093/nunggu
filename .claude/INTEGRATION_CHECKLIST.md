@@ -1,6 +1,24 @@
 # KITA - Integration Checklist
 
+> **Last Updated:** January 2026
+> **Source of Truth:** [Thetanuts V4 Docs](https://docs.thetanuts.finance/for-builders)
+
 This file tracks all external integrations and their status.
+
+---
+
+## ⚠️ CRITICAL: Collateral Token
+
+**Thetanuts V4 ONLY supports:**
+- ✅ **USDC** (Primary) - `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` (6 decimals)
+- ✅ WETH - `0x4200000000000000000000000000000000000006` (18 decimals)
+- ✅ CBBTC - `0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf` (8 decimals)
+
+**❌ IDRX is NOT supported by Thetanuts V4**
+
+IDRX references in user flows are for **display purposes only** (showing amounts in Indonesian Rupiah). All actual blockchain transactions must use USDC.
+
+---
 
 ## 1. Thetanuts V4 OptionBook
 
@@ -10,22 +28,33 @@ This file tracks all external integrations and their status.
 - [x] Created `IOptionBook.sol` interface matching official ABI
 - [x] All 13 Order struct fields verified against docs
 - [x] `fillOrder()` function signature correct
-- [x] Created API fetch script (`fetchOrders.js`)
-- [x] Created test script (`testFillOrder.ts`)
+- [x] Backend service updated to fetch orders correctly
+- [x] API endpoints return USDC-based orders
 
 **Contract Address (Base Mainnet):**
 ```
 OptionBook: 0xd58b814C7Ce700f251722b5555e25aE0fa8169A1
 ```
 
-**API Endpoint:**
+**API Endpoints (Official):**
 ```
-https://round-snowflake-9c31.devops-118.workers.dev/
+Orders:    https://round-snowflake-9c31.devops-118.workers.dev/
+Positions: https://optionbook-indexer.thetanuts.finance/api/v1/user/{address}/positions
+History:   https://optionbook-indexer.thetanuts.finance/api/v1/user/{address}/history
+Stats:     https://optionbook-indexer.thetanuts.finance/api/v1/stats
+Update:    https://optionbook-indexer.thetanuts.finance/api/v1/update
+```
+
+**Price Feeds (Chainlink):**
+```
+BTC: 0x64c911996D3c6aC71f9b455B1E8E7266BcbD848F
+ETH: 0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70
 ```
 
 **Pending:**
 - [ ] Test `fillOrder()` on Base Mainnet with real USDC
 - [ ] Verify premium calculation with actual trades
+- [ ] Setup referrer address for KITA fee tracking
 
 **Integration Owner:** Smart Contract Dev
 

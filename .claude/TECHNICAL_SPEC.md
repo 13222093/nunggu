@@ -1,5 +1,8 @@
 # KITA - Technical Specification
 
+> **Last Updated:** January 2026
+> **Source of Truth:** [Thetanuts V4 Docs](https://docs.thetanuts.finance/for-builders)
+
 ## System Architecture
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -26,13 +29,77 @@
 └──────────────────────────┘   └───────────────────────────┘
                 │                            │
     ┌───────────┼───────────────────────────┘
-    ▼           ▼           
-┌─────────┐ ┌─────────┐ 
-│Thetanuts│ │  Aave   │ 
-│ Option  │ │ Lending │ 
-│  Book   │ │  Pool   │ 
-└─────────┘ └─────────┘ 
+    ▼           ▼
+┌─────────┐ ┌─────────┐
+│Thetanuts│ │  Aave   │
+│ Option  │ │ Lending │
+│  Book   │ │  Pool   │
+└─────────┘ └─────────┘
 ```
+
+---
+
+## Thetanuts V4 Integration (Official Docs)
+
+### Network
+- **Chain:** Base Mainnet
+- **Chain ID:** 8453
+- **Deployment Block:** 36596854
+
+### Supported Collateral Tokens (IDRX NOT SUPPORTED)
+
+| Token | Address | Decimals |
+|-------|---------|----------|
+| **USDC** | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` | 6 |
+| **WETH** | `0x4200000000000000000000000000000000000006` | 18 |
+| **CBBTC** | `0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf` | 8 |
+| aBasUSDC | `0x4e65fE4DbA92790696d040ac24Aa414708F5c0AB` | 6 |
+| aBasWETH | `0xD4a0e0b9149BCee3C920d2E00b5dE09138fd8bb7` | 18 |
+| aBascbBTC | `0xBdb9300b7CDE636d9cD4AFF00f6F009fFBBc8EE6` | 8 |
+
+> ⚠️ **IMPORTANT:** IDRX (Indonesian Rupiah Stablecoin) is **NOT** supported by Thetanuts V4.
+> Use **USDC** (6 decimals) as the primary collateral token.
+
+### Price Feeds (Chainlink Oracles)
+| Asset | Address |
+|-------|---------|
+| BTC | `0x64c911996D3c6aC71f9b455B1E8E7266BcbD848F` |
+| ETH | `0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70` |
+
+### Option Implementations (by strike count)
+
+| Type | Strikes | Call Implementation | Put Implementation |
+|------|---------|--------------------|--------------------|
+| Spreads | 2 | `0x2Db5aFA04aeE616157Beb53b96612947b3d13eE3` | `0x571471B2f823cC6B5683FC99ac6781209BC85F55` |
+| Butterflies | 3 | `0xb727690FDD4Bb0ff74f2f0CC3E68297850A634c5` | `0x78b02119007F9EFc2297A9738b9a47A3bc3c2777` |
+| Condors | 4 | `0x7D3C622852d71B932D0903F973cafF45BCdBa4F1` | `0x5cc960B56049b6f850730FacB4F3EB45417c7679` |
+| Iron Condors | 4 | - | `0xb200253b68Fbf18f31D813AECEf97be3A6246b79` |
+
+### Decimal Standards
+
+| Field | Decimals | Example |
+|-------|----------|---------|
+| `strikes[]` | 8 | `100000000000` = $1000 |
+| `price` | 8 | `5000000` = 0.05 USDC/contract |
+| `maxCollateralUsable` | 6 (USDC) | `1000000` = 1 USDC |
+| `numContracts` | 6 (USDC-scaled) | `1000000` = 1 contract |
+
+### API Endpoints (Official)
+
+| Purpose | URL |
+|---------|-----|
+| **Fetch Orders** | `https://round-snowflake-9c31.devops-118.workers.dev/` |
+| **Trigger Update** | `https://optionbook-indexer.thetanuts.finance/api/v1/update` |
+| **User Positions** | `https://optionbook-indexer.thetanuts.finance/api/v1/user/{address}/positions` |
+| **User History** | `https://optionbook-indexer.thetanuts.finance/api/v1/user/{address}/history` |
+| **Stats** | `https://optionbook-indexer.thetanuts.finance/api/v1/stats` |
+
+### Polling Strategy
+- Refresh orders every **~30 seconds**
+- Always fetch fresh orders **before trade execution**
+- Orders can expire or be filled between polling cycles
+
+---
 
 ## Smart Contract Architecture
 
@@ -165,17 +232,40 @@ interface IOptionBook {
 ### Thetanuts Order Fetcher
 ```typescript
 // src/services/thetanuts.ts
-const THETANUTS_API = "https://round-snowflake-9c31.devops-118.workers.dev/";
+// API endpoints from official docs
+const THETANUTS_ORDERS_API = "https://round-snowflake-9c31.devops-118.workers.dev/";
+const THETANUTS_INDEXER_API = "https://optionbook-indexer.thetanuts.finance/api/v1";
+
+// USDC address on Base (6 decimals) - IDRX IS NOT SUPPORTED
+const USDC_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
 
 export async function fetchOrders() {
-  const response = await axios.get(THETANUTS_API);
+  const response = await axios.get(THETANUTS_ORDERS_API);
   return response.data.data.orders;
 }
 
-// Filter for selling PUTs (what KITA needs)
+// Filter for selling PUTs with USDC collateral (cash-secured put strategy)
 export async function fetchPutSellOrders() {
   const orders = await fetchOrders();
-  return orders.filter(o => !o.order.isCall && !o.order.isLong);
+  return orders.filter(o =>
+    !o.order.isCall &&                                    // Put option
+    !o.order.isLong &&                                    // Selling (not buying)
+    o.order.collateral.toLowerCase() === USDC_ADDRESS.toLowerCase()  // USDC collateral
+  );
+}
+
+// Get user positions from indexer
+export async function getUserPositions(userAddress: string, referrer?: string) {
+  const response = await axios.get(`${THETANUTS_INDEXER_API}/user/${userAddress}/positions`);
+  if (referrer) {
+    return response.data.filter((p: any) => p.referrer === referrer);
+  }
+  return response.data;
+}
+
+// Trigger indexer update (call after fillOrder)
+export async function triggerIndexerUpdate() {
+  await axios.get(`${THETANUTS_INDEXER_API}/update`);
 }
 ```
 
@@ -217,12 +307,29 @@ await kitaVault.executeOrder(
 
 ## Contract Addresses
 
-### Base Mainnet
+### Thetanuts V4 (Base Mainnet - Official)
 | Contract | Address |
 |----------|---------|
-| Thetanuts OptionBook | `0xd58b814C7Ce700f251722b5555e25aE0fa8169A1` |
-| USDC | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
+| **OptionBook** | `0xd58b814C7Ce700f251722b5555e25aE0fa8169A1` |
+| BTC Price Feed | `0x64c911996D3c6aC71f9b455B1E8E7266BcbD848F` |
+| ETH Price Feed | `0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70` |
+
+### Collateral Tokens (Base Mainnet)
+| Token | Address | Decimals |
+|-------|---------|----------|
+| **USDC** (Primary) | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` | 6 |
+| WETH | `0x4200000000000000000000000000000000000006` | 18 |
+| CBBTC | `0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf` | 8 |
+
+### Aave V3 (Base Mainnet)
+| Contract | Address |
+|----------|---------|
 | Aave Pool | `0xA238Dd80C259a72e81d7e4664a9801593F98d1c5` |
+| aBasUSDC | `0x4e65fE4DbA92790696d040ac24Aa414708F5c0AB` |
+
+### KITA Contracts (To Deploy)
+| Contract | Address |
+|----------|---------|
 | KITAVault | TBD |
 | GroupVault | TBD |
 
