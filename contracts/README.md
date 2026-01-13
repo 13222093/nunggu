@@ -1,306 +1,120 @@
-# NUNGGU Smart Contracts
+# KITA Smart Contracts
 
-NUNGGUVault - "Get Paid to Wait" DeFi Vault with Thetanuts Integration
+**KITA (Kolektif Investasi Tanpa Ambyar)** - DeFi options trading on Base with Thetanuts V4
 
 ## Overview
 
-The NUNGGUVault smart contract allows users to earn instant cashback by setting limit orders to buy crypto at their target price. It works by selling cash-secured put options through Thetanuts V4 RFQ system and depositing collateral to Aave for additional yield.
+KITA enables users to earn instant cashback ("Beli Murah Dapat Cashback") through options trading via Thetanuts V4 OptionBook, with additional yield from Aave.
+
+| Feature | Description |
+|---------|-------------|
+| **Instant Cashback** | Earn premium immediately when selling options |
+| **Yield Stacking** | Collateral deposited to Aave for additional yield |
+| **Nabung Bareng** | Group investing with voting |
+| **Social Features** | Profit sharing, streak tracking |
 
 ## Project Structure
 
 ```
 contracts/
 ├── contracts/
-│   ├── NUNGGUVault.sol          # Main vault contract
+│   ├── KITAVault.sol              # Solo vault - individual positions
+│   ├── GroupVault.sol             # Group vault - pooled investing
 │   ├── interfaces/
-│   │   ├── IThetanutsRFQ.sol    # Thetanuts RFQ interface
-│   │   └── IAave.sol            # Aave lending interface
+│   │   ├── IOptionBook.sol        # Thetanuts V4 interface
+│   │   └── IAave.sol              # Aave lending interface
 │   └── mocks/
-│       └── MockERC20.sol        # Mock IDRX token for testing
+│       ├── MockAave.sol           # Mock Aave for testing
+│       └── MockERC20.sol          # Mock USDC for testing
 ├── test/
-│   └── NUNGGUVault.test.ts      # Comprehensive test suite
+│   ├── KITAVault.test.ts          # 12 tests
+│   └── GroupVault.test.ts         # 20 tests
 ├── scripts/
-│   └── deploy.ts                # Deployment script
-├── hardhat.config.ts            # Hardhat configuration
-├── .env.example                 # Environment variables template
-└── README.md                    # This file
+│   ├── deploy-kita.ts             # Deployment script
+│   └── thetanuts-v4/
+│       ├── fetchOrders.js         # Fetch orders from API
+│       └── testFillOrder.ts       # Test fillOrder on mainnet
+└── hardhat.config.ts
 ```
-
-## Features
-
-- **Instant Cashback**: Users receive premium immediately when creating positions
-- **Yield Stacking**: Collateral deposited to Aave to earn interest while waiting
-- **Auto-Roll**: Positions can automatically renew weekly until assignment
-- **Position Management**: Users can view, close, and manage their positions
-- **Platform Fees**: Configurable fee system (default 10% of premium)
-- **Emergency Controls**: Pause/unpause functionality for safety
 
 ## Setup
 
-### 1. Install Dependencies
-
 ```bash
+# Install dependencies
 npm install
-```
 
-### 2. Configure Environment
-
-Create a `.env` file based on `.env.example`:
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env` with your values:
-
-```env
-# Deployment
-PRIVATE_KEY=your_private_key_here
-
-# RPC URLs
-BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
-BASE_MAINNET_RPC_URL=https://mainnet.base.org
-
-# API Keys
-BASESCAN_API_KEY=your_basescan_api_key_here
-
-# Contract Addresses (Base Sepolia Testnet)
-IDRX_ADDRESS=0x...
-THETANUTS_RFQ_ADDRESS=0x...
-AAVE_POOL_ADDRESS=0x...
-ETH_ADDRESS=0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
-```
-
-### 3. Compile Contracts
-
-```bash
+# Compile
 npx hardhat compile
-```
 
-## Testing
-
-Run the test suite:
-
-```bash
+# Run tests
 npx hardhat test
-```
-
-Run with gas reporting:
-
-```bash
-REPORT_GAS=true npx hardhat test
-```
-
-Run with coverage:
-
-```bash
-npx hardhat coverage
 ```
 
 ## Deployment
 
-### Deploy to Base Sepolia (Testnet)
-
 ```bash
-npx hardhat run scripts/deploy.ts --network baseSepolia
-```
+# Deploy to Base Mainnet
+npx hardhat run scripts/deploy-kita.ts --network base
 
-### Deploy to Base Mainnet
-
-```bash
-npx hardhat run scripts/deploy.ts --network base
-```
-
-### Verify on BaseScan
-
-After deployment, verify the contract:
-
-```bash
-npx hardhat verify --network baseSepolia DEPLOYED_ADDRESS "IDRX_ADDRESS" "THETANUTS_ADDRESS" "AAVE_ADDRESS" "ETH_ADDRESS"
+# Deploy to Base Sepolia (testnet)
+npx hardhat run scripts/deploy-kita.ts --network baseSepolia
 ```
 
 ## Contract Addresses
 
-### Base Sepolia Testnet
-
-- **NUNGGUVault**: TBD (deploy first)
-- **IDRX**: TBD (check BaseScan)
-- **Thetanuts RFQ**: TBD (contact Thetanuts team)
-- **Aave Pool**: [Find on Aave docs](https://docs.aave.com/developers/deployed-contracts/v3-testnet/base-sepolia)
-
 ### Base Mainnet
+| Contract | Address |
+|----------|---------|
+| Thetanuts OptionBook | `0xd58b814C7Ce700f251722b5555e25aE0fa8169A1` |
+| USDC | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
+| Aave Pool | `0xA238Dd80C259a72e81d7e4664a9801593F98d1c5` |
+| **KITAVault** | TBD |
+| **GroupVault** | TBD |
 
-- **NUNGGUVault**: TBD
-- **IDRX**: TBD (search on BaseScan)
-- **Thetanuts RFQ**: TBD
-- **Aave Pool**: `0xA238Dd80C259a72e81d7e4664a9801593F98d1c5`
+## Key Functions
 
-## Usage
-
-### Create a Position
-
+### KITAVault (Solo)
 ```solidity
-// 1. Approve vault to spend IDRX
-IDRX.approve(vaultAddress, collateralAmount);
+// Execute a Thetanuts order
+function executeOrder(
+    IOptionBook.Order calldata order,
+    bytes calldata signature,
+    uint256 collateralAmount,
+    uint256 expectedPremium
+) external returns (uint256 positionId);
 
-// 2. Create position
-vault.createPosition(
-    40000000 * 1e18,    // collateral (40M IDRX)
-    40000000 * 1e18,    // targetPrice (40M IDRX)
-    7 * 24 * 3600,      // expiryDuration (7 days)
-    false               // autoRoll
-);
+// Get user positions
+function getUserPositions(address user) external view returns (Position[] memory);
 ```
 
-### View Positions
-
+### GroupVault (Nabung Bareng)
 ```solidity
-// Get all user positions
-Position[] memory positions = vault.getUserPositions(userAddress);
+// Create a group
+function createGroup(string calldata name, uint256 initialDeposit) 
+    external returns (uint256 groupId);
 
-// Get only active positions
-Position[] memory activePositions = vault.getActivePositions(userAddress);
+// Join a group
+function joinGroup(uint256 groupId, uint256 deposit) external;
 
-// Get total premium earned
-uint256 totalPremium = vault.getTotalPremiumEarned(userAddress);
+// Create and vote on proposals
+function createProposal(uint256 groupId, ProposalType proposalType, bytes calldata data) 
+    external returns (uint256 proposalId);
+function vote(uint256 proposalId, bool support) external;
 ```
 
-### Close a Position
+## Integration
 
-```solidity
-// Close position after expiry
-vault.closePosition(positionId);
-```
+1. **Fetch orders** from Thetanuts API:
+   ```bash
+   node scripts/thetanuts-v4/fetchOrders.js
+   ```
 
-## Admin Functions
+2. **Frontend** passes order + signature to contract's `executeOrder()`
 
-Only the contract owner can call these:
-
-```solidity
-// Update platform fee (in basis points)
-vault.updateFee(500); // Set to 5%
-
-// Withdraw collected fees
-vault.withdrawFees(recipientAddress);
-
-// Update minimum collateral
-vault.updateMinCollateral(2000000 * 1e18); // 2M IDRX
-
-// Pause contract (emergency)
-vault.pause();
-
-// Unpause contract
-vault.unpause();
-
-// Update Thetanuts RFQ address
-vault.updateThetanutsRFQ(newAddress);
-
-// Update Aave pool address
-vault.updateAavePool(newAddress);
-```
-
-## Events
-
-The contract emits the following events:
-
-```solidity
-event PositionCreated(
-    address indexed user,
-    uint256 indexed positionId,
-    uint256 collateral,
-    uint256 targetPrice,
-    uint256 premium,
-    uint256 expiry,
-    bytes32 quoteId
-);
-
-event PositionClosed(
-    address indexed user,
-    uint256 indexed positionId,
-    uint256 collateralReturned,
-    uint256 yieldEarned
-);
-
-event PositionAssigned(
-    address indexed user,
-    uint256 indexed positionId,
-    uint256 assetReceived
-);
-
-event PositionRolled(
-    address indexed user,
-    uint256 indexed oldPositionId,
-    uint256 indexed newPositionId
-);
-```
-
-## Security Considerations
-
-- **ReentrancyGuard**: All state-changing functions are protected against reentrancy attacks
-- **Pausable**: Contract can be paused in emergency situations
-- **Access Control**: Admin functions restricted to owner only
-- **SafeERC20**: All token transfers use OpenZeppelin's SafeERC20
-- **Input Validation**: All user inputs are validated
-
-## Integration Checklist
-
-Before mainnet deployment:
-
-- [ ] Get Thetanuts RFQ API key and contract address
-- [ ] Verify IDRX token address on Base
-- [ ] Confirm Aave pool supports IDRX (or use USDC)
-- [ ] Test all functions on Base Sepolia testnet
-- [ ] Run security audit (basic review minimum)
-- [ ] Test with real small amounts ($10-$50)
-- [ ] Setup monitoring (Tenderly, The Graph)
-- [ ] Verify contract on BaseScan
-- [ ] Transfer ownership to multisig (optional but recommended)
-
-## Gas Optimization
-
-Estimated gas costs (Base L2):
-
-- `createPosition`: ~200-300k gas (~$0.20-$0.30 at 1 gwei)
-- `closePosition`: ~100-150k gas (~$0.10-$0.15 at 1 gwei)
-- `getUserPositions`: Free (view function)
-
-## Troubleshooting
-
-### Common Issues
-
-**"Collateral below minimum"**
-- Ensure collateral >= 1,000,000 IDRX (1M IDRX)
-
-**"Insufficient allowance"**
-- Call `IDRX.approve(vaultAddress, amount)` first
-
-**"Insufficient balance"**
-- Ensure your IDRX balance >= collateral amount
-
-**Compilation errors**
-- Make sure you're using Node.js version 18 or 20 (not 25)
-- Run `npm install` again if dependencies are missing
-
-**Test failures**
-- Check that Hardhat network is clean: `npx hardhat clean`
-- Recompile: `npx hardhat compile`
-
-## Support & Resources
-
-- **Documentation**: See `/home/ariaziz/hackathon/nunggu/.claude/` for full project specs
-- **Thetanuts Docs**: https://docs.thetanuts.finance
-- **Aave Docs**: https://docs.aave.com
-- **Base Docs**: https://docs.base.org
-- **OpenZeppelin**: https://docs.openzeppelin.com
+3. **Backend** can filter orders by:
+   - `isCall: false` for PUT options
+   - `isLong: false` for selling (to receive premium)
 
 ## License
 
 MIT
-
-## Contributing
-
-This is a hackathon project for Base Indonesia Hackathon + Thetanuts Track (Deadline: January 31, 2026).
-
----
-
-**Built with ❤️ for the Indonesian crypto community**

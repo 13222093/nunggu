@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx hardhat run:*)",
+      "Bash(npx hardhat:*)",
+      "Bash(cat:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "WebFetch(domain:docs.thetanuts.finance)",
+      "WebSearch",
+      "WebFetch(domain:thetanutsfinance.medium.com)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

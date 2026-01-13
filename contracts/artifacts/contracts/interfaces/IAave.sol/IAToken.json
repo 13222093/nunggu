@@ -1,5 +1,5 @@
 {
-  "_format": "hh3-artifact-1",
+  "_format": "hh-sol-artifact-1",
   "contractName": "IAToken",
   "sourceName": "contracts/interfaces/IAave.sol",
   "abi": [
@@ -50,8 +50,5 @@
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "linkReferences": {},
-  "deployedLinkReferences": {},
-  "immutableReferences": {},
-  "inputSourceName": "project/contracts/interfaces/IAave.sol",
-  "buildInfoId": "solc-0_8_20-7d203efef96c9915b93aaf27e99b5041f0ede464"
+  "deployedLinkReferences": {}
 }

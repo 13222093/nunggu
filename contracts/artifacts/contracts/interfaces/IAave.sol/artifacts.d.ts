@@ -15,7 +15,7 @@ export interface IAToken$Type {
   readonly deployedLinkReferences: {};
   readonly immutableReferences: {};
   readonly inputSourceName: "project/contracts/interfaces/IAave.sol";
-  readonly buildInfoId: "solc-0_8_20-7d203efef96c9915b93aaf27e99b5041f0ede464";
+  readonly buildInfoId: "solc-0_8_20-4940ba4dbaa7a15c1fd73860b29eaaf94829b028";
 };
 
 export interface IAave$Type {
@@ -29,7 +29,7 @@ export interface IAave$Type {
   readonly deployedLinkReferences: {};
   readonly immutableReferences: {};
   readonly inputSourceName: "project/contracts/interfaces/IAave.sol";
-  readonly buildInfoId: "solc-0_8_20-7d203efef96c9915b93aaf27e99b5041f0ede464";
+  readonly buildInfoId: "solc-0_8_20-4940ba4dbaa7a15c1fd73860b29eaaf94829b028";
 };
 
 import "hardhat/types/artifacts";
