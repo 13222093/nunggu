@@ -34,17 +34,17 @@ export default function PhoneInput() {
         </button>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-heading text-gray-800 mb-2">
             Masukkan Nomor Telepon
           </h1>
-          <p className="text-gray-600">
+          <p className="text-body text-gray-600">
             Kami akan mengirim kode verifikasi via WhatsApp
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-body text-gray-700 mb-2">
               Nomor Telepon
             </label>
             <div className="flex gap-2">
@@ -67,13 +67,13 @@ export default function PhoneInput() {
               />
             </div>
             {error && (
-              <p className="text-red-500 text-sm mt-2">{error}</p>
+              <p className="text-red-500 text-body mt-2">{error}</p>
             )}
           </div>
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-start">
-              <p className="text-sm text-blue-800">
+              <p className="text-body text-blue-800">
                 Pastikan WhatsApp kamu aktif untuk menerima kode verifikasi.
               </p>
             </div>
@@ -81,13 +81,13 @@ export default function PhoneInput() {
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-button py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105"
           >
             Kirim Kode Verifikasi
           </button>
         </form>
 
-        <p className="text-sm text-gray-500 mt-6 text-center">
+        <p className="text-body text-gray-500 mt-6 text-center">
           Dengan melanjutkan, kamu menyetujui{' '}
           <a href="#" className="text-blue-600 hover:underline">
             Syarat & Ketentuan

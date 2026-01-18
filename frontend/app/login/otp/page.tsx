@@ -73,7 +73,7 @@ export default function LoginOTP() {
   const handleVerify = (code: string) => {
     if (code === '123456') { // PLACEHOLDER VERIF
       localStorage.removeItem('isLoginFlow');
-      router.push('/');
+      router.push('/dashboard');
     } else {
       setError('Kode verifikasi salah. Silakan coba lagi.');
       setOtp(['', '', '', '', '', '']);
@@ -107,13 +107,13 @@ export default function LoginOTP() {
           <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4">
             <span className="text-3xl">💬</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-heading text-gray-800 mb-2">
             Verifikasi Nomor
           </h1>
-          <p className="text-gray-600">
+          <p className="text-body text-gray-600">
             Ketik kode 6 digit yang dikirim ke
           </p>
-          <p className="text-gray-800 font-semibold">
+          <p className="text-body text-gray-800 font-semibold">
             {phoneNumber}
           </p>
         </div>
@@ -136,7 +136,7 @@ export default function LoginOTP() {
             ))}
           </div>
           {error && (
-            <p className="text-red-500 text-sm text-center">{error}</p>
+            <p className="text-red-500 text-body text-center">{error}</p>
           )}
         </div>
 
@@ -144,14 +144,14 @@ export default function LoginOTP() {
           {canResend ? (
             <button
               onClick={handleResend}
-              className="text-blue-600 font-semibold hover:underline"
+              className="text-blue-600 text-button hover:underline"
             >
               Kirim Ulang Kode
             </button>
           ) : (
-            <p className="text-gray-600">
+            <p className="text-body text-gray-600">
               Kirim ulang kode dalam{' '}
-              <span className="font-semibold text-blue-600">{countdown}s</span>
+              <span className="text-button text-blue-600">{countdown}s</span>
             </p>
           )}
         </div>

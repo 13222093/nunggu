@@ -17,7 +17,7 @@ export default function OnboardingSuccess() {
   }, [router]);
 
   const handleContinue = () => {
-    router.push('/'); // TODOLIST: Langsung navigatenya ke dashboard page, bukan balik ke landing page
+    router.push('/dashboard');
   };
 
   if (!userData) {
@@ -31,25 +31,25 @@ export default function OnboardingSuccess() {
           <div className="w-24 h-24 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-4 animate-wiggle">
             <span className="text-5xl">🎉</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-heading text-gray-800 mb-2">
             Halo, {userData.fullName}!
           </h1>
-          <p className="text-gray-600 mb-4">
+          <p className="text-body text-gray-600 mb-4">
             Akun berhasil dibuat
           </p>
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <p className="text-sm text-gray-700">
-              <span className="font-semibold">Username:</span> @{userData.username}
+            <p className="text-body text-gray-700">
+              <span className="text-button">Username:</span> @{userData.username}
             </p>
-            <p className="text-sm text-gray-700 mt-1">
-              <span className="font-semibold">Email:</span> {userData.email}
+            <p className="text-body text-gray-700 mt-1">
+              <span className="text-button">Email:</span> {userData.email}
             </p>
           </div>
         </div>
 
         <button
           onClick={handleContinue}
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 mb-4"
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-button py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 mb-4"
         >
           Mulai dengan KITA
         </button>

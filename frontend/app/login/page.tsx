@@ -52,17 +52,17 @@ export default function Login() {
           <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center mb-4">
             <span className="text-white text-3xl font-bold">K</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-heading text-gray-800 mb-2">
             Selamat Datang Kembali
           </h1>
-          <p className="text-gray-600">
+          <p className="text-body text-gray-600">
             Masuk ke akun KITA kamu
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-body text-gray-700 mb-2">
               Nomor Telepon
             </label>
             <div className="flex gap-2">
@@ -86,13 +86,13 @@ export default function Login() {
               />
             </div>
             {error && (
-              <p className="text-red-500 text-sm mt-2">{error}</p>
+              <p className="text-red-500 text-body mt-2">{error}</p>
             )}
           </div>
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-start">
-              <p className="text-sm text-blue-800">
+              <p className="text-body text-blue-800">
                 Kami akan mengirim kode verifikasi via WhatsApp untuk konfirmasi identitas kamu.
               </p>
             </div>
@@ -101,25 +101,25 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-button py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
             {isLoading ? 'Memeriksa...' : 'Kirim Kode Verifikasi'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600 mb-2">
+          <p className="text-body text-gray-600 mb-2">
             Belum punya akun?
           </p>
           <button
             onClick={() => router.push('/onboarding')}
-            className="text-blue-600 font-semibold hover:underline"
+            className="text-blue-600 text-button hover:underline"
           >
             Daftar Sekarang
           </button>
         </div>
 
-        <p className="text-sm text-gray-500 mt-6 text-center">
+        <p className="text-body text-gray-500 mt-6 text-center">
           Dengan melanjutkan, kamu menyetujui{' '}
           <a href="#" className="text-blue-600 hover:underline">
             Syarat & Ketentuan

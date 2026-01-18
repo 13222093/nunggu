@@ -87,17 +87,17 @@ export default function CompleteProfile() {
         </button>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-heading text-gray-800 mb-2">
             Lengkapi Profil
           </h1>
-          <p className="text-gray-600">
+          <p className="text-body text-gray-600">
             Hanya beberapa detail lagi untuk memulai
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-body text-gray-700 mb-2">
               Nama Lengkap
             </label>
             <input
@@ -108,12 +108,12 @@ export default function CompleteProfile() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
             />
             {errors.fullName && (
-              <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+              <p className="text-red-500 text-body mt-1">{errors.fullName}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-body text-gray-700 mb-2">
               Email Address
             </label>
             <input
@@ -124,12 +124,12 @@ export default function CompleteProfile() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              <p className="text-red-500 text-body mt-1">{errors.email}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-body text-gray-700 mb-2">
               Username
             </label>
             <input
@@ -140,18 +140,18 @@ export default function CompleteProfile() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
             />
             {errors.username && (
-              <p className="text-red-500 text-sm mt-1">{errors.username}</p>
+              <p className="text-red-500 text-body mt-1">{errors.username}</p>
             )}
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-body text-gray-500 mt-1">
               Ini akan menjadi pengenal unikmu
             </p>
           </div>
 
           <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-700 mb-2">
-              <span className="font-semibold">Nomor Telepon:</span> {phoneNumber}
+            <p className="text-body text-gray-700 mb-2">
+              <span className="text-button">Nomor Telepon:</span> {phoneNumber}
             </p>
-            <p className="text-xs text-gray-500">Terverifikasi ✓</p>
+            <p className="text-body text-gray-500">Terverifikasi ✓</p>
           </div>
 
           <div className="flex items-start">
@@ -162,7 +162,7 @@ export default function CompleteProfile() {
               onChange={(e) => handleChange('agreeToTerms', e.target.checked)}
               className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 text-gray-900 bg-white"
             />
-            <label htmlFor="agreeToTerms" className="ml-2 text-sm text-gray-700">
+            <label htmlFor="agreeToTerms" className="ml-2 text-body text-gray-700">
               Saya setuju dengan{' '}
               <a href="#" className="text-blue-600 hover:underline">
                 Syarat Layanan
@@ -174,12 +174,12 @@ export default function CompleteProfile() {
             </label>
           </div>
           {errors.agreeToTerms && (
-            <p className="text-red-500 text-sm">{errors.agreeToTerms}</p>
+            <p className="text-red-500 text-body">{errors.agreeToTerms}</p>
           )}
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-button py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105"
           >
             Lengkapi Pendaftaran
           </button>
