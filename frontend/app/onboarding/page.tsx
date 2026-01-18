@@ -13,26 +13,26 @@ export default function OnboardingWelcome() {
           <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center mb-4">
             <span className="text-white text-4xl font-bold">K</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-heading text-gray-800 mb-2">
             Selamat Datang di KITA
           </h1>
-          <p className="text-gray-600">
+          <p className="text-body text-gray-600">
             Platform investasi kripto terpercaya untuk kamu
           </p>
         </div>
 
         <button
           onClick={() => router.push('/onboarding/phone')}
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-button py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105"
         >
           Mulai dengan KITA
         </button>
 
-        <p className="text-sm text-gray-500 mt-4">
+        <p className="text-body text-gray-500 mt-4">
           Sudah punya akun?{' '}
           <button
             onClick={() => router.push('/login')}
-            className="text-blue-600 font-semibold hover:underline"
+            className="text-blue-600 text-button hover:underline"
           >
             Masuk
           </button>
