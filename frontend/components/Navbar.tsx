@@ -19,7 +19,9 @@ export function Navbar() {
         <div className="px-6 sm:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-8">
-              <Link href="/" className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <Link
+                href={isLoggedIn ? "/dashboard" : "/"}
+                className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 KITA
               </Link>
               <div className="hidden md:flex gap-6">
@@ -44,7 +46,7 @@ export function Navbar() {
               </div>
             </div>
             <Link 
-              href={isLoggedIn ? "/profile" : "/login"} 
+              href={isLoggedIn ? "/profil" : "/login"} 
               className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-blue-500/25 text-white font-semibold rounded-xl transition-all duration-200"
             >
               {isLoggedIn ? 'Profil' : 'Masuk'}
