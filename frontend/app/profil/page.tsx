@@ -3,6 +3,7 @@
 import { Navbar } from '@/components/Navbar';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { ChatBot } from '@/components/ChatBot';
 
 export default function Profile() {
   const router = useRouter();
@@ -276,6 +277,7 @@ export default function Profile() {
           </div>
         </div>
       )}
+      <ChatBot />
     </>
   );
 }
