@@ -1,23 +1,27 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, MessageCircle } from 'lucide-react';
+import { X, Send, MessageCircle, Trash2 } from 'lucide-react';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
+// Generate random user ID for session
+const generateUserId = () => `user_${Math.random().toString(36).substring(2, 11)}`;
+
 export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Halo! Aku AI assistant KITA. Ada yang bisa kubantu?',
+      content: 'Halo! 👋 Aku KITA AI, asisten pintar yang siap bantu kamu belajar tentang DeFi options dan Thetanuts V4.\n\nMau tanya apa? Misalnya:\n• "Apa itu Thetanuts?"\n• "Gimana cara kerja Cash-Secured Put?"\n• "Apa bedanya Call dan Put?"',
     },
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [userId] = useState(generateUserId);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -28,6 +32,20 @@ export function ChatBot() {
     scrollToBottom();
   }, [messages]);
 
+  const clearHistory = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/chat/history/${userId}`, {
+        method: 'DELETE',
+      });
+      setMessages([{
+        role: 'assistant',
+        content: 'Conversation cleared! 🧹 Ada yang bisa kubantu tentang Thetanuts atau DeFi options?',
+      }]);
+    } catch (error) {
+      console.error('Clear history error:', error);
+    }
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
@@ -37,12 +55,12 @@ export function ChatBot() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/ai/chat', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ userId, message: userMessage }),
       });
 
       if (!response.ok) throw new Error('Failed to get response');
@@ -50,7 +68,7 @@ export function ChatBot() {
       const data = await response.json();
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: data.response },
+        { role: 'assistant', content: data.data?.message || data.response || 'Maaf, ada kendala.' },
       ]);
     } catch (error) {
       console.error('Error:', error);
@@ -58,7 +76,7 @@ export function ChatBot() {
         ...prev,
         {
           role: 'assistant',
-          content: 'Maaf, terjadi kesalahan. Silakan coba lagi.',
+          content: 'Maaf, tidak bisa terhubung ke server. Pastikan backend sudah running di port 8000! 🔧',
         },
       ]);
     } finally {
@@ -102,16 +120,14 @@ export function ChatBot() {
             {messages.map((message, index) => (
               <div
                 key={index}
-                className={`flex ${
-                  message.role === 'user' ? 'justify-end' : 'justify-start'
-                }`}
+                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'
+                  }`}
               >
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2 ${
-                    message.role === 'user'
+                  className={`max-w-[80%] rounded-2xl px-4 py-2 ${message.role === 'user'
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                       : 'bg-white text-gray-800 shadow-sm'
-                  }`}
+                    }`}
                 >
                   <p className="text-body whitespace-pre-wrap">{message.content}</p>
                 </div>

@@ -1,14 +1,17 @@
 import { Elysia } from 'elysia';
-import { recentPositions, recentGroupEvents } from '../services/listener';
+
+// Mock data - was from listener but that has config issues
+const recentPositions: any[] = [];
+const recentGroupEvents: any[] = [];
 
 export const positionsRouter = new Elysia({ prefix: '/positions' })
   // Get recent on-chain activity (for "Live Feed" feature)
   .get('/activity', () => {
     // Merge positions and group events
     const allEvents = [...recentPositions, ...recentGroupEvents];
-    
+
     // Sort by timestamp descending (newest first)
-    return allEvents.sort((a, b) => 
+    return allEvents.sort((a, b) =>
       new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );
   })
