@@ -17,18 +17,42 @@ export class ThetanutsService {
   // Official API endpoints
   private ordersApiUrl = "https://round-snowflake-9c31.devops-118.workers.dev/";
   
+  // Cache storage
+  private cachedOrders: any[] | null = null;
+  private lastFetchTime: number = 0;
+  private readonly CACHE_DURATION_MS = 30 * 1000; // 30 seconds
+
   /**
    * Fetch all available orders from Thetanuts V4
    * Poll every ~30 seconds and fetch fresh before trade execution
    */
   async fetchOrders() {
+    const now = Date.now();
+
+    // Return cached data if valid
+    if (this.cachedOrders && (now - this.lastFetchTime < this.CACHE_DURATION_MS)) {
+      return this.cachedOrders;
+    }
+
     try {
       const response = await axios.get(this.ordersApiUrl);
-      return response.data.data.orders;
+      this.cachedOrders = response.data.data.orders;
+      this.lastFetchTime = now;
+      return this.cachedOrders;
     } catch (error) {
       console.error("Failed to fetch Thetanuts orders", error);
-      return [];
+      // Return old cache if available even if expired, otherwise empty
+      return this.cachedOrders || [];
     }
+  }
+
+  /**
+   * Force refresh orders (bypass cache)
+   * Useful right before executing a trade
+   */
+  async refreshOrders() {
+    this.cachedOrders = null;
+    return this.fetchOrders();
   }
 
   /**
@@ -38,6 +62,9 @@ export class ThetanutsService {
   async fetchPutSellOrders() {
     const config = getCurrentConfig();
     const orders = await this.fetchOrders();
+    // Safety check if orders is undefined
+    if (!orders) return [];
+    
     return orders.filter((o: any) =>
       !o.order.isCall &&  // Put option
       !o.order.isLong &&  // Selling (user receives premium)

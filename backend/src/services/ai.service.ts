@@ -23,19 +23,32 @@ export class AIService {
     
     // Mock premium calculation (approx 1.5% of budget for MVP)
     // In reality, this should come from Black-Scholes or Thetanuts API
-    const premium = budget * (risk === 'high' ? 0.025 : risk === 'low' ? 0.010 : 0.015);
+    // Base premium rate (e.g., 1.5% for ATM)
+    const basePremiumRate = 0.015;
+    
+    // Risk multipliers
+    const multipliers: Record<string, number> = {
+        low: 0.6,   // Safer = Lower Premium
+        medium: 1.0,
+        high: 1.6   // Riskier = Higher Premium
+    };
 
-    let reasoning = "Mode Seimbang: Titik optimal antara cashback dan keamanan.";
+    const selectedRisk = (risk || 'medium') as 'low' | 'medium' | 'high';
+    const multiplier = multipliers[selectedRisk] || 1.0;
+    
+    const premium = budget * basePremiumRate * multiplier;
+
+    let reasoning = "Mode Seimbang: Pilihan paling pas buat kamu. Cashbacknya lumayan, tapi harganya juga nggak terlalu mepet pasar. Aman dan nyaman!";
     if (risk === 'high') {
-        reasoning = "Mode Agresif: Strike dekat harga pasar. Cashback maksimal (Gede!), tapi siap-siap beli asetnya kalau harga turun dikit.";
+        reasoning = "Mode Agresif: Cashback GEDE BANGET! Tapi hati-hati ya, karena harganya deket sama harga pasar, kemungkinan kamu beli asetnya jadi lebih besar.";
     } else if (risk === 'low') {
-        reasoning = "Mode Santai: Strike jauh di bawah harga sekarang. Kemungkinan kecil tereksekusi, cashback lebih kecil tapi aman buat yang cuma mau parkir dana.";
+        reasoning = "Mode Santai: Pilihan paling aman. Cashbacknya emang lebih kecil, tapi kemungkinan kamu 'kepaksa' beli asetnya kecil banget. Cocok buat yang cuma mau parkir dana.";
     }
 
     return {
       suggested_strike: suggestedStrike,
       expected_premium: premium,
-      risk_profile: risk || 'medium',
+      risk_profile: selectedRisk,
       reasoning: reasoning,
       alternatives: [
         { 
