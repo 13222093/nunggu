@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@elysiajs/cors": "^1.4.1",
+    "@elysiajs/node": "^1.4.3",
     "@google/genai": "^1.38.0",
     "axios": "^1.13.2",
     "dotenv": "^17.2.3",

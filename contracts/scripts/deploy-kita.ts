@@ -1,8 +1,8 @@
 import { ethers } from "hardhat";
 
 /**
- * Deploy KITAVault to Base Mainnet or Sepolia
- * 
+ * Deploy KITAVault and GroupVault to Base Mainnet or Sepolia
+ *
  * Usage:
  *   npx hardhat run scripts/deploy-kita.ts --network base
  *   npx hardhat run scripts/deploy-kita.ts --network baseSepolia
@@ -24,7 +24,7 @@ async function main() {
     const [deployer] = await ethers.getSigners();
     const network = await ethers.provider.getNetwork();
 
-    console.log("🚀 Deploying KITAVault\n");
+    console.log("🚀 Deploying KITAVault & GroupVault\n");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log(`Network: ${network.name} (chainId: ${network.chainId})`);
     console.log(`Deployer: ${deployer.address}`);
@@ -94,27 +94,47 @@ async function main() {
     );
     await vault.waitForDeployment();
     const vaultAddress = await vault.getAddress();
+    console.log(`✅ KITAVault deployed: ${vaultAddress}`);
 
-    console.log(`✅ KITAVault deployed: ${vaultAddress}\n`);
+    // Deploy GroupVault (Nabung Bareng)
+    console.log("📝 Deploying GroupVault...");
+    const GroupVault = await ethers.getContractFactory("GroupVault");
+    const groupVault = await GroupVault.deploy(
+        optionBookAddress,
+        usdcAddress,
+        aavePoolAddress,
+        deployer.address // Referrer = deployer for now
+    );
+    await groupVault.waitForDeployment();
+    const groupVaultAddress = await groupVault.getAddress();
+    console.log(`✅ GroupVault deployed: ${groupVaultAddress}\n`);
 
     // Summary
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log("                    DEPLOYMENT SUMMARY");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
     console.log(`KITAVault:    ${vaultAddress}`);
+    console.log(`GroupVault:   ${groupVaultAddress}`);
     console.log(`OptionBook:   ${optionBookAddress}`);
     console.log(`USDC:         ${usdcAddress}`);
     console.log(`Aave Pool:    ${aavePoolAddress}`);
     console.log(`Referrer:     ${deployer.address}`);
     console.log();
 
-    // Verification command
+    // Environment variables to copy
+    console.log("📋 Add to your .env file:");
+    console.log(`KITA_VAULT_ADDRESS_SEPOLIA=${vaultAddress}`);
+    console.log(`GROUP_VAULT_ADDRESS_SEPOLIA=${groupVaultAddress}`);
+    console.log();
+
+    // Verification commands
     if (network.chainId === 8453n || network.chainId === 84532n) {
         console.log("📝 To verify on BaseScan:");
         console.log(`npx hardhat verify --network ${network.name} ${vaultAddress} "${optionBookAddress}" "${usdcAddress}" "${aavePoolAddress}" "${deployer.address}"`);
+        console.log(`npx hardhat verify --network ${network.name} ${groupVaultAddress} "${optionBookAddress}" "${usdcAddress}" "${aavePoolAddress}" "${deployer.address}"`);
     }
 
-    return { vault, vaultAddress };
+    return { vault, vaultAddress, groupVault, groupVaultAddress };
 }
 
 main()

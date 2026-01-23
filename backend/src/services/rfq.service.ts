@@ -166,6 +166,27 @@ export class ThetanutsService {
       optionBookAddress: order.optionBookAddress
     };
   }
+
+  /**
+   * Get a specific order by its signature (ID)
+   */
+  async getOrderById(signature: string) {
+    const orders = await this.fetchOrders();
+    if (!orders) return null;
+
+    const order = orders.find((o: any) => o.signature === signature);
+    return order ? this.formatOrderForDisplay(order) : null;
+  }
+
+  /**
+   * Get raw order data by signature (for transaction encoding)
+   */
+  async getRawOrderById(signature: string) {
+    const orders = await this.fetchOrders();
+    if (!orders) return null;
+
+    return orders.find((o: any) => o.signature === signature) || null;
+  }
 }
 
 export const thetanutsService = new ThetanutsService();

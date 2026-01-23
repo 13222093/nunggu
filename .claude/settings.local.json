@@ -10,7 +10,13 @@
       "WebSearch",
       "WebFetch(domain:thetanutsfinance.medium.com)",
       "WebFetch(domain:github.com)",
-      "Bash(timeout 30 npx hardhat:*)"
+      "Bash(timeout 30 npx hardhat:*)",
+      "Bash(npx tsx:*)",
+      "Bash(timeout /t 3 /nobreak)",
+      "Bash(bun run:*)",
+      "Bash(ping:*)",
+      "Bash(curl:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

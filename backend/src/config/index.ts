@@ -2,6 +2,9 @@ import { base, baseSepolia } from 'viem/chains';
 
 const NETWORK = process.env.NETWORK || 'sepolia';
 
+// Webhook API key for bot integration
+export const WEBHOOK_API_KEY = process.env.WEBHOOK_API_KEY || 'dev-api-key';
+
 export const CONFIG = {
   activeNetwork: NETWORK,
   
