@@ -70,14 +70,32 @@ export default function LoginOTP() {
     }
   };
 
-  const handleVerify = (code: string) => {
-    if (code === '123456') { // PLACEHOLDER VERIF
-      localStorage.removeItem('isLoginFlow');
-      router.push('/dashboard');
-    } else {
-      setError('Kode verifikasi salah. Silakan coba lagi.');
-      setOtp(['', '', '', '', '', '']);
-      inputRefs.current[0]?.focus();
+  const handleVerify = async (code: string) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/auth/verify-otp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phoneNumber: phoneNumber, // This should be the FULL phone number stored in localStorage
+          code: code,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.removeItem('isLoginFlow');
+        localStorage.setItem('userSession', JSON.stringify(data.data)); // Store session
+        router.push('/dashboard');
+      } else {
+        setError(data.error || 'Kode verifikasi salah. Silakan coba lagi.');
+        setOtp(['', '', '', '', '', '']);
+        inputRefs.current[0]?.focus();
+      }
+    } catch (err) {
+      setError('Gagal verifikasi. Periksa koneksi internet Anda.');
     }
   };
 

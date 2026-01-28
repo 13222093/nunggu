@@ -36,19 +36,20 @@ A fast API service using Bun and Elysia.
 -   **`src/services/listener.ts`:** Uses `viem` to watch for on-chain `PositionCreated` events.
 -   **`src/services/rfq.service.ts`:** Handles interaction with Thetanuts Cloudflare worker API.
 
-## Current Status (as of Jan 24, 2026)
+## Current Status (as of Jan 28, 2026)
 -   **Contracts:**
     -   Logic for `KITAVault` and `GroupVault` is complete and tested.
     -   Deployment scripts (`scripts/deploy-kita.ts`) are ready for Base Sepolia and Mainnet.
     -   Integration guides (`INTEGRATION_GUIDE_FOR_TEAM.md`) provided.
 -   **Backend:**
-    -   Basic API structure running with Elysia.
-    -   Can fetch orders from Thetanuts and provide mock positions.
-    -   Blockchain listener is scaffolded.
+    -   **Stateless:** Currently uses in-memory storage (Maps) for users and chat history; no database is connected.
+    -   **Features:** RFQ/Order fetching (Thetanuts), Gemini-powered AI Chatbot, and basic transaction encoding are implemented.
+    -   **Pending:** Authentication (OTP/JWT), Database integration (Persistence), and enabling the event listener.
 -   **Pending Tasks:**
-    -   **Deployment:** Deploy contracts to Base Sepolia for live testing.
-    -   **Frontend:** Needs integration (OnchainKit) to fetch orders from Backend and sign transactions for Contracts.
-    -   **Verification:** Verify contracts on BaseScan.
+    -   **Backend Infrastructure:** Set up Database (Postgres/SQLite) + Prisma ORM.
+    -   **Auth:** Implement full OTP flow and session management.
+    -   **Frontend Integration:** Connect Frontend to Backend for Auth and Data fetching.
+    -   **Deployment:** Deploy contracts to Base Sepolia.
 
 ## Key Configurations & Addresses
 -   **Thetanuts V4 API:** `https://round-snowflake-9c31.devops-118.workers.dev/`
@@ -59,9 +60,24 @@ A fast API service using Bun and Elysia.
 
 ## 📝 TODO: Backend Development Checklist
 
-Based on `.claude/BACKEND_GUIDE.md` and `INTEGRATION_CHECKLIST.md`.
+Updated based on codebase investigation (Jan 28, 2026).
 
-### Priority 1: Core API & Orders (MVP)
+### Priority 0: Infrastructure & Persistence (CRITICAL)
+- [ ] **Database Setup**
+    - [x] Choose and initialize database (PostgreSQL via Docker).
+    - [x] Set up ORM (Prisma).
+    - [x] Define schemas: `User` (with wallet/phone), `Session`, `ChatHistory`, `Group`, `Position`.
+- [ ] **Environment**
+    - [ ] Ensure all API keys (Gemini, Thetanuts, RPC) are in `.env`.
+
+### Priority 1: Authentication & User Management
+- [ ] **Implement Auth Flow**
+    - [ ] **OTP Service:** Integrate with a provider (or mock for now) to handle phone login.
+    - [ ] **JWT Generation:** Issue tokens upon successful verification.
+    - [ ] **Middleware:** Apply `auth.ts` middleware to protect routes (`/api/groups`, `/api/chat`).
+    - [ ] **Profile:** Create endpoints to update user profile (name, preferences).
+
+### Priority 2: Core API & Orders (MVP)
 - [ ] **Verify Thetanuts Integration (`src/services/rfq.service.ts`)**
     - [ ] Ensure `fetchPutSellOrders` correctly filters for `!isCall` (Puts) and `!isLong` (Selling/Short).
     - [ ] Test data fetching from Thetanuts API (ensure endpoint is live and returning data).
@@ -71,29 +87,25 @@ Based on `.claude/BACKEND_GUIDE.md` and `INTEGRATION_CHECKLIST.md`.
     - [ ] Implement/Verify `/api/orders/puts` endpoint (specifically for "Beli Murah Dapat Cashback").
     - [ ] Ensure API response format matches what Frontend needs (formatted decimals, human-readable expiry).
 
-### Priority 2: Blockchain Event Indexer
-- [ ] **Enhance Event Listener (`src/services/listener.ts`)**
-    - [ ] Connect to **Base Sepolia** RPC (ensure `.env` is set).
-    - [ ] Listen for `PositionCreated` events from `KITAVault`.
-    - [ ] Listen for `GroupCreated`, `MemberJoined`, `ProposalCreated` from `GroupVault`.
-    - [ ] **Data Persistence:** Currently just logs to console. Need to decide:
-        -   Option A (MVP): Keep in-memory array or simple JSON file?
-        -   Option B (Better): Spin up a simple SQLite/Postgres DB to store positions and user history. *Recommendation: Use SQLite with Bun (built-in) for speed.*
+### Priority 3: Blockchain Event Indexer & Real-time
+- [ ] **Enable Event Listener (`src/index.ts`)**
+    - [ ] Uncomment/enable `startEventListener`.
+    - [ ] **Persist Events:** Save `PositionCreated` and `ProposalCreated` events to the DB (not just console).
+    - [ ] **Data Persistence:**
+        -   Store position details (strike, expiry, amount) in `Position` table.
+        -   Update `Group` status based on `ProposalCreated`/`MemberJoined`.
 
-### Priority 3: Feature Support
+### Priority 4: Chatbot & AI
+- [ ] **Chat Persistence**
+    - [ ] Replace in-memory `conversationHistory` map with DB storage.
+    - [ ] Context-aware: Load previous chat history when user starts a session.
 - [ ] **AI/Heuristics Service (`src/services/ai.service.ts`)**
     - [ ] Refine `getOptimizationSuggestion` logic.
-    - [ ] Add "risk profile" inputs (Conservative/Aggressive) to adjust recommended strike prices (e.g., ATM-5% vs ATM-10%).
-- [ ] **WhatsApp/Notification Stub**
-    - [ ] Create a mock service/endpoint to simulate sending WhatsApp notifications when events occur (e.g., "Position filled!", "Voting started").
+    - [ ] Add "risk profile" inputs (Conservative/Aggressive).
 
-### Priority 4: Deployment & Optimization
+### Priority 5: Deployment & Optimization
 - [ ] **Deployment**
     - [ ] Deploy Backend to a VPS or Railway/Render.
     - [ ] Ensure CORS is configured for the Frontend domain.
 - [ ] **Caching**
-    - [ ] Implement simple in-memory caching for Thetanuts API responses (poll every 30s) to avoid hitting their rate limits and improve frontend speed.
-
-### Integration Requirements
-- [ ] **Contracts:** Need deployed contract addresses (`KITAVault`, `GroupVault`) in `.env` for the listener to work.
-- [ ] **Frontend:** Provide clear API documentation (Swagger/Elysia Swagger) for frontend devs.
+    - [ ] Implement simple in-memory caching for Thetanuts API responses.

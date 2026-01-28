@@ -2,6 +2,8 @@ import { Elysia } from 'elysia';
 import { node } from '@elysiajs/node';
 import { cors } from '@elysiajs/cors';
 import 'dotenv/config';
+import { authRouter } from './routers/auth';
+import { userRouter } from './routers/user';
 import { rfqRouter } from './routers/rfq';
 import { aiRouter } from './routers/ai';
 import { positionsRouter } from './routers/positions';
@@ -18,6 +20,8 @@ const app = new Elysia({ adapter: node() })
   .get('/health', () => ({ status: 'ok', message: 'KITA API is running' }))
   .group('/api', (app) =>
     app
+      .use(authRouter)
+      .use(userRouter)
       .use(rfqRouter)
       .use(aiRouter)
       .use(positionsRouter)

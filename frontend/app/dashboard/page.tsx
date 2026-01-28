@@ -3,20 +3,60 @@
 import { Navbar } from '@/components/Navbar';
 import { ChatBot } from '@/components/ChatBot';
 import { TrendingUp, Wallet, Target, Award, ArrowUpRight, ArrowDownRight, Plus, Users, X, TrendingDown, DollarSign, Zap } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
+  const router = useRouter();
   const [showSoloModal, setShowSoloModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userData, setUserData] = useState<any>(null);
 
-  // Data dummy untuk tampilan
-  const stats = {
-    totalBalance: 12500000,
-    totalYield: 450000,
-    activePositions: 3,
-    monthlyReturn: 3.6,
+  // Data dummy (fallback)
+  const defaultStats = {
+    totalBalance: 0,
+    totalYield: 0,
+    activePositions: 0,
+    monthlyReturn: 0,
   };
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      // Get session
+      const sessionStr = localStorage.getItem('userSession');
+      if (!sessionStr) {
+        router.push('/login');
+        return;
+      }
+      
+      const session = JSON.parse(sessionStr);
+      // Determine identity (wallet or phone)
+      // The API accepts either, but let's use what we have. 
+      // Auth router returns id, phoneNumber, walletAddress.
+      const identifier = session.walletAddress || session.phoneNumber;
+
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/user/profile/${identifier}`);
+        const data = await res.json();
+        
+        if (data.success) {
+          setUserData(data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch profile", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [router]);
+
+  const stats = userData?.stats || defaultStats;
+  const positions = userData?.positions || [];
+  // const recentActivities = userData?.history || []; // Backend not sending history yet, keep dummy or empty
+  
   const soloStrategies = [
     {
       id: 1,
@@ -62,11 +102,13 @@ export default function Dashboard() {
     { id: 3, action: 'Withdraw', amount: 2000000, date: '3 hari lalu', type: 'withdraw' },
   ];
 
-  const positions = [
-    { id: 1, name: 'USDC Vault', balance: 7500000, apy: 8.5, status: 'Active' },
-    { id: 2, name: 'USDT Vault', balance: 3000000, apy: 7.2, status: 'Active' },
-    { id: 3, name: 'DAI Vault', balance: 2000000, apy: 9.1, status: 'Active' },
-  ];
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-white text-xl animate-pulse">Memuat Data Portfolio...</div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -75,7 +117,9 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header Section */}
           <div className="mb-8 mt-8">
-            <h1 className="text-ultra-heading text-white mb-1">Ini Dashboardmu!</h1>
+            <h1 className="text-ultra-heading text-white mb-1">
+              Hi, {userData?.user?.name || 'Investor'}! 👋
+            </h1>
             <p className="text-body text-slate-300">Lihat portfolio dan semua yield kamu di sini.</p>
           </div>
 

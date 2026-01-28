@@ -23,26 +23,34 @@ export default function Login() {
       return;
     }
 
-    // TODOLIST: Ini masih simulasi cek nomor terdaftar atau nggak
-    setTimeout(() => {
-      const userData = localStorage.getItem('userData');
-      if (userData) {
-        const user = JSON.parse(userData);
-        const storedPhone = localStorage.getItem('phoneNumber');
-        
-        if (storedPhone === formData.countryCode + formData.phoneNumber) {
-          // User exists, send OTP
-          localStorage.setItem('phoneNumber', formData.countryCode + formData.phoneNumber);
-          localStorage.setItem('isLoginFlow', 'true');
-          router.push('/login/otp');
-        } else {
-          setError('Nomor telepon belum terdaftar. Silakan daftar terlebih dahulu.');
-        }
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/auth/request-otp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phoneNumber: formData.phoneNumber,
+          countryCode: formData.countryCode,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // User exists, send OTP
+        localStorage.setItem('phoneNumber', formData.countryCode + formData.phoneNumber);
+        localStorage.setItem('rawPhoneNumber', formData.phoneNumber); // Store for verification
+        localStorage.setItem('isLoginFlow', 'true');
+        router.push('/login/otp');
       } else {
-        setError('Nomor telepon belum terdaftar. Silakan daftar terlebih dahulu.');
+        setError(data.error || 'Terjadi kesalahan. Silakan coba lagi.');
       }
+    } catch (err) {
+      setError('Gagal menghubungi server. Periksa koneksi internet Anda.');
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
