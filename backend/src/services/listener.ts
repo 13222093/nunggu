@@ -3,6 +3,11 @@ import { publicClient } from '../utils/client';
 import { getCurrentConfig } from '../config';
 import prisma from '../utils/prisma';
 import { Decimal } from '@prisma/client/runtime/library';
+import { telegramService } from './telegram.service';
+
+// Simple in-memory store for MVP (Kept for compatibility limits)
+export const recentPositions: any[] = [];
+export const recentGroupEvents: any[] = [];
 
 // ABIs
 const PositionCreatedAbi = parseAbiItem(
@@ -29,6 +34,7 @@ export const startEventListener = () => {
   const config = getCurrentConfig();
   const kitaVaultAddress = config.contracts.kitaVault as `0x${string}`;
   const groupVaultAddress = config.contracts.groupVault as `0x${string}`;
+  const adminChatId = process.env.TELEGRAM_ADMIN_CHAT_ID;
 
   // Helper to ensure user exists
   const ensureUser = async (address: string) => {
@@ -43,6 +49,9 @@ export const startEventListener = () => {
     return user;
   };
 
+  console.log(`👂 Starting Event Listener on ${config.chain.name}...`);
+  telegramService.startPolling();
+
   // Listener for KITAVault
   if (kitaVaultAddress && !kitaVaultAddress.startsWith("0x0000")) {
     publicClient.watchEvent({
@@ -54,6 +63,7 @@ export const startEventListener = () => {
             const { user: userAddr, positionId, optionContract, collateral, strikePrice, expiry, isCall, isLong } = log.args;
             if (!userAddr || positionId === undefined) continue;
 
+            // 1. Database Logic (HEAD)
             const user = await ensureUser(userAddr);
 
             await prisma.position.upsert({
@@ -76,6 +86,22 @@ export const startEventListener = () => {
                 txHash: log.transactionHash
               }
             });
+
+            // 2. Bot Logic (Origin/Backend/Bot)
+            console.log(`📍 [KITA] New Position: ID ${positionId} | User ${userAddr}`);
+
+            recentPositions.unshift({
+              type: 'POSITION_CREATED',
+              txHash: log.transactionHash,
+              ...log.args,
+              timestamp: new Date().toISOString()
+            });
+            if (recentPositions.length > 100) recentPositions.pop();
+
+            if (adminChatId) {
+              telegramService.sendMessage(adminChatId, `🚀 *Posisi Baru Terdeteksi!*\nUser: \`${userAddr?.slice(0, 6)}...${userAddr?.slice(-4)}\`\nCollateral: ${Number(collateral) / 1e6} USDC\nCashback: ${Number(log.args.premium) / 1e6} USDC`);
+            }
+
           } catch (error) {
             console.error('Error processing PositionCreated event:', error);
           }
@@ -96,6 +122,7 @@ export const startEventListener = () => {
             const { groupId, name, admin: adminAddr } = log.args;
             if (groupId === undefined || !adminAddr) continue;
 
+            // 1. Database Logic
             const admin = await ensureUser(adminAddr);
 
             await prisma.group.upsert({
@@ -107,6 +134,21 @@ export const startEventListener = () => {
                 adminId: admin.id
               }
             });
+
+            // 2. Bot Logic
+            console.log(`👥 [GROUP] New Group: ${name} (ID: ${groupId})`);
+
+            recentGroupEvents.unshift({
+              type: 'GROUP_CREATED',
+              txHash: log.transactionHash,
+              ...log.args,
+              timestamp: new Date().toISOString()
+            });
+
+            if (adminChatId) {
+              telegramService.sendMessage(adminChatId, `👥 *Grup Baru Dibuat!*\nNama: ${name}\nAdmin: \`${adminAddr?.slice(0, 6)}...\``);
+            }
+
           } catch (error) {
             console.error('Error processing GroupCreated event:', error);
           }
@@ -114,7 +156,7 @@ export const startEventListener = () => {
       }
     });
 
-    // Member Joined
+    // Member Joined (Only in HEAD)
     publicClient.watchEvent({
       address: groupVaultAddress,
       event: MemberJoinedAbi,
@@ -162,6 +204,7 @@ export const startEventListener = () => {
             const { proposalId, groupId, proposalType, proposer: proposerAddr } = log.args;
             if (proposalId === undefined || groupId === undefined || !proposerAddr) continue;
 
+            // 1. Database Logic
             const proposer = await ensureUser(proposerAddr);
             const group = await prisma.group.findUnique({
               where: { onchainId: Number(groupId) }
@@ -181,6 +224,21 @@ export const startEventListener = () => {
                 }
               });
             }
+
+            // 2. Bot Logic
+            console.log(`🗳️ [GROUP] New Proposal: ID ${proposalId} in Group ${groupId}`);
+
+            recentGroupEvents.unshift({
+              type: 'PROPOSAL_CREATED',
+              txHash: log.transactionHash,
+              ...log.args,
+              timestamp: new Date().toISOString()
+            });
+
+            if (adminChatId) {
+              telegramService.sendMessage(adminChatId, `🗳️ *Voting Dimulai!*\nProposal ID: ${proposalId}\nGrup ID: ${groupId}\n\nKetik /vote untuk ikut berpartisipasi!`);
+            }
+
           } catch (error) {
             console.error('Error processing ProposalCreated event:', error);
           }
@@ -188,7 +246,7 @@ export const startEventListener = () => {
       }
     });
 
-    // Strategy Executed
+    // Strategy Executed (Only in HEAD)
     publicClient.watchEvent({
       address: groupVaultAddress,
       event: StrategyExecutedAbi,
@@ -209,7 +267,7 @@ export const startEventListener = () => {
                   vaultAddress: optionContract || '',
                   assetSymbol: 'ETH', // Default
                   amount: new Decimal(collateral?.toString() || '0'),
-                  strikePrice: new Decimal(0), 
+                  strikePrice: new Decimal(0),
                   expiry: new Date(),
                   status: 'OPEN',
                   txHash: log.transactionHash
