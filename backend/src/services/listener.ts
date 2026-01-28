@@ -2,7 +2,6 @@ import { parseAbiItem } from 'viem';
 import { publicClient } from '../utils/client';
 import { getCurrentConfig } from '../config';
 import prisma from '../utils/prisma';
-import { Decimal } from '@prisma/client/runtime/library';
 import { telegramService } from './telegram.service';
 
 // Simple in-memory store for MVP (Kept for compatibility limits)
@@ -77,8 +76,8 @@ export const startEventListener = () => {
                 userId: user.id,
                 vaultAddress: optionContract || '',
                 assetSymbol: (Number(strikePrice || 0) > 50000e8) ? 'BTC' : 'ETH',
-                amount: new Decimal(collateral?.toString() || '0'),
-                strikePrice: new Decimal(strikePrice?.toString() || '0'),
+                amount: collateral?.toString() || '0',
+                strikePrice: strikePrice?.toString() || '0',
                 expiry: new Date(Number(expiry) * 1000),
                 isCall: !!isCall,
                 isLong: !!isLong,
@@ -179,11 +178,11 @@ export const startEventListener = () => {
                     userId: user.id
                   }
                 },
-                update: { amount: new Decimal(amount?.toString() || '0') },
+                update: { amount: amount?.toString() || '0' },
                 create: {
                   groupId: group.id,
                   userId: user.id,
-                  amount: new Decimal(amount?.toString() || '0')
+                  amount: amount?.toString() || '0'
                 }
               });
             }
@@ -266,8 +265,8 @@ export const startEventListener = () => {
                   groupId: group.id,
                   vaultAddress: optionContract || '',
                   assetSymbol: 'ETH', // Default
-                  amount: new Decimal(collateral?.toString() || '0'),
-                  strikePrice: new Decimal(0),
+                  amount: collateral?.toString() || '0',
+                  strikePrice: '0',
                   expiry: new Date(),
                   status: 'OPEN',
                   txHash: log.transactionHash

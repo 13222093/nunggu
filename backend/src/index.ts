@@ -35,4 +35,5 @@ const app = new Elysia({ adapter: node() })
   .use(webhookRouter)
   .listen(process.env.PORT || 8000);
 
-startEventListener(); // Enabled to sync with contracts
+startEventListener();
+console.log('🚀 KITA API started on port', process.env.PORT || 8000);
