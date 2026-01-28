@@ -9,7 +9,7 @@ import { chatRouter } from './routers/chat';
 import { groupsRouter } from './routers/groups';
 import { transactionsRouter } from './routers/transactions';
 import { webhookRouter } from './routers/webhook';
-// import { startEventListener } from './services/listener';
+import { startEventListener } from './services/listener';
 
 const app = new Elysia({ adapter: node() })
   // Default CORS: Allow all origins (OK for Hackathon/Dev)
@@ -29,4 +29,4 @@ const app = new Elysia({ adapter: node() })
   .use(webhookRouter)
   .listen(process.env.PORT || 8000);
 
-// startEventListener(); // Disabled until contracts are deployed
+startEventListener(); // Enabled to sync with contracts

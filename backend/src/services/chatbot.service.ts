@@ -1,10 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
+import prisma from '../utils/prisma';
 
 // Initialize Gemini client - gets API key from GEMINI_API_KEY env var
 const ai = new GoogleGenAI({});
-
-// Store conversation history for multi-turn chat
-const conversationHistory: Map<string, Array<{ role: string, parts: string }>> = new Map();
 
 // Thetanuts & KITA Knowledge Base
 const SYSTEM_INSTRUCTION = `Kamu adalah KITA AI, asisten cerdas untuk platform KITA.
@@ -43,19 +41,39 @@ export interface ChatResponse {
 export class ChatbotService {
     async chat(userId: string, message: string): Promise<ChatResponse> {
         try {
-            // Get or create conversation history for user
-            if (!conversationHistory.has(userId)) {
-                conversationHistory.set(userId, []);
+            // Find user in DB
+            let user = await prisma.user.findFirst({
+                where: {
+                    OR: [
+                        { walletAddress: userId },
+                        { phoneNumber: userId }
+                    ]
+                }
+            });
+
+            // If user doesn't exist and userId looks like a wallet address, create user
+            if (!user && userId.startsWith('0x') && userId.length === 42) {
+                user = await prisma.user.create({
+                    data: { walletAddress: userId }
+                });
             }
-            const history = conversationHistory.get(userId)!;
+
+            // Fetch history from DB
+            const dbHistory = user ? await prisma.chatHistory.findMany({
+                where: { userId: user.id },
+                orderBy: { createdAt: 'desc' },
+                take: 10
+            }) : [];
+
+            // History is fetched desc (newest first), we need asc (oldest first) for the prompt
+            const sortedHistory = [...dbHistory].reverse();
 
             // Build the prompt with context
             let fullPrompt = SYSTEM_INSTRUCTION + '\n\n';
 
-            // Add conversation history (last 5 turns)
-            const recentHistory = history.slice(-10);
-            for (const msg of recentHistory) {
-                fullPrompt += `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.parts}\n`;
+            for (const msg of sortedHistory) {
+                const roleName = msg.role === 'user' ? 'User' : 'Assistant';
+                fullPrompt += `${roleName}: ${msg.message}\n`;
             }
 
             // Add current message
@@ -72,13 +90,23 @@ export class ChatbotService {
                 (response as any).response?.text?.() ||
                 'Maaf, tidak ada respons.';
 
-            // Store in history
-            history.push({ role: 'user', parts: message });
-            history.push({ role: 'model', parts: responseText });
+            // Store in DB
+            if (user) {
+                await prisma.chatHistory.create({
+                    data: {
+                        userId: user.id,
+                        role: 'user',
+                        message: message
+                    }
+                });
 
-            // Keep only last 20 messages
-            while (history.length > 20) {
-                history.shift();
+                await prisma.chatHistory.create({
+                    data: {
+                        userId: user.id,
+                        role: 'assistant',
+                        message: responseText
+                    }
+                });
             }
 
             return { message: responseText };
@@ -90,8 +118,21 @@ export class ChatbotService {
         }
     }
 
-    clearHistory(userId: string): void {
-        conversationHistory.delete(userId);
+    async clearHistory(userId: string): Promise<void> {
+        const user = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { walletAddress: userId },
+                    { phoneNumber: userId }
+                ]
+            }
+        });
+
+        if (user) {
+            await prisma.chatHistory.deleteMany({
+                where: { userId: user.id }
+            });
+        }
     }
 
     isReady(): boolean {

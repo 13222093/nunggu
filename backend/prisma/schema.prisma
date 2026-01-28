@@ -17,6 +17,7 @@ model User {
   groupsAdmin   Group[]        @relation("GroupAdmin")
   groupMembers  GroupMember[]
   positions     Position[]
+  proposals     Proposal[]
 
   @@map("users")
 }
@@ -34,6 +35,7 @@ model ChatHistory {
 
 model Group {
   id              Int           @id @default(autoincrement())
+  onchainId       Int?          @unique @map("onchain_id")
   name            String        @db.VarChar(100)
   description     String?
   adminId         Int?          @map("admin_id")
@@ -42,6 +44,7 @@ model Group {
   admin           User?         @relation("GroupAdmin", fields: [adminId], references: [id])
   members         GroupMember[]
   positions       Position[]
+  proposals       Proposal[]
 
   @@map("groups")
 }
@@ -50,6 +53,7 @@ model GroupMember {
   groupId  Int      @map("group_id")
   userId   Int      @map("user_id")
   joinedAt DateTime @default(now()) @map("joined_at") @db.Timestamptz
+  amount   Decimal? @db.Decimal(30, 0)
   group    Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -59,6 +63,7 @@ model GroupMember {
 
 model Position {
   id           Int      @id @default(autoincrement())
+  onchainId    Int?     @unique @map("onchain_id")
   userId       Int?     @map("user_id")
   groupId      Int?     @map("group_id")
   vaultAddress String   @map("vault_address") @db.VarChar(42)
@@ -67,6 +72,7 @@ model Position {
   strikePrice  Decimal  @map("strike_price") @db.Decimal(30, 0)
   expiry       DateTime @db.Timestamptz
   isCall       Boolean  @default(false) @map("is_call")
+  isLong       Boolean  @default(false) @map("is_long")
   status       String   @default("OPEN") @db.VarChar(20) // OPEN, FILLED, EXPIRED, CLOSED
   txHash       String?  @map("tx_hash") @db.VarChar(66)
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
@@ -74,4 +80,22 @@ model Position {
   group        Group?   @relation(fields: [groupId], references: [id])
 
   @@map("positions")
+}
+
+model Proposal {
+  id           Int      @id @default(autoincrement())
+  onchainId    Int      @unique @map("onchain_id")
+  groupId      Int      @map("group_id")
+  proposerId   Int      @map("proposer_id")
+  proposalType Int      @map("proposal_type")
+  description  String?
+  votesFor     Int      @default(0) @map("votes_for")
+  votesAgainst Int      @default(0) @map("votes_against")
+  deadline     DateTime @db.Timestamptz
+  status       String   @default("PENDING") @db.VarChar(20) // PENDING, EXECUTED, CANCELLED
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+  group        Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  proposer     User     @relation(fields: [proposerId], references: [id])
+
+  @@map("proposals")
 }
