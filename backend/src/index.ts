@@ -4,6 +4,7 @@ import { cors } from '@elysiajs/cors';
 import 'dotenv/config';
 import { authRouter } from './routers/auth';
 import { userRouter } from './routers/user';
+import { missionsRouter } from './routers/missions';
 import { rfqRouter } from './routers/rfq';
 import { aiRouter } from './routers/ai';
 import { positionsRouter } from './routers/positions';
@@ -22,6 +23,7 @@ const app = new Elysia({ adapter: node() })
     app
       .use(authRouter)
       .use(userRouter)
+      .use(missionsRouter)
       .use(rfqRouter)
       .use(aiRouter)
       .use(positionsRouter)
