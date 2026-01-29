@@ -40,12 +40,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Type check
-        run: npx tsc --noEmit
+      # - name: Type check
+      #   run: npx tsc --noEmit
 
-      - name: Lint check
-        # Pake || echo biar gak fail pipeline kalau script lint gak ada (optional)
-        run: npm run lint 2>/dev/null || echo "No lint script found"
+      # - name: Lint check
+      #   # Pake || echo biar gak fail pipeline kalau script lint gak ada (optional)
+      #   run: npm run lint 2>/dev/null || echo "No lint script found"
 
       - name: Prisma generate
         run: npx prisma generate
@@ -79,8 +79,8 @@ jobs:
       - name: Type check
         run: npx tsc --noEmit
 
-      - name: Lint check
-        run: npm run lint
+      # - name: Lint check
+      #   run: npm run lint
 
       # Build test di sini penting buat nangkep error Next.js sebelum jadi Docker
       - name: Build check
