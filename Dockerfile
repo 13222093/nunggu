@@ -52,6 +52,24 @@ RUN npx prisma generate
 FROM base AS backend
 
 ENV NODE_ENV=production
+# General Configuration
+ENV PORT=8000
+ENV NETWORK=sepolia
+# Base Sepolia (Testnet)
+ENV BASE_SEPOLIA_RPC=https://sepolia.base.org
+ENV MOCK_USDC_ADDRESS=0x00dcEE3921A5BDf4Baa6bd836D8Bf88cE9cd0bF1
+ENV MOCK_OPTIONBOOK_ADDRESS=0x79F320b0b657BfBB20a619600e1Fda721026EB1c
+ENV KITA_VAULT_ADDRESS_SEPOLIA=0x1cF7e8fF49cd61D7AAB9850BaC106E0947c31326
+ENV GROUP_VAULT_ADDRESS_SEPOLIA=0x9B2b628b1bad3C9983A2E6C0170185d289489c6e
+# Base Mainnet (Production)
+ENV BASE_MAINNET_RPC=https://mainnet.base.org
+ENV KITA_VAULT_ADDRESS_MAINNET=0x0000000000000000000000000000000000000000
+ENV GROUP_VAULT_ADDRESS_MAINNET=0x0000000000000000000000000000000000000000
+# Secrets (override at runtime)
+ENV DATABASE_URL=""
+ENV TELEGRAM_BOT_TOKEN=""
+ENV TELEGRAM_ADMIN_CHAT_ID=""
+ENV GEMINI_API_KEY=""
 
 WORKDIR /app
 
@@ -71,11 +89,11 @@ RUN npm ci --omit=dev && \
 USER appuser
 
 # Expose backend port
-EXPOSE 3000
+EXPOSE 8000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8000/health || exit 1
 
 # Start the backend server
 CMD ["npm", "run", "start"]

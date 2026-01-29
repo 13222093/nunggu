@@ -41,20 +41,34 @@ services:
     container_name: nunggu-backend
     restart: unless-stopped
     ports:
-      - "${BACKEND_PORT:-3001}:3000"
+      - "${BACKEND_PORT:-8000}:8000"
     environment:
       NODE_ENV: production
+      PORT: 8000
+      NETWORK: ${NETWORK:-sepolia}
+      # Database
       DATABASE_URL: postgresql://${POSTGRES_USER:-nunggu_user}:${POSTGRES_PASSWORD:-nunggu_password}@db:5432/${POSTGRES_DB:-nunggu_db}?schema=public
-      # Add other env vars as needed
-      # GOOGLE_AI_API_KEY: ${GOOGLE_AI_API_KEY}
-      # TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      # Base Sepolia (Testnet)
+      BASE_SEPOLIA_RPC: ${BASE_SEPOLIA_RPC:-https://sepolia.base.org}
+      MOCK_USDC_ADDRESS: ${MOCK_USDC_ADDRESS:-0x00dcEE3921A5BDf4Baa6bd836D8Bf88cE9cd0bF1}
+      MOCK_OPTIONBOOK_ADDRESS: ${MOCK_OPTIONBOOK_ADDRESS:-0x79F320b0b657BfBB20a619600e1Fda721026EB1c}
+      KITA_VAULT_ADDRESS_SEPOLIA: ${KITA_VAULT_ADDRESS_SEPOLIA:-0x1cF7e8fF49cd61D7AAB9850BaC106E0947c31326}
+      GROUP_VAULT_ADDRESS_SEPOLIA: ${GROUP_VAULT_ADDRESS_SEPOLIA:-0x9B2b628b1bad3C9983A2E6C0170185d289489c6e}
+      # Base Mainnet (Production)
+      BASE_MAINNET_RPC: ${BASE_MAINNET_RPC:-https://mainnet.base.org}
+      KITA_VAULT_ADDRESS_MAINNET: ${KITA_VAULT_ADDRESS_MAINNET:-0x0000000000000000000000000000000000000000}
+      GROUP_VAULT_ADDRESS_MAINNET: ${GROUP_VAULT_ADDRESS_MAINNET:-0x0000000000000000000000000000000000000000}
+      # Integrations
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_ADMIN_CHAT_ID: ${TELEGRAM_ADMIN_CHAT_ID:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
     depends_on:
       db:
         condition: service_healthy
     networks:
       - nunggu-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3

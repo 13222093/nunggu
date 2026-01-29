@@ -1,0 +1,235 @@
+# ============================================
+# KUBERNETES MANIFESTS - NUNGGU/KITA
+# Namespace, Deployments, Services, IngressRoutes
+# ============================================
+
+---
+# ============================================
+# Namespace
+# ============================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nunggu
+
+---
+# ============================================
+# ConfigMap - Non-sensitive configuration
+# ============================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nunggu-config
+  namespace: nunggu
+data:
+  NODE_ENV: "production"
+  NEXT_PUBLIC_API_URL: "https://api.nunggu.naufarrel.tech"
+  # Backend Config
+  PORT: "8000"
+  NETWORK: "sepolia"
+  # Base Sepolia (Testnet)
+  BASE_SEPOLIA_RPC: "https://sepolia.base.org"
+  MOCK_USDC_ADDRESS: "0x00dcEE3921A5BDf4Baa6bd836D8Bf88cE9cd0bF1"
+  MOCK_OPTIONBOOK_ADDRESS: "0x79F320b0b657BfBB20a619600e1Fda721026EB1c"
+  KITA_VAULT_ADDRESS_SEPOLIA: "0x1cF7e8fF49cd61D7AAB9850BaC106E0947c31326"
+  GROUP_VAULT_ADDRESS_SEPOLIA: "0x9B2b628b1bad3C9983A2E6C0170185d289489c6e"
+  # Base Mainnet (Production)
+  BASE_MAINNET_RPC: "https://mainnet.base.org"
+  KITA_VAULT_ADDRESS_MAINNET: "0x0000000000000000000000000000000000000000"
+  GROUP_VAULT_ADDRESS_MAINNET: "0x0000000000000000000000000000000000000000"
+
+---
+# ============================================
+# Secret - Sensitive configuration
+# ============================================
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nunggu-secrets
+  namespace: nunggu
+type: Opaque
+stringData:
+  DATABASE_URL: "postgresql://nunggu_user:nunggu_password@nunggu-db:5432/nunggu_db?schema=public"
+  TELEGRAM_BOT_TOKEN: "your-bot-token"
+  TELEGRAM_ADMIN_CHAT_ID: ""
+  GEMINI_API_KEY: "your-gemini-api-key"
+
+---
+# ============================================
+# Backend Deployment
+# ============================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nunggu-backend
+  namespace: nunggu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nunggu-backend
+  template:
+    metadata:
+      labels:
+        app: nunggu-backend
+    spec:
+      containers:
+        - name: nunggu-backend
+          image: reletz/nunggu-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: nunggu-config
+            - secretRef:
+                name: nunggu-secrets
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+
+---
+# ============================================
+# Backend Service
+# ============================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: nunggu-backend
+  namespace: nunggu
+spec:
+  type: ClusterIP
+  selector:
+    app: nunggu-backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+
+---
+# ============================================
+# Backend IngressRoute (Traefik)
+# ============================================
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nunggu-backend
+  namespace: nunggu
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`api.nunggu.k8s.local`) || Host(`api.nunggu.naufarrel.tech`)
+      kind: Rule
+      services:
+        - name: nunggu-backend
+          port: 8000
+
+---
+# ============================================
+# Frontend Deployment
+# ============================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nunggu-frontend
+  namespace: nunggu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nunggu-frontend
+  template:
+    metadata:
+      labels:
+        app: nunggu-frontend
+    spec:
+      containers:
+        - name: nunggu-frontend
+          image: reletz/nunggu-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: NEXT_PUBLIC_API_URL
+              value: "https://api.nunggu.naufarrel.tech"
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+
+---
+# ============================================
+# Frontend Service
+# ============================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: nunggu-frontend
+  namespace: nunggu
+spec:
+  type: ClusterIP
+  selector:
+    app: nunggu-frontend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+# ============================================
+# Frontend IngressRoute (Traefik)
+# ============================================
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nunggu-frontend
+  namespace: nunggu
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`nunggu.k8s.local`) || Host(`nunggu.naufarrel.tech`)
+      kind: Rule
+      services:
+        - name: nunggu-frontend
+          port: 3000
