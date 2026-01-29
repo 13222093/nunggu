@@ -17,7 +17,8 @@
       "Bash(ping:*)",
       "Bash(curl:*)",
       "Bash(npx tsc:*)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(git show:*)"
     ]
   }
 }
