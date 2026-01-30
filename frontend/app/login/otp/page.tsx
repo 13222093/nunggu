@@ -8,6 +8,7 @@ export default function LoginOTP() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [error, setError] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('');1
   const [countdown, setCountdown] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -15,13 +16,15 @@ export default function LoginOTP() {
   useEffect(() => { // Make sure ini login flow (datang dari halaman login)
     const isLogin = localStorage.getItem('isLoginFlow');
     const phone = localStorage.getItem('phoneNumber');
+    const country = localStorage.getItem('countryCode');
     
-    if (!isLogin || !phone) {
+    if (!isLogin || !phone || !country) {
       router.push('/login');
       return;
     }
     
     setPhoneNumber(phone);
+    setCountryCode(country);
   }, [router]);
 
   useEffect(() => {
@@ -78,7 +81,8 @@ export default function LoginOTP() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          phoneNumber: phoneNumber, // This should be the FULL phone number stored in localStorage
+          phoneNumber: phoneNumber,
+          countryCode: countryCode,
           code: code,
         }),
       });
@@ -132,7 +136,7 @@ export default function LoginOTP() {
             Ketik kode 6 digit yang dikirim ke
           </p>
           <p className="text-body text-gray-800 font-semibold">
-            {phoneNumber}
+            {`${countryCode}-${phoneNumber}`}
           </p>
         </div>
 

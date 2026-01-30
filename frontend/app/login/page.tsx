@@ -39,8 +39,8 @@ export default function Login() {
 
       if (data.success) {
         // User exists, send OTP
-        localStorage.setItem('phoneNumber', formData.countryCode + formData.phoneNumber);
-        localStorage.setItem('rawPhoneNumber', formData.phoneNumber); // Store for verification
+        localStorage.setItem('countryCode', formData.countryCode);
+        localStorage.setItem('phoneNumber', formData.phoneNumber); // Store for verification
         localStorage.setItem('isLoginFlow', 'true');
         router.push('/login/otp');
       } else {
