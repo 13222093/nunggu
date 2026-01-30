@@ -5,20 +5,26 @@
 :root {
   /* ExportReadyAI-Inspired Color System (70-20-10 Rule) */
   /* PRIMARY: Blue-Teal (70% usage) - Trust & Calm */
-  --color-primary: #0284c7;      /* Main blue */
+  --color-primary: #0284c7;
+  /* Main blue */
   --color-primary-dark: #0369a1;
   --color-primary-light: #38bdf8;
-  --color-accent: #0d9488;       /* Teal accent */
+  --color-accent: #0d9488;
+  /* Teal accent */
 
   /* SECONDARY: Amber (10% usage) - Action & Energy (CTAs only) */
-  --color-secondary: #f59e0b;    /* Amber for CTAs */
+  --color-secondary: #f59e0b;
+  /* Amber for CTAs */
   --color-secondary-dark: #d97706;
   --color-secondary-light: #fbbf24;
 
   /* NEUTRAL: Stone (20% usage) - Structure */
-  --color-bg-primary: #1c1917;   /* Stone-900 */
-  --color-bg-secondary: #292524; /* Stone-800 */
-  --color-bg-tertiary: #44403c;  /* Stone-700 */
+  --color-bg-primary: #1c1917;
+  /* Stone-900 */
+  --color-bg-secondary: #292524;
+  /* Stone-800 */
+  --color-bg-tertiary: #44403c;
+  /* Stone-700 */
 
   /* Text */
   --color-text-primary: #fafaf9;
@@ -55,7 +61,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary); /* Blue instead of amber */
+  background: var(--color-primary);
+  /* Blue instead of amber */
   border-radius: 100px;
 }
 
@@ -64,19 +71,24 @@ body {
 }
 
 @layer components {
+
   /* Typography System */
   .ultra-heading {
     @apply text-ultra-heading;
   }
+
   .heading {
     @apply text-heading;
   }
+
   .subheading {
     @apply text-subheading;
   }
+
   .body-text {
     @apply text-body;
   }
+
   .btn-text {
     @apply text-button;
   }
@@ -98,5 +110,85 @@ body {
   /* Card Interactive (with hover lift) */
   .card-interactive {
     @apply card-base hover:-translate-y-1 cursor-pointer;
+  }
+}
+
+/* Custom Animations for Landing Page */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+
+  50% {
+    transform: translateY(-20px) translateX(10px);
+  }
+}
+
+@keyframes float-delayed {
+
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+
+  50% {
+    transform: translateY(-30px) translateX(-15px);
+  }
+}
+
+@keyframes float-slow {
+
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+
+  50% {
+    transform: translateY(-15px) translateX(20px);
+  }
+}
+
+@keyframes gradient-x {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 10s ease-in-out infinite;
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+.animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }

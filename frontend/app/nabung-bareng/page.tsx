@@ -2,7 +2,7 @@
 
 import { Navbar } from '@/components/Navbar';
 import { ChatBot } from '@/components/ChatBot';
-import { Users, Plus, TrendingUp, Calendar, Award, Target, Clock, DollarSign, CheckCircle, X, Share2, Copy, MessageCircle } from 'lucide-react';
+import { Users, TrendingUp, Clock, Target, Shield, Plus, Copy, MessageCircle, X, ArrowRight, Award, Calendar, DollarSign, CheckCircle, Share2 } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -50,8 +50,8 @@ export default function NabungBareng() {
   const [selectedFriends, setSelectedFriends] = useState<number[]>([]);
 
   const toggleFriendSelection = (friendId: number) => {
-    setSelectedFriends(prev => 
-      prev.includes(friendId) 
+    setSelectedFriends(prev =>
+      prev.includes(friendId)
         ? prev.filter(id => id !== friendId)
         : [...prev, friendId]
     );
@@ -83,128 +83,225 @@ export default function NabungBareng() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-24 px-4 pb-24">
-        <div className="max-w-7xl mx-auto space-y-8">
-          {/* Header Section */}
-          <div className="mb-8 mt-8 flex items-start justify-between gap-4">
-            <div>
-              <h1 className="text-ultra-heading text-white mb-2">Nabung Bareng</h1>
-              <p className="text-body text-slate-300">Investasi bersama teman dan keluarga, capai target lebih cepat</p>
+      <div className="relative min-h-screen bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f] pt-24 px-4 pb-24 overflow-hidden">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(10,152,255,0.3),transparent_50%)] animate-pulse" />
+
+        {/* Floating orbs - Split complementary colors */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-30 animate-float" />
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#FBFF2B] rounded-full blur-3xl opacity-20 animate-float-delayed" />
+          <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-[#00FFF0] rounded-full blur-3xl opacity-25 animate-float-slow" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto space-y-12">
+          {/* Hero Header Section */}
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="inline-block bg-white/20 backdrop-blur-md text-white px-6 py-2 rounded-full text-sm font-bold mb-6 border-2 border-white/30 shadow-lg">
+              👥 NABUNG BARENG
             </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-4 drop-shadow-lg">
+              Investasi Lebih <span className="text-[#FFBC57]">Seru</span> Bareng Teman!
+            </h1>
+            <p className="text-lg sm:text-xl text-white/90 max-w-3xl mx-auto mb-8">
+              Gabung atau buat grup investasi, voting strategi bareng, dan raih target lebih cepat. <span className="font-bold">Cuan bareng lebih fun! 🚀</span>
+            </p>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-xl transition-all text-white font-semibold whitespace-nowrap"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#FFBC57] to-[#FF9500] hover:from-[#FF9500] hover:to-[#FFBC57] rounded-2xl transition-all text-white font-black text-lg shadow-[0_8px_0_0_rgba(255,149,0,0.5)] hover:shadow-[0_10px_0_0_rgba(255,149,0,0.5)] hover:-translate-y-1 active:translate-y-1 active:shadow-[0_4px_0_0_rgba(255,149,0,0.5)] border-4 border-white/30"
             >
-              <Plus className="w-5 h-5" />
-              Buat Grup
+              <Plus className="w-6 h-6" />
+              Buat Grup Sekarang
             </button>
           </div>
 
-          {/* Benefits Section */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8">
-            <h2 className="text-heading text-white mb-6">Emang harus Nabung Bareng?</h2>
+          {/* Benefits Section - Vibrant Cards */}
+          <section className="mb-16">
+            <div className="text-center mb-12">
+              <div className="inline-block bg-gradient-to-r from-[#C15BFF] to-[#FBFF2B] text-white px-6 py-2 rounded-full text-sm font-bold mb-4 shadow-lg">
+                ✨ KEUNTUNGAN
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 drop-shadow-lg">
+                Kenapa Harus Nabung Bareng?
+              </h2>
+              <p className="text-lg text-white/90 max-w-2xl mx-auto">
+                Lebih dari sekedar investasi - ini adalah <span className="font-bold text-[#FFBC57]">social DeFi experience!</span>
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon;
+                const gradients = [
+                  { from: '#C15BFF', to: '#0A98FF', shadow: 'rgba(193,91,255,0.4)' },
+                  { from: '#00FFF0', to: '#0A98FF', shadow: 'rgba(0,255,240,0.4)' },
+                  { from: '#FFBC57', to: '#FF9500', shadow: 'rgba(255,188,87,0.4)' },
+                  { from: '#FBFF2B', to: '#C15BFF', shadow: 'rgba(251,255,43,0.4)' },
+                ];
+                const gradient = gradients[index % gradients.length];
+
                 return (
-                  <div key={index} className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <Icon className="w-8 h-8 text-purple-400" />
+                  <div
+                    key={index}
+                    className="group bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 hover:scale-105 hover:-translate-y-2 transition-all duration-300"
+                    style={{
+                      boxShadow: `0 20px 60px ${gradient.shadow}`
+                    }}
+                  >
+                    <div
+                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform"
+                      style={{
+                        background: `linear-gradient(135deg, ${gradient.from}, ${gradient.to})`
+                      }}
+                    >
+                      <Icon className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-subheading text-white mb-2">{benefit.title}</h3>
-                    <p className="text-body text-slate-400">{benefit.description}</p>
+                    <h3 className="text-xl font-black text-[#0A4A7C] mb-2 text-center">{benefit.title}</h3>
+                    <p className="text-gray-700 text-center leading-relaxed">{benefit.description}</p>
                   </div>
                 );
               })}
             </div>
-          </div>
+          </section>
 
-          {/* My Groups Section */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-heading text-white">Grup Saya</h2>
-              <span className="text-sm text-slate-400">{myGroups.length} Grup Aktif</span>
+          {/* My Groups Section - Vibrant White Cards */}
+          <section className="mb-16">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-3xl sm:text-4xl font-black text-white drop-shadow-lg">Grup Saya</h2>
+                <p className="text-white/90 mt-2">Kelola dan pantau semua grup investasimu</p>
+              </div>
+              <div className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border-2 border-white/30">
+                <span className="text-white font-bold">{myGroups.length} Grup Aktif</span>
+              </div>
             </div>
-            <div className="space-y-4">
-              {myGroups.map((group) => {
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {myGroups.map((group, index) => {
                 const progress = (group.currentAmount / group.targetAmount) * 100;
+                const cardGradients = [
+                  { border: '#C15BFF', badge: 'from-[#C15BFF] to-[#0A98FF]', progress: 'from-[#C15BFF] to-[#0A98FF]', shadow: 'rgba(193,91,255,0.3)' },
+                  { border: '#00FFF0', badge: 'from-[#00FFF0] to-[#0A98FF]', progress: 'from-[#00FFF0] to-[#0A98FF]', shadow: 'rgba(0,255,240,0.3)' },
+                  { border: '#FFBC57', badge: 'from-[#FFBC57] to-[#FF9500]', progress: 'from-[#FFBC57] to-[#FF9500]', shadow: 'rgba(255,188,87,0.3)' },
+                ];
+                const cardStyle = cardGradients[index % cardGradients.length];
+
                 return (
                   <Link
                     key={group.id}
                     href={`/nabung-bareng/${group.id}`}
-                    className="block bg-slate-700/30 border border-slate-600/30 rounded-xl p-6 hover:bg-slate-700/50 transition-all cursor-pointer"
+                    className="group block bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                    style={{
+                      boxShadow: `0 20px 60px ${cardStyle.shadow}`
+                    }}
                   >
+                    {/* Header */}
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-subheading text-white">{group.name}</h3>
-                          <span className="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">
+                          <h3 className="text-2xl font-black text-[#0A4A7C] group-hover:text-[#0A98FF] transition-colors">{group.name}</h3>
+                          <span
+                            className={`px-3 py-1 bg-gradient-to-r ${cardStyle.badge} text-white text-xs font-bold rounded-full shadow-md`}
+                          >
                             {group.role}
                           </span>
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-slate-400">
-                          <span className="flex items-center gap-1">
-                            <Users className="w-4 h-4" />
-                            {group.members} Members
+
+                        {/* Stats Row */}
+                        <div className="flex items-center gap-4 text-sm text-gray-600 flex-wrap">
+                          <span className="flex items-center gap-1.5 bg-gray-100 px-3 py-1 rounded-full">
+                            <Users className="w-4 h-4 text-[#0A98FF]" />
+                            <span className="font-semibold">{group.members} Members</span>
                           </span>
-                          <span className="flex items-center gap-1">
-                            <TrendingUp className="w-4 h-4 text-green-400" />
-                            APY {group.apy}%
+                          <span className="flex items-center gap-1.5 bg-green-50 px-3 py-1 rounded-full">
+                            <TrendingUp className="w-4 h-4 text-green-500" />
+                            <span className="font-semibold text-green-600">APY {group.apy}%</span>
                           </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            {group.nextContribution}
+                          <span className="flex items-center gap-1.5 bg-amber-50 px-3 py-1 rounded-full">
+                            <Clock className="w-4 h-4 text-amber-500" />
+                            <span className="font-semibold text-amber-600">{group.nextContribution}</span>
                           </span>
                         </div>
                       </div>
+
+                      {/* Progress Badge */}
                       <div className="text-right">
-                        <p className="text-sm text-slate-400 mb-1">Progress</p>
-                        <p className="text-heading text-white">{Math.round(progress)}%</p>
+                        <div
+                          className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${cardStyle.badge} flex flex-col items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform`}
+                        >
+                          <span className="text-2xl font-black text-white">{Math.round(progress)}%</span>
+                          <span className="text-xs text-white/80 font-semibold">Progress</span>
+                        </div>
                       </div>
                     </div>
 
                     {/* Progress Bar */}
                     <div className="mb-4">
-                      <div className="w-full bg-slate-600/30 rounded-full h-3 overflow-hidden">
+                      <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
                         <div
-                          className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all"
+                          className={`h-full bg-gradient-to-r ${cardStyle.progress} rounded-full transition-all duration-500 shadow-md`}
                           style={{ width: `${progress}%` }}
                         ></div>
                       </div>
                       <div className="flex items-center justify-between mt-2 text-sm">
-                        <span className="text-slate-400">
+                        <span className="text-gray-600 font-semibold">
                           Rp {(group.currentAmount / 1000000).toFixed(1)}jt
                         </span>
-                        <span className="text-white font-semibold">
-                          Rp {(group.targetAmount / 1000000).toFixed(1)}jt
+                        <span className="text-[#0A4A7C] font-bold">
+                          Target: Rp {(group.targetAmount / 1000000).toFixed(1)}jt
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-slate-600/30">
-                      <span className="text-sm text-slate-400">Strategi: {group.strategy}</span>
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-4 border-t-2 border-gray-200">
+                      <span className="text-sm text-gray-600">
+                        Strategi: <span className="font-bold text-[#0A98FF]">{group.strategy}</span>
+                      </span>
+                      <div className="flex items-center gap-2 text-[#0A98FF] font-bold text-sm group-hover:gap-3 transition-all">
+                        <span>Lihat Detail</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
                     </div>
                   </Link>
                 );
               })}
             </div>
-          </div>
+
+            {/* Empty State */}
+            {myGroups.length === 0 && (
+              <div className="text-center py-16 bg-white/95 backdrop-blur-sm rounded-3xl border-4 border-white/50 shadow-2xl">
+                <div className="w-24 h-24 bg-gradient-to-br from-[#C15BFF] to-[#FBFF2B] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <Users className="w-12 h-12 text-white" />
+                </div>
+                <h3 className="text-2xl font-black text-[#0A4A7C] mb-2">Belum Ada Grup</h3>
+                <p className="text-gray-600 mb-6">Buat grup pertamamu dan mulai investasi bareng teman!</p>
+                <button
+                  onClick={() => setShowCreateModal(true)}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                >
+                  <Plus className="w-5 h-5" />
+                  Buat Grup Pertama
+                </button>
+              </div>
+            )}
+          </section>
         </div>
       </div>
 
       {/* Create Group Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-          <div className="bg-slate-800 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-slate-700/50">
+        <div className="fixed inset-0 bg-[#0A4A7C]/80 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+          <div className="bg-white/15 backdrop-blur-md rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2 border-white/20">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-slate-800 border-b border-slate-700/50 p-6 flex items-center justify-between">
+            <div className="sticky top-0 bg-white/10 backdrop-blur-md border-b-2 border-white/20 p-6 flex items-center justify-between">
               <div>
                 <h2 className="text-heading text-white mb-1">
                   {createGroupStep === 1 ? 'Buat Grup Baru' : 'Ajak Teman'}
                 </h2>
-                <p className="text-body text-slate-400">
-                  {createGroupStep === 1 
-                    ? 'Isi detail grup nabung bareng kamu' 
+                <p className="text-body text-white/70">
+                  {createGroupStep === 1
+                    ? 'Isi detail grup nabung bareng kamu'
                     : 'Pilih teman atau bagikan link untuk join grup'}
                 </p>
               </div>
@@ -214,9 +311,9 @@ export default function NabungBareng() {
                   setCreateGroupStep(1);
                   setSelectedFriends([]);
                 }}
-                className="w-10 h-10 bg-slate-700/50 hover:bg-slate-700 rounded-xl flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors"
               >
-                <X className="w-5 h-5 text-slate-300" />
+                <X className="w-5 h-5 text-white" />
               </button>
             </div>
 
@@ -225,100 +322,100 @@ export default function NabungBareng() {
               {createGroupStep === 1 ? (
                 // Step 1: Form Buat Grup
                 <>
-              {/* Group Name */}
-              <div>
-                <label className="block text-sm font-semibold text-white mb-2">Nama Grup</label>
-                <input
-                  type="text"
-                  placeholder="Contoh: Tim Startup Gaji Pas"
-                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
+                  {/* Group Name */}
+                  <div>
+                    <label className="block text-sm font-semibold text-white mb-2">Nama Grup</label>
+                    <input
+                      type="text"
+                      placeholder="Contoh: Tim Startup Gaji Pas"
+                      className="w-full px-4 py-3 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#00FFF0]"
+                    />
+                  </div>
 
-              {/* Target Amount */}
-              <div>
-                <label className="block text-sm font-semibold text-white mb-2">Target Dana</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">Rp</span>
-                  <input
-                    type="number"
-                    placeholder="50.000.000"
-                    className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
-              </div>
+                  {/* Target Amount */}
+                  <div>
+                    <label className="block text-sm font-semibold text-white mb-2">Target Dana</label>
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50">Rp</span>
+                      <input
+                        type="number"
+                        placeholder="50.000.000"
+                        className="w-full pl-12 pr-4 py-3 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#00FFF0]"
+                      />
+                    </div>
+                  </div>
 
-              {/* Max Members */}
-              <div>
-                <label className="block text-sm font-semibold text-white mb-2">Maksimal Anggota</label>
-                <input
-                  type="number"
-                  placeholder="10"
-                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
+                  {/* Max Members */}
+                  <div>
+                    <label className="block text-sm font-semibold text-white mb-2">Maksimal Anggota</label>
+                    <input
+                      type="number"
+                      placeholder="10"
+                      className="w-full px-4 py-3 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#00FFF0]"
+                    />
+                  </div>
 
-              {/* Action Buttons Step 1 */}
-              <div className="flex gap-4 pt-4">
-                <button
-                  onClick={() => {
-                    setShowCreateModal(false);
-                    setCreateGroupStep(1);
-                  }}
-                  className="flex-1 py-3 border-2 border-slate-600 text-slate-300 rounded-xl hover:bg-slate-700/30 transition-all"
-                >
-                  Batal
-                </button>
-                <button 
-                  onClick={() => setCreateGroupStep(2)}
-                  className="flex-1 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all font-semibold"
-                >
-                  Lanjut
-                </button>
-              </div>
-              </>
+                  {/* Action Buttons Step 1 */}
+                  <div className="flex gap-4 pt-4">
+                    <button
+                      onClick={() => {
+                        setShowCreateModal(false);
+                        setCreateGroupStep(1);
+                      }}
+                      className="flex-1 py-3 border-2 border-white/40 text-white rounded-xl hover:bg-white/10 transition-all font-semibold"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      onClick={() => setCreateGroupStep(2)}
+                      className="flex-1 py-3 bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white rounded-xl font-bold shadow-[0_6px_0_0_rgba(255,149,0,0.4)] hover:shadow-[0_8px_0_0_rgba(255,149,0,0.4)] hover:-translate-y-0.5 active:translate-y-1 active:shadow-[0_3px_0_0_rgba(255,149,0,0.4)] transition-all border-2 border-white/20"
+                    >
+                      Lanjut
+                    </button>
+                  </div>
+                </>
               ) : (
                 // Step 2: Invite Members
                 <>
                   {/* Invite Link Section */}
-                  <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-xl p-6">
+                  <div className="bg-white/10 border-2 border-white/20 rounded-xl p-6">
                     <h3 className="text-subheading text-white mb-3">Link Undangan Grup</h3>
-                    <p className="text-sm text-slate-400 mb-4">Bagikan link ini untuk mengundang teman</p>
-                    <div className="flex items-center gap-2 p-4 bg-slate-700/50 rounded-xl mb-4">
+                    <p className="text-sm text-white/70 mb-4">Bagikan link ini untuk mengundang teman</p>
+                    <div className="flex items-center gap-2 p-4 bg-white/10 rounded-xl mb-4">
                       <input
                         type="text"
                         value="https://kita.app/join/abc123xyz"
                         readOnly
                         className="flex-1 bg-transparent text-white text-sm focus:outline-none"
                       />
-                      <button className="p-2 hover:bg-slate-600/50 rounded-lg transition-colors">
-                        <Copy className="w-5 h-5 text-slate-400" />
+                      <button className="p-2 hover:bg-white/20 rounded-lg transition-colors">
+                        <Copy className="w-5 h-5 text-white/70" />
                       </button>
                     </div>
-                    <button className="w-full flex items-center justify-center gap-3 p-4 bg-green-500/20 text-green-400 rounded-xl hover:bg-green-500/30 transition-colors">
+                    <button className="w-full flex items-center justify-center gap-3 p-4 bg-green-500/20 text-green-400 rounded-xl hover:bg-green-500/30 transition-colors font-semibold">
                       <MessageCircle className="w-5 h-5" />
-                      <span className="font-semibold">Share via WhatsApp</span>
+                      <span className="font-semibold">Share via Telegram</span>
                     </button>
                   </div>
 
                   {/* Divider */}
                   <div className="flex items-center gap-4">
-                    <div className="flex-1 h-px bg-slate-600/50"></div>
-                    <span className="text-sm text-slate-400">atau</span>
-                    <div className="flex-1 h-px bg-slate-600/50"></div>
+                    <div className="flex-1 h-px bg-white/20"></div>
+                    <span className="text-sm text-white/70">atau</span>
+                    <div className="flex-1 h-px bg-white/20"></div>
                   </div>
 
                   {/* Invite KITA Users */}
                   <div>
                     <h3 className="text-subheading text-white mb-4">Cari & Undang Pengguna KITA</h3>
-                    <p className="text-sm text-slate-400 mb-4">Undang teman yang sudah punya akun KITA</p>
-                    
+                    <p className="text-sm text-white/70 mb-4">Undang teman yang sudah punya akun KITA</p>
+
                     {/* Search Bar */}
                     <div className="mb-4">
                       <input
                         type="text"
                         placeholder="Cari berdasarkan username..."
-                        className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-4 py-3 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#00FFF0]"
                       />
                     </div>
 
@@ -327,27 +424,27 @@ export default function NabungBareng() {
                       {suggestedFriends.map((friend) => (
                         <label
                           key={friend.id}
-                          className="flex items-center gap-4 p-4 bg-slate-700/30 rounded-xl cursor-pointer hover:bg-slate-700/50 transition-colors"
+                          className="flex items-center gap-4 p-4 bg-white/10 rounded-xl cursor-pointer hover:bg-white/15 transition-colors"
                         >
                           <input
                             type="checkbox"
                             checked={selectedFriends.includes(friend.id)}
                             onChange={() => toggleFriendSelection(friend.id)}
-                            className="w-5 h-5 text-purple-500 rounded focus:ring-2 focus:ring-purple-500"
+                            className="w-5 h-5 text-[#A855F7] rounded focus:ring-2 focus:ring-[#A855F7]"
                           />
-                          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-bold">
+                          <div className="w-12 h-12 bg-gradient-to-br from-[#0284C7] to-[#06B6D4] rounded-xl flex items-center justify-center text-white font-bold">
                             {friend.avatar}
                           </div>
                           <div className="flex-1">
                             <p className="text-white font-semibold">{friend.name}</p>
-                            <p className="text-sm text-slate-400">{friend.username}</p>
+                            <p className="text-sm text-white/70">{friend.username}</p>
                           </div>
                         </label>
                       ))}
                     </div>
                     {selectedFriends.length > 0 && (
-                      <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-xl">
-                        <p className="text-sm text-purple-400">
+                      <div className="mt-4 p-4 bg-[#A855F7]/10 border-2 border-[#A855F7]/20 rounded-xl">
+                        <p className="text-sm text-[#A855F7]">
                           {selectedFriends.length} teman dipilih
                         </p>
                       </div>
@@ -358,17 +455,17 @@ export default function NabungBareng() {
                   <div className="flex gap-4 pt-4">
                     <button
                       onClick={() => setCreateGroupStep(1)}
-                      className="flex-1 py-3 border-2 border-slate-600 text-slate-300 rounded-xl hover:bg-slate-700/30 transition-all"
+                      className="flex-1 py-3 border-2 border-white/40 text-white rounded-xl hover:bg-white/10 transition-all font-semibold"
                     >
                       Kembali
                     </button>
-                    <button 
+                    <button
                       onClick={() => {
                         setShowCreateModal(false);
                         setCreateGroupStep(1);
                         setSelectedFriends([]);
                       }}
-                      className="flex-1 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all font-semibold"
+                      className="flex-1 py-3 bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white rounded-xl font-bold shadow-[0_6px_0_0_rgba(255,149,0,0.4)] hover:shadow-[0_8px_0_0_rgba(255,149,0,0.4)] hover:-translate-y-0.5 active:translate-y-1 active:shadow-[0_3px_0_0_rgba(255,149,0,0.4)] transition-all border-2 border-white/20"
                     >
                       {selectedFriends.length > 0 ? 'Kirim Undangan' : 'Selesai'}
                     </button>

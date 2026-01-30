@@ -48,39 +48,52 @@ export default function BuyCall() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-24 px-4 pb-24">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="relative min-h-screen bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f] pt-24 px-4 pb-24 overflow-hidden">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(10,152,255,0.3),transparent_50%)] animate-pulse" />
+
+        {/* Floating orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-30 animate-float" />
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#FBFF2B] rounded-full blur-3xl opacity-20 animate-float-delayed" />
+          <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-[#00FFF0] rounded-full blur-3xl opacity-25 animate-float-slow" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto space-y-8">
           {/* Header */}
           <div className="flex items-center gap-4 mb-4">
             <Link
               href="/dashboard"
-              className="w-10 h-10 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-xl flex items-center justify-center transition-colors"
+              className="group w-12 h-12 bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 hover:-translate-y-1 transition-all duration-300"
             >
-              <ArrowLeft className="w-5 h-5 text-slate-300" />
+              <ArrowLeft className="w-6 h-6 text-[#0A4A7C] group-hover:-translate-x-1 transition-transform" />
             </Link>
             <div>
-              <h1 className="text-ultra-heading text-white">{strategyInfo.title}</h1>
-              <p className="text-body text-slate-300">{strategyInfo.name}</p>
+              <div className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-bold mb-1 shadow-md">
+                STRATEGY
+              </div>
+              <h1 className="text-4xl font-black text-white drop-shadow-lg">{strategyInfo.title}</h1>
+              <p className="text-white/90 font-medium">{strategyInfo.name}</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-8">
               {/* Strategy Overview */}
-              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-2xl p-6">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="w-16 h-16 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                    <Zap className="w-8 h-8 text-purple-400" />
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
+                <div className="flex items-start gap-6 mb-6">
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-6 transition-transform">
+                    <Zap className="w-10 h-10 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-heading text-white mb-2">Tentang Strategi</h2>
-                    <p className="text-body text-slate-300 mb-4">{strategyInfo.description}</p>
+                    <h2 className="text-2xl font-black text-[#0A4A7C] mb-2">Tentang Strategi</h2>
+                    <p className="text-gray-600 font-medium leading-relaxed mb-6">{strategyInfo.description}</p>
                     <div className="flex items-center gap-3">
-                      <span className="px-3 py-1 bg-purple-500/20 text-purple-400 text-sm font-semibold rounded-full">
+                      <span className="px-4 py-2 bg-purple-100 text-purple-700 font-bold rounded-xl border border-purple-200">
                         Return {strategyInfo.apy}
                       </span>
-                      <span className="px-3 py-1 bg-red-500/20 text-red-400 text-sm font-semibold rounded-full">
+                      <span className="px-4 py-2 bg-red-100 text-red-700 font-bold rounded-xl border border-red-200">
                         Risk: {strategyInfo.risk}
                       </span>
                     </div>
@@ -89,19 +102,19 @@ export default function BuyCall() {
               </div>
 
               {/* Benefits */}
-              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
-                <h2 className="text-heading text-white mb-6">Keuntungan Strategi</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
+                <h2 className="text-2xl font-black text-[#0A4A7C] mb-8">Keuntungan Strategi</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {benefits.map((benefit, index) => {
                     const Icon = benefit.icon;
                     return (
-                      <div key={index} className="flex items-start gap-3 p-4 bg-slate-700/30 rounded-xl">
-                        <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Icon className="w-5 h-5 text-purple-400" />
+                      <div key={index} className="flex items-start gap-4 p-4 bg-purple-50 rounded-2xl border border-purple-100 hover:bg-purple-100 transition-colors">
+                        <div className="w-12 h-12 bg-purple-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Icon className="w-6 h-6 text-purple-700" />
                         </div>
                         <div>
-                          <h3 className="text-subheading text-white mb-1">{benefit.title}</h3>
-                          <p className="text-sm text-slate-400">{benefit.description}</p>
+                          <h3 className="font-bold text-[#0A4A7C] mb-1">{benefit.title}</h3>
+                          <p className="text-sm text-gray-500 font-medium">{benefit.description}</p>
                         </div>
                       </div>
                     );
@@ -110,17 +123,17 @@ export default function BuyCall() {
               </div>
 
               {/* How It Works */}
-              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
-                <h2 className="text-heading text-white mb-6">Cara Kerja</h2>
-                <div className="space-y-4">
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
+                <h2 className="text-2xl font-black text-[#0A4A7C] mb-8">Cara Kerja</h2>
+                <div className="space-y-6">
                   {howItWorks.map((item) => (
-                    <div key={item.step} className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0">
+                    <div key={item.step} className="flex items-start gap-6">
+                      <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg flex-shrink-0">
                         {item.step}
                       </div>
-                      <div className="flex-1">
-                        <h3 className="text-subheading text-white mb-1">{item.title}</h3>
-                        <p className="text-body text-slate-400">{item.description}</p>
+                      <div className="flex-1 pt-1">
+                        <h3 className="text-lg font-bold text-[#0A4A7C] mb-1">{item.title}</h3>
+                        <p className="text-gray-600 font-medium">{item.description}</p>
                       </div>
                     </div>
                   ))}
@@ -128,12 +141,12 @@ export default function BuyCall() {
               </div>
 
               {/* Risk Warning */}
-              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="w-6 h-6 text-red-400 flex-shrink-0 mt-1" />
+              <div className="bg-red-50 border-2 border-red-200 rounded-3xl p-6 shadow-lg">
+                <div className="flex items-start gap-4">
+                  <AlertCircle className="w-8 h-8 text-red-600 flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="text-subheading text-red-400 mb-2">⚠️ High Risk Alert</h3>
-                    <ul className="space-y-2 text-sm text-slate-300">
+                    <h3 className="font-black text-red-700 mb-2 text-lg">⚠️ High Risk Alert</h3>
+                    <ul className="space-y-2 text-sm text-red-800 font-medium">
                       <li>• Jika harga tidak naik melewati strike, premium hangus 100%</li>
                       <li>• Strategi spekulatif, cocok untuk risk taker</li>
                       <li>• Hanya gunakan dana yang siap loss</li>
@@ -146,28 +159,27 @@ export default function BuyCall() {
 
             {/* Sidebar - Investment Form */}
             <div className="lg:col-span-1">
-              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 sticky top-24">
-                <h2 className="text-heading text-white mb-6">Mulai Investasi</h2>
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 sticky top-24">
+                <h2 className="text-2xl font-black text-[#0A4A7C] mb-6">Mulai Investasi</h2>
 
                 {/* Asset Selection */}
                 <div className="mb-6">
-                  <label className="block text-sm font-semibold text-white mb-3">Pilih Aset</label>
-                  <div className="space-y-2">
+                  <label className="block text-sm font-bold text-gray-500 mb-3">Pilih Aset</label>
+                  <div className="space-y-3">
                     {assets.map((asset) => (
                       <button
                         key={asset.symbol}
                         onClick={() => setSelectedAsset(asset.symbol)}
-                        className={`w-full p-4 rounded-xl transition-all text-left ${
-                          selectedAsset === asset.symbol
-                            ? 'bg-purple-500/20 border-2 border-purple-500'
-                            : 'bg-slate-700/30 border border-slate-600/30 hover:bg-slate-700/50'
-                        }`}
+                        className={`w-full p-4 rounded-xl transition-all text-left border-2 ${selectedAsset === asset.symbol
+                            ? 'bg-purple-50 border-purple-500 shadow-lg'
+                            : 'bg-white border-gray-100 hover:bg-gray-50'
+                          }`}
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-semibold text-white">{asset.symbol}</span>
-                          <span className="text-xs text-purple-400 font-semibold">{asset.potentialReturn}</span>
+                          <span className={`font-bold ${selectedAsset === asset.symbol ? 'text-[#0A4A7C]' : 'text-gray-700'}`}>{asset.symbol}</span>
+                          <span className="text-xs text-purple-600 font-bold bg-purple-100 px-2 py-1 rounded-lg">{asset.potentialReturn}</span>
                         </div>
-                        <p className="text-xs text-slate-400">{asset.name} • Strike {asset.strikePrice}</p>
+                        <p className="text-xs text-gray-500 font-medium">{asset.name} • Strike {asset.strikePrice}</p>
                       </button>
                     ))}
                   </div>
@@ -175,36 +187,38 @@ export default function BuyCall() {
 
                 {/* Amount Input */}
                 <div className="mb-6">
-                  <label className="block text-sm font-semibold text-white mb-2">Jumlah Premium</label>
+                  <label className="block text-sm font-bold text-gray-500 mb-2">Jumlah Premium</label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">Rp</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">Rp</span>
                     <input
                       type="number"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
                       placeholder="500.000"
-                      className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all font-bold"
                     />
                   </div>
-                  <p className="text-xs text-slate-400 mt-2">Minimal: Rp {(strategyInfo.minInvestment / 1000).toFixed(0)}rb</p>
+                  <p className="text-xs text-gray-500 mt-2 font-medium">Minimal: Rp {(strategyInfo.minInvestment / 1000).toFixed(0)}rb</p>
                 </div>
 
                 {/* Estimated Returns */}
                 {estimatedReturns && (
-                  <div className="mb-6 p-4 bg-purple-500/10 border border-purple-500/20 rounded-xl">
-                    <h3 className="text-sm font-semibold text-purple-400 mb-3">Potensi Return</h3>
-                    <div className="space-y-2">
+                  <div className="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-2xl">
+                    <h3 className="text-sm font-bold text-purple-600 mb-3 flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4" /> Potensi Return
+                    </h3>
+                    <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-slate-400">Conservative</span>
-                        <span className="text-white font-semibold">Rp {(estimatedReturns.conservative / 1000).toFixed(0)}rb</span>
+                        <span className="text-sm text-gray-500 font-medium">Conservative</span>
+                        <span className="text-[#0A4A7C] font-black">Rp {(estimatedReturns.conservative / 1000).toFixed(0)}rb</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-slate-400">Moderate</span>
-                        <span className="text-purple-400 font-semibold">Rp {(estimatedReturns.moderate / 1000).toFixed(0)}rb</span>
+                        <span className="text-sm text-gray-500 font-medium">Moderate</span>
+                        <span className="text-purple-600 font-black">Rp {(estimatedReturns.moderate / 1000).toFixed(0)}rb</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-slate-400">Aggressive</span>
-                        <span className="text-purple-400 font-semibold">Rp {(estimatedReturns.aggressive / 1000).toFixed(0)}rb</span>
+                        <span className="text-sm text-gray-500 font-medium">Aggressive</span>
+                        <span className="text-pink-600 font-black">Rp {(estimatedReturns.aggressive / 1000).toFixed(0)}rb</span>
                       </div>
                     </div>
                   </div>
@@ -213,16 +227,15 @@ export default function BuyCall() {
                 {/* Action Button */}
                 <button
                   disabled={!amount || parseFloat(amount) < strategyInfo.minInvestment}
-                  className={`w-full py-4 rounded-xl font-semibold transition-all ${
-                    amount && parseFloat(amount) >= strategyInfo.minInvestment
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white'
-                      : 'bg-slate-700/50 text-slate-400 cursor-not-allowed'
-                  }`}
+                  className={`w-full py-4 rounded-xl font-bold transition-all shadow-lg text-lg ${amount && parseFloat(amount) >= strategyInfo.minInvestment
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:scale-[1.02] hover:shadow-xl border-b-4 border-black/20 active:border-b-0 active:translate-y-1'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    }`}
                 >
                   Beli Call Option
                 </button>
 
-                <p className="text-xs text-center text-slate-400 mt-4">
+                <p className="text-xs text-center text-gray-400 mt-4 font-medium">
                   🚀 Siap-siap jackpot kalau prediksi bener!
                 </p>
               </div>

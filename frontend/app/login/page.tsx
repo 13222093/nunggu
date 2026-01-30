@@ -63,97 +63,108 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex bg-primary-50">
+    <div className="min-h-screen flex bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f] overflow-hidden">
       {/* Left Panel - Decorative (Hidden on Mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-500 to-primary-600 p-12 flex-col justify-between relative overflow-hidden">
-        {/* Decorative circles */}
-        <div className="absolute top-20 right-20 w-64 h-64 bg-primary-400/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-secondary-500/20 rounded-full blur-3xl" />
+      <div className="hidden lg:flex lg:w-1/2 p-12 flex-col justify-between relative">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(10,152,255,0.3),transparent_50%)] animate-pulse" />
+
+        {/* Floating orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-30 animate-float" />
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#FBFF2B] rounded-full blur-3xl opacity-20 animate-float-delayed" />
+        </div>
 
         {/* Logo */}
         <div className="relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm shadow-hard-md">
-              <TrendingUp className="h-7 w-7 text-white" />
+          <div className="flex items-center gap-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm shadow-xl border-2 border-white/30">
+              <TrendingUp className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-extrabold text-white">KITA</h1>
-              <div className="flex items-center gap-1">
-                <Sparkles className="h-4 w-4 text-secondary-400" />
-                <span className="text-sm font-bold text-secondary-400">DeFi Options</span>
+              <h1 className="text-3xl font-black text-white drop-shadow-lg">KITA</h1>
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
+                <Sparkles className="h-4 w-4 text-[#FBFF2B]" />
+                <span className="text-sm font-bold text-white">DeFi Options</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 space-y-6">
-          <h2 className="text-4xl font-extrabold text-white leading-tight">
+        <div className="relative z-10 space-y-8">
+          <h2 className="text-5xl font-black text-white leading-tight drop-shadow-2xl">
             Selamat Datang<br />
             Kembali ke<br />
-            <span className="text-secondary-400">Platform DeFi Kamu!</span>
+            <span className="text-[#FBFF2B]">Platform DeFi Kamu!</span>
           </h2>
-          <p className="text-lg text-primary-100 font-medium max-w-md">
+          <p className="text-xl text-white/90 font-medium max-w-md leading-relaxed">
             Monetisasi limit orders dengan DeFi options. Nabung sendiri atau bareng temen, sambil
             kumpulin XP dan unlock badges!
           </p>
         </div>
 
         {/* Features */}
-        <div className="relative z-10 space-y-3">
+        <div className="relative z-10 space-y-4">
           {[
             "Cash Secured Put & Covered Call",
             "Gamifikasi Seru - XP & Badges",
             "Nabung Bareng di Group Vault"
           ].map((feature, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary-500 shadow-hard-amber-sm">
-                <CheckCircle2 className="h-5 w-5 text-white" />
+            <div key={i} className="flex items-center gap-4 bg-white/10 p-3 rounded-2xl backdrop-blur-sm w-fit border border-white/10 hover:bg-white/20 transition-colors">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
+                <CheckCircle2 className="h-6 w-6 text-[#0A98FF]" />
               </div>
-              <span className="text-white font-semibold">{feature}</span>
+              <span className="text-white font-bold text-lg">{feature}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Right Panel - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex items-center justify-center p-8 relative">
+        {/* Mobile Background Elements */}
+        <div className="absolute inset-0 lg:hidden overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-20" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#00FFF0] rounded-full blur-3xl opacity-20" />
+        </div>
+
+        <div className="w-full max-w-md relative z-10">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-500 shadow-hard-md">
-              <TrendingUp className="h-6 w-6 text-white" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm shadow-xl border border-white/30">
+              <TrendingUp className="h-7 w-7 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-extrabold text-primary-700">KITA</h1>
-              <div className="flex items-center gap-1">
-                <Sparkles className="h-3 w-3 text-secondary-500" />
-                <span className="text-xs font-bold text-secondary-600">DeFi Options</span>
+              <h1 className="text-2xl font-black text-white drop-shadow-lg">KITA</h1>
+              <div className="flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full">
+                <Sparkles className="h-3 w-3 text-[#FBFF2B]" />
+                <span className="text-xs font-bold text-white">DeFi Options</span>
               </div>
             </div>
           </div>
 
           {/* Card */}
-          <div className="bg-white rounded-3xl border-2 border-primary-100 p-8 shadow-[0_8px_0_0_#e0f2fe]">
+          <div className="bg-white/95 backdrop-blur-sm rounded-[2.5rem] p-8 shadow-2xl border-4 border-white/50">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-extrabold text-primary-700 mb-2">
+              <h2 className="text-3xl font-black text-[#0A4A7C] mb-2">
                 Selamat Datang! 👋
               </h2>
-              <p className="text-primary-600 font-medium">
+              <p className="text-gray-500 font-bold">
                 Masuk ke akun KITA kamu untuk lanjut
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
-                <Alert variant="destructive">
+                <Alert variant="destructive" className="bg-red-50 border-red-200 text-red-600 font-medium rounded-xl">
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="phoneNumber">Nomor Telepon</Label>
-                <div className="flex gap-2">
+                <Label htmlFor="phoneNumber" className="text-[#0A4A7C] font-bold">Nomor Telepon</Label>
+                <div className="flex gap-3">
                   {/* Country Code Select */}
                   <div className="relative">
                     <select
@@ -161,10 +172,10 @@ export default function Login() {
                       onChange={(e) =>
                         setFormData({ ...formData, countryCode: e.target.value })
                       }
-                      className="h-12 w-24 px-3 rounded-xl border-2 border-primary-100 bg-white
-                                 text-base font-medium text-stone-900 shadow-[0_2px_0_0_#e0f2fe]
-                                 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20
-                                 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="h-14 w-28 px-3 rounded-xl border-2 border-gray-200 bg-white
+                                 text-lg font-bold text-[#0A4A7C] shadow-sm
+                                 focus:border-[#0A98FF] focus:outline-none focus:ring-4 focus:ring-[#0A98FF]/10
+                                 disabled:cursor-not-allowed disabled:opacity-50 transition-all appearance-none cursor-pointer"
                       disabled={isLoading}
                     >
                       <option value="+62">🇮🇩 +62</option>
@@ -176,7 +187,7 @@ export default function Login() {
 
                   {/* Phone Number Input */}
                   <div className="relative flex-1">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-300" />
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <Input
                       id="phoneNumber"
                       type="tel"
@@ -190,16 +201,22 @@ export default function Login() {
                       }
                       required
                       disabled={isLoading}
-                      className="pl-12"
+                      className="pl-12 h-14 rounded-xl border-2 border-gray-200 text-lg font-bold text-[#0A4A7C] 
+                               focus:border-[#0A98FF] focus:ring-4 focus:ring-[#0A98FF]/10 transition-all placeholder:font-medium"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Info Box */}
-              <div className="bg-primary-50 border-2 border-primary-100 rounded-2xl p-4">
-                <p className="text-sm text-primary-700 font-medium">
-                  📱 Kami akan mengirim kode verifikasi via WhatsApp untuk konfirmasi
+              <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex items-start gap-3">
+                <div className="flex-shrink-0 mt-0.5">
+                  <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs">ℹ️</span>
+                  </div>
+                </div>
+                <p className="text-sm text-blue-800 font-medium leading-relaxed">
+                  Kami akan mengirim kode verifikasi via WhatsApp untuk konfirmasi
                   identitas kamu.
                 </p>
               </div>
@@ -207,31 +224,30 @@ export default function Login() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                variant="primary"
+                className="w-full bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white font-black py-6 text-lg rounded-2xl shadow-[0_6px_0_0_#D97706] hover:shadow-[0_8px_0_0_#D97706] hover:-translate-y-1 active:translate-y-0 active:shadow-[0_4px_0_0_#D97706] transition-all border-b-0"
                 size="lg"
-                fullWidth
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center gap-2">
                     <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     <span>Memeriksa...</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center gap-2">
                     <span>Kirim Kode Verifikasi</span>
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="h-6 w-6" />
                   </div>
                 )}
               </Button>
 
               {/* Divider */}
-              <div className="text-center pt-4 border-t-2 border-primary-100">
-                <p className="text-stone-700 font-medium">
+              <div className="text-center pt-4 border-t-2 border-gray-100">
+                <p className="text-gray-500 font-medium">
                   Belum punya akun?{" "}
                   <Link
                     href="/onboarding"
-                    className="text-primary-600 hover:text-primary-700 font-bold underline underline-offset-2"
+                    className="text-[#0A4A7C] hover:text-[#0A98FF] font-black underline underline-offset-4 decoration-2 decoration-[#00FFF0] hover:decoration-[#0A98FF] transition-all"
                   >
                     Daftar sekarang
                   </Link>
@@ -241,18 +257,18 @@ export default function Login() {
           </div>
 
           {/* Footer */}
-          <p className="text-center text-sm text-primary-400 font-medium mt-6">
+          <p className="text-center text-sm text-white/60 font-medium mt-8">
             © 2026 KITA - Kolektif Investasi Tanpa Ambyar
           </p>
 
           {/* Terms */}
-          <p className="text-xs text-stone-500 mt-4 text-center">
+          <p className="text-xs text-white/40 mt-4 text-center">
             Dengan melanjutkan, kamu menyetujui{" "}
-            <a href="#" className="text-primary-600 hover:underline font-medium">
+            <a href="#" className="text-white/80 hover:text-white hover:underline font-bold transition-colors">
               Syarat & Ketentuan
             </a>{" "}
             dan{" "}
-            <a href="#" className="text-primary-600 hover:underline font-medium">
+            <a href="#" className="text-white/80 hover:text-white hover:underline font-bold transition-colors">
               Kebijakan Privasi
             </a>
           </p>

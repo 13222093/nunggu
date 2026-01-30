@@ -93,7 +93,7 @@ export default function CompleteProfile() {
   return (
     <div className="min-h-screen flex bg-primary-50">
       {/* Left Panel - Decorative (Hidden on Mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-success-500 to-success-600 p-12 flex-col justify-between relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#0284C7] to-[#06B6D4] p-12 flex-col justify-between relative overflow-hidden">
         {/* Decorative circles */}
         <div className="absolute top-20 right-20 w-64 h-64 bg-primary-400/20 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-secondary-500/20 rounded-full blur-3xl" />
@@ -121,7 +121,7 @@ export default function CompleteProfile() {
             Lengkapi Profilmu<br />
             <span className="text-secondary-400">Sekarang ✨</span>
           </h2>
-          <p className="text-lg text-green-100 font-medium max-w-md">
+          <p className="text-lg text-cyan-50 font-medium max-w-md">
             Hanya beberapa detail lagi untuk memulai perjalanan DeFi kamu dan unlock semua
             fitur gamifikasi yang seru!
           </p>
@@ -136,7 +136,7 @@ export default function CompleteProfile() {
           ].map((benefit, i) => (
             <div key={i} className="flex items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-hard-sm">
-                <CheckCircle2 className="h-5 w-5 text-success-500" />
+                <CheckCircle2 className="h-5 w-5 text-[#06B6D4]" />
               </div>
               <span className="text-white font-semibold">{benefit}</span>
             </div>
@@ -149,11 +149,11 @@ export default function CompleteProfile() {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-success-500 shadow-hard-md">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0284C7] shadow-hard-md">
               <TrendingUp className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-extrabold text-success-700">KITA</h1>
+              <h1 className="text-xl font-extrabold text-[#0A4A7C]">KITA</h1>
               <div className="flex items-center gap-1">
                 <Sparkles className="h-3 w-3 text-secondary-500" />
                 <span className="text-xs font-bold text-secondary-600">DeFi Options</span>
@@ -173,7 +173,7 @@ export default function CompleteProfile() {
           {/* Card */}
           <div className="bg-white rounded-3xl border-2 border-primary-100 p-8 shadow-[0_8px_0_0_#e0f2fe]">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-extrabold text-success-700 mb-2">
+              <h2 className="text-3xl font-extrabold text-[#0A4A7C] mb-2">
                 Lengkapi Profil 👤
               </h2>
               <p className="text-primary-600 font-medium">

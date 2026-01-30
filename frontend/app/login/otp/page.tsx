@@ -15,12 +15,12 @@ export default function LoginOTP() {
   useEffect(() => { // Make sure ini login flow (datang dari halaman login)
     const isLogin = localStorage.getItem('isLoginFlow');
     const phone = localStorage.getItem('phoneNumber');
-    
+
     if (!isLogin || !phone) {
       router.push('/login');
       return;
     }
-    
+
     setPhoneNumber(phone);
   }, [router]);
 
@@ -101,47 +101,56 @@ export default function LoginOTP() {
 
   const handleResend = () => {
     if (!canResend) return;
-    
+
     // Simulasi ngirim ulang kode verif
     setCountdown(60);
     setCanResend(false);
     setOtp(['', '', '', '', '', '']);
     inputRefs.current[0]?.focus();
-    
+
     alert('Verification code sent!');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f] flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated gradient overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(10,152,255,0.3),transparent_50%)] animate-pulse pointer-events-none" />
+
+      {/* Floating orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-20 animate-float" />
+        <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#FBFF2B] rounded-full blur-3xl opacity-10 animate-float-delayed" />
+      </div>
+
+      <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border-4 border-white/50 relative z-10">
         <button
           onClick={() => router.back()}
-          className="text-gray-600 hover:text-gray-800 mb-6 flex items-center"
+          className="text-gray-500 hover:text-[#0A4A7C] mb-6 flex items-center font-bold transition-colors"
         >
           <span className="text-xl mr-2">←</span> Kembali
         </button>
 
         <div className="mb-8 text-center">
-          <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4">
+          <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4 shadow-inner">
             <span className="text-3xl">💬</span>
           </div>
-          <h1 className="text-heading text-gray-800 mb-2">
+          <h1 className="text-2xl font-black text-[#0A4A7C] mb-2">
             Verifikasi Nomor
           </h1>
-          <p className="text-body text-gray-600">
+          <p className="text-gray-500 font-medium">
             Ketik kode 6 digit yang dikirim ke
           </p>
-          <p className="text-body text-gray-800 font-semibold">
+          <p className="text-[#0A98FF] font-black text-lg">
             {phoneNumber}
           </p>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-8">
           <div className="flex justify-center gap-2 mb-4">
             {otp.map((digit, index) => (
               <input
                 key={index}
-                ref={(el) => {inputRefs.current[index] = el}}
+                ref={(el) => { inputRefs.current[index] = el }}
                 type="text"
                 inputMode="numeric"
                 maxLength={1}
@@ -149,27 +158,29 @@ export default function LoginOTP() {
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={handlePaste}
-                className="w-12 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-500 bg-white"
+                className="w-12 h-14 text-center text-2xl font-black border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#0A98FF] focus:ring-4 focus:ring-[#0A98FF]/10 text-[#0A4A7C] bg-white transition-all shadow-sm"
               />
             ))}
           </div>
           {error && (
-            <p className="text-red-500 text-body text-center">{error}</p>
+            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-center">
+              <p className="text-red-500 font-bold text-sm">{error}</p>
+            </div>
           )}
         </div>
 
-        <div className="text-center mb-6">
+        <div className="text-center mb-2">
           {canResend ? (
             <button
               onClick={handleResend}
-              className="text-blue-600 text-button hover:underline"
+              className="text-[#0A98FF] font-black hover:underline hover:text-[#0A4A7C] transition-colors"
             >
               Kirim Ulang Kode
             </button>
           ) : (
-            <p className="text-body text-gray-600">
+            <p className="text-gray-500 font-medium">
               Kirim ulang kode dalam{' '}
-              <span className="text-button text-blue-600">{countdown}s</span>
+              <span className="font-bold text-[#0A98FF]">{countdown}s</span>
             </p>
           )}
         </div>
