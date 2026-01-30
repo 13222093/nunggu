@@ -92,7 +92,13 @@ export default function LoginOTP() {
       if (data.success) {
         localStorage.removeItem('isLoginFlow');
         localStorage.setItem('userSession', JSON.stringify(data.data)); // Store session
-        router.push('/dashboard');
+
+        // Check if user has completed onboarding (has a name)
+        if (data.data.name) {
+          router.push('/dashboard');
+        } else {
+          router.push('/onboarding');
+        }
       } else {
         setError(data.error || 'Kode verifikasi salah. Silakan coba lagi.');
         setOtp(['', '', '', '', '', '']);
