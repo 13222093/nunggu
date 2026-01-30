@@ -17,7 +17,7 @@ export const authRouter = new Elysia({ prefix: '/auth' })
         // For this MVP, we'll allow any phone number to request OTP
 
         // Generate OTP (Fixed for dev or random)
-        const code = process.env.NODE_ENV === 'development' ? '123456' : Math.floor(100000 + Math.random() * 900000).toString();
+        const code = process.env.NODE_ENV === 'development' ? '123456' : '123456'; //Math.floor(100000 + Math.random() * 900000).toString();
 
         // Store OTP with 5 min expiry
         otpStore.set(fullPhone, {

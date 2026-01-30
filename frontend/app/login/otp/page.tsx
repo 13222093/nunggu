@@ -97,7 +97,7 @@ export default function LoginOTP() {
         if (data.data.name) {
           router.push('/dashboard');
         } else {
-          router.push('/onboarding');
+          router.push('/onboarding/profile');
         }
       } else {
         setError(data.error || 'Kode verifikasi salah. Silakan coba lagi.');

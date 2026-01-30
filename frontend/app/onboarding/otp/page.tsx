@@ -88,7 +88,11 @@ export default function OTPVerification() {
       const data = await response.json();
 
       if (data.success) {
-        router.push('/onboarding/profile');
+        if (data.data.name) {
+          router.push('/dashboard');
+        } else {
+          router.push('/onboarding/profile');
+        }
       } else {
         setError(data.error || 'Kode verifikasi salah. Silakan coba lagi.');
         setOtp(['', '', '', '', '', '']);
@@ -132,7 +136,7 @@ export default function OTPVerification() {
             Ketik kode 6 digit yang dikirim ke
           </p>
           <p className="text-body text-gray-800 font-semibold">
-            {phoneNumber}
+            {countryCode}-{phoneNumber}
           </p>
         </div>
 
