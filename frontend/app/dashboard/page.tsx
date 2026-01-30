@@ -160,187 +160,293 @@ export default function Dashboard() {
           <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-[#00FFF0] rounded-full blur-3xl opacity-25 animate-float-slow" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto space-y-8">
-          {/* Header Section */}
-          <div className="text-center mb-8">
-            <div className="inline-block bg-white/20 backdrop-blur-md text-white px-6 py-2 rounded-full text-sm font-bold mb-4 border-2 border-white/30 shadow-lg">
-              💼 DASHBOARD
+        <div className="relative z-10 max-w-7xl mx-auto space-y-6 md:space-y-8">
+          {/* HERO CARD - Player Profile (Mobile-First) */}
+          <div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl rounded-3xl md:rounded-[2.5rem] p-6 md:p-8 shadow-2xl border-2 border-white/30 hover:border-white/40 transition-all">
+            <div className="flex items-center gap-4 md:gap-6">
+              {/* Level Badge/Avatar */}
+              <div className="relative">
+                <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[#FBFF2B] via-[#FFBC57] to-[#FF9500] rounded-2xl md:rounded-3xl flex items-center justify-center shadow-2xl border-4 border-white/30 transform hover:scale-110 hover:rotate-3 transition-all">
+                  <span className="text-4xl md:text-5xl font-black text-white drop-shadow-lg">5</span>
+                </div>
+                {/* XP Badge */}
+                <div className="absolute -top-2 -right-2 bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] text-white text-xs font-black px-2 py-1 rounded-full border-2 border-white shadow-lg">
+                  LVL 5
+                </div>
+              </div>
+
+              {/* User Info */}
+              <div className="flex-1 min-w-0">
+                <h1 className="text-2xl md:text-3xl font-black text-white mb-1 drop-shadow-lg truncate">
+                  Hi, {userData?.user?.name || 'Investor'}! 👋
+                </h1>
+                <p className="text-sm md:text-base text-white/80 mb-3">Trader Aktif • On Fire!</p>
+
+                {/* XP Bar */}
+                <div className="mb-2">
+                  <div className="flex items-center justify-between text-xs md:text-sm text-white/90 mb-1.5">
+                    <span className="font-bold">XP Progress</span>
+                    <span className="font-bold">350 / 500 XP</span>
+                  </div>
+                  <div className="relative h-3 md:h-4 bg-white/20 rounded-full overflow-hidden border-2 border-white/30 shadow-inner">
+                    <div
+                      className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#00FFF0] via-[#0A98FF] to-[#C15BFF] rounded-full transition-all duration-500"
+                      style={{ width: '70%' }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
+                  </div>
+                </div>
+
+                {/* Streak Counter */}
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500/30 to-red-500/30 backdrop-blur-sm px-3 py-1.5 rounded-full border-2 border-orange-400/40">
+                  <span className="text-lg md:text-xl">🔥</span>
+                  <span className="text-xs md:text-sm font-black text-white">7 Day Streak!</span>
+                </div>
+              </div>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-black text-white mb-2 drop-shadow-lg">
-              Hi, {userData?.user?.name || 'Investor'}! 👋
-            </h1>
-            <p className="text-lg text-white/90">Lihat portfolio dan semua yield kamu di sini.</p>
           </div>
 
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* QUICK STATS - Horizontal Scroll (Story Style) */}
+          <div className="overflow-hidden -mx-4 md:mx-0">
+            <div className="flex gap-3 md:gap-4 px-4 md:px-0 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2">
+              {/* Total Balance */}
+              <div className="min-w-[160px] md:min-w-[200px] flex-1 bg-gradient-to-br from-[#00FFF0]/20 to-[#0A98FF]/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-4 md:p-5 shadow-xl border-2 border-[#00FFF0]/30 hover:scale-105 transition-all snap-start">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg mb-3">
+                  <Wallet className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                </div>
+                <p className="text-xs md:text-sm text-white/70 mb-1 font-semibold">Total Balance</p>
+                <h3 className="text-xl md:text-2xl font-black text-white drop-shadow-lg">
+                  Rp {(stats.totalBalance / 1000000).toFixed(1)}jt
+                </h3>
+                <span className="inline-flex items-center gap-1 text-xs text-green-400 font-bold mt-1">
+                  <ArrowUpRight className="w-3 h-3" />
+                  +12.5%
+                </span>
+              </div>
+
+              {/* Total Yield */}
+              <div className="min-w-[160px] md:min-w-[200px] flex-1 bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-4 md:p-5 shadow-xl border-2 border-green-400/30 hover:scale-105 transition-all snap-start">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-green-400 to-green-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg mb-3">
+                  <TrendingUp className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                </div>
+                <p className="text-xs md:text-sm text-white/70 mb-1 font-semibold">Total Yield</p>
+                <h3 className="text-xl md:text-2xl font-black text-green-300 drop-shadow-lg">
+                  Rp {(stats.totalYield / 1000000).toFixed(2)}jt
+                </h3>
+              </div>
+
+              {/* Active Positions */}
+              <div className="min-w-[160px] md:min-w-[200px] flex-1 bg-gradient-to-br from-[#FFBC57]/20 to-[#FF9500]/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-4 md:p-5 shadow-xl border-2 border-[#FFBC57]/30 hover:scale-105 transition-all snap-start">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-[#FFBC57] to-[#FF9500] rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg mb-3">
+                  <Award className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                </div>
+                <p className="text-xs md:text-sm text-white/70 mb-1 font-semibold">Active Positions</p>
+                <h3 className="text-xl md:text-2xl font-black text-[#FFBC57] drop-shadow-lg">
+                  {stats.activePositions}
+                </h3>
+              </div>
+
+              {/* Target Reached */}
+              <div className="min-w-[160px] md:min-w-[200px] flex-1 bg-gradient-to-br from-[#C15BFF]/20 to-[#FBFF2B]/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-4 md:p-5 shadow-xl border-2 border-[#C15BFF]/30 hover:scale-105 transition-all snap-start">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-[#C15BFF] to-[#FBFF2B] rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg mb-3">
+                  <Target className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                </div>
+                <p className="text-xs md:text-sm text-white/70 mb-1 font-semibold">Target Reached</p>
+                <h3 className="text-xl md:text-2xl font-black text-[#FBFF2B] drop-shadow-lg">
+                  {stats.targetReached || 0}%
+                </h3>
+              </div>
+            </div>
+          </div>
+
+          {/* DAILY MISSION BANNER */}
+          <Link href="/missions" className="block group">
+            <div className="bg-gradient-to-r from-[#C15BFF]/30 via-[#0A98FF]/30 to-[#00FFF0]/30 backdrop-blur-xl rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-2xl border-2 border-[#C15BFF]/40 hover:border-[#C15BFF]/60 transition-all hover:-translate-y-1">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#FBFF2B] to-[#FFBC57] rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform flex-shrink-0">
+                  <Target className="w-7 h-7 md:w-8 md:h-8 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base md:text-lg font-black text-white mb-1 drop-shadow-lg">Misi Harian: Trade 1x Hari Ini! 🎯</h3>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex-1 h-2.5 md:h-3 bg-white/20 rounded-full overflow-hidden border border-white/30">
+                      <div className="h-full bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] rounded-full transition-all" style={{ width: '40%' }} />
+                    </div>
+                    <span className="text-xs md:text-sm font-black text-[#FBFF2B] whitespace-nowrap">+100 XP</span>
+                  </div>
+                  <p className="text-xs md:text-sm text-white/80 font-semibold">0 / 1 trade • Tap untuk lihat semua misi →</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* ACTION CARDS */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <button
               onClick={() => setShowSoloModal(true)}
-              className="group bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50 hover:scale-105 hover:-translate-y-2 transition-all duration-300 text-left"
-              style={{ boxShadow: '0 20px 60px rgba(0,255,240,0.3)' }}
+              className="group relative overflow-hidden bg-gradient-to-br from-[#00FFF0]/20 to-[#0A98FF]/20 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl border-2 border-[#00FFF0]/40 hover:border-[#00FFF0]/60 hover:scale-[1.02] hover:-translate-y-1 transition-all text-left"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform">
-                  <Plus className="w-8 h-8 text-white" />
+              {/* Animated background orb */}
+              <div className="absolute -right-8 -top-8 w-32 h-32 md:w-40 md:h-40 bg-[#00FFF0] rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity" />
+
+              <div className="relative flex items-center gap-4">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] rounded-2xl md:rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-transform flex-shrink-0">
+                  <Plus className="w-8 h-8 md:w-10 md:h-10 text-white" />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-black text-[#0A4A7C] mb-1">Nabung Solo</h3>
-                  <p className="text-gray-700">Mulai investasi sendiri dengan APY hingga 9%</p>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl md:text-2xl font-black text-white drop-shadow-lg mb-1">Nabung Solo 💎</h3>
+                  <p className="text-sm md:text-base text-white/90">APY hingga 9% • Mulai dari 100rb</p>
                 </div>
               </div>
             </button>
 
-            <Link href="/nabung-bareng" className="group block bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50 hover:scale-105 hover:-translate-y-2 transition-all duration-300 text-left"
-              style={{ boxShadow: '0 20px 60px rgba(193,91,255,0.3)' }}
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform">
-                  <Users className="w-8 h-8 text-white" />
+            <Link href="/nabung-bareng" className="group relative overflow-hidden block bg-gradient-to-br from-[#C15BFF]/20 to-[#0A98FF]/20 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl border-2 border-[#C15BFF]/40 hover:border-[#C15BFF]/60 hover:scale-[1.02] hover:-translate-y-1 transition-all text-left">
+              {/* Animated background orb */}
+              <div className="absolute -right-8 -top-8 w-32 h-32 md:w-40 md:h-40 bg-[#C15BFF] rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity" />
+
+              <div className="relative flex items-center gap-4">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] rounded-2xl md:rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-transform flex-shrink-0">
+                  <Users className="w-8 h-8 md:w-10 md:h-10 text-white" />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-black text-[#0A4A7C] mb-1">Nabung Bareng</h3>
-                  <p className="text-gray-700">Investasi bersama teman dan keluarga</p>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl md:text-2xl font-black text-white drop-shadow-lg mb-1">Nabung Bareng 👥</h3>
+                  <p className="text-sm md:text-base text-white/90">Investasi bareng temen • Lebih seru!</p>
                 </div>
               </div>
             </Link>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Total Balance */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 hover:scale-105 transition-all duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] rounded-2xl flex items-center justify-center shadow-lg">
-                  <Wallet className="w-7 h-7 text-white" />
-                </div>
-                <span className="text-xs text-green-500 font-bold flex items-center gap-1 bg-green-50 px-2 py-1 rounded-full">
-                  <ArrowUpRight className="w-4 h-4" />
-                  +12.5%
-                </span>
-              </div>
-              <p className="text-sm text-gray-600 mb-1 font-semibold">Total Balance</p>
-              <h3 className="text-3xl font-black text-[#0A4A7C]">
-                Rp {(stats.totalBalance / 1000000).toFixed(1)}jt
-              </h3>
+          {/* ACTIVE POSITIONS - Horizontal Scroll */}
+          <div>
+            <div className="flex items-center justify-between mb-4 px-1">
+              <h2 className="text-xl md:text-2xl font-black text-white drop-shadow-lg">Active Positions 🚀</h2>
+              <Link href="/vaults" className="text-sm md:text-base font-bold text-[#00FFF0] hover:text-[#ACFFFC] transition-colors">
+                View All →
+              </Link>
             </div>
 
-            {/* Total Yield */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 hover:scale-105 transition-all duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <TrendingUp className="w-7 h-7 text-white" />
-                </div>
-              </div>
-              <p className="text-sm text-gray-600 mb-1 font-semibold">Total Yield</p>
-              <h3 className="text-3xl font-black text-green-600">
-                Rp {(stats.totalYield / 1000000).toFixed(2)}jt
-              </h3>
-            </div>
-
-            {/* Target Reached */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 hover:scale-105 transition-all duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#C15BFF] to-[#FBFF2B] rounded-2xl flex items-center justify-center shadow-lg">
-                  <Target className="w-7 h-7 text-white" />
-                </div>
-              </div>
-              <p className="text-sm text-gray-600 mb-1 font-semibold">Target Reached</p>
-              <h3 className="text-3xl font-black text-[#C15BFF]">
-                {stats.targetReached}%
-              </h3>
-            </div>
-
-            {/* Active Positions */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 hover:scale-105 transition-all duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#FFBC57] to-[#FF9500] rounded-2xl flex items-center justify-center shadow-lg">
-                  <Award className="w-7 h-7 text-white" />
-                </div>
-              </div>
-              <p className="text-sm text-gray-600 mb-1 font-semibold">Active Positions</p>
-              <h3 className="text-3xl font-black text-[#FFBC57]">
-                {stats.activePositions}
-              </h3>
-            </div>
-          </div>
-
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Active Positions */}
-            <div className="lg:col-span-2 bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
-              <h2 className="text-2xl font-black text-[#0A4A7C] mb-6">Active Positions</h2>
-              <div className="space-y-4">
+            <div className="overflow-hidden -mx-4 md:mx-0">
+              <div className="flex gap-4 px-4 md:px-0 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2">
                 {positions.map((position: Position, index: number) => {
                   const gradients = [
-                    'from-[#00FFF0] to-[#0A98FF]',
-                    'from-[#C15BFF] to-[#0A98FF]',
-                    'from-[#FFBC57] to-[#FF9500]',
+                    { from: '#00FFF0', to: '#0A98FF' },
+                    { from: '#C15BFF', to: '#0A98FF' },
+                    { from: '#FFBC57', to: '#FF9500' },
                   ];
+                  const gradient = gradients[index % 3];
+
                   return (
                     <div
                       key={position.id}
-                      className="flex items-center justify-between p-5 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-all border-2 border-gray-200"
+                      className="min-w-[280px] md:min-w-[320px] flex-shrink-0 bg-white/10 backdrop-blur-lg rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-xl border-2 border-white/20 hover:border-white/40 hover:scale-105 transition-all snap-start"
                     >
-                      <div className="flex items-center gap-4">
-                        <div className={`w-14 h-14 bg-gradient-to-br ${gradients[index % 3]} rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg`}>
-                          {position.name.charAt(0)}
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-[#0A4A7C] text-lg">{position.name}</h4>
-                          <p className="text-sm text-gray-600">
-                            APY: <span className="text-green-600 font-bold">{position.apy}%</span>
-                          </p>
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-white font-black text-xl md:text-2xl shadow-lg"
+                            style={{ background: `linear-gradient(135deg, ${gradient.from}, ${gradient.to})` }}
+                          >
+                            {position.name.charAt(0)}
+                          </div>
+                          <div>
+                            <h4 className="font-black text-white text-base md:text-lg">{position.name}</h4>
+                            <span className="inline-block px-2 py-0.5 bg-green-500/20 text-green-300 text-xs font-bold rounded-full backdrop-blur-sm border border-green-400/30">
+                              {position.status}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-black text-[#0A4A7C] text-lg">
-                          Rp {(position.balance / 1000000).toFixed(1)}jt
-                        </p>
-                        <span className="inline-block px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">
-                          {position.status}
-                        </span>
+
+                      <div className="space-y-2 mb-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-white/70">Balance</span>
+                          <span className="font-black text-white text-lg md:text-xl drop-shadow-lg">
+                            Rp {(position.balance / 1000000).toFixed(1)}jt
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-white/70">APY</span>
+                          <span className="font-bold text-green-300 text-base md:text-lg">{position.apy}%</span>
+                        </div>
+                      </div>
+
+                      {/* Mini chart placeholder */}
+                      <div className="h-12 bg-white/5 rounded-xl flex items-end gap-1 px-2 overflow-hidden">
+                        {[40, 60, 45, 75, 50, 80, 65, 90].map((height, i) => (
+                          <div
+                            key={i}
+                            className="flex-1 bg-gradient-to-t rounded-t transition-all hover:opacity-80"
+                            style={{
+                              height: `${height}%`,
+                              background: `linear-gradient(to top, ${gradient.from}, ${gradient.to})`
+                            }}
+                          />
+                        ))}
                       </div>
                     </div>
                   );
                 })}
+
+                {/* Add Position Card */}
+                <button
+                  onClick={() => setShowSoloModal(true)}
+                  className="min-w-[280px] md:min-w-[320px] flex-shrink-0 bg-white/5 backdrop-blur-lg rounded-2xl md:rounded-3xl p-6 shadow-xl border-2 border-dashed border-white/30 hover:border-white/50 hover:bg-white/10 transition-all snap-start flex flex-col items-center justify-center gap-3 group"
+                >
+                  <div className="w-16 h-16 bg-gradient-to-br from-white/20 to-white/10 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Plus className="w-8 h-8 text-white" />
+                  </div>
+                  <p className="font-bold text-white text-lg">Tambah Posisi Baru</p>
+                  <p className="text-sm text-white/70">Mulai strategi baru</p>
+                </button>
               </div>
-              <Link href="/vaults" className="block w-full mt-6 py-5 bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white rounded-xl font-bold text-center shadow-[0_8px_0_0_rgba(255,149,0,0.4)] hover:shadow-[0_12px_0_0_rgba(255,149,0,0.4)] hover:-translate-y-1 active:translate-y-2 active:shadow-[0_4px_0_0_rgba(255,149,0,0.4)] transition-all border-2 border-white/20">
-                View All Positions
+            </div>
+          </div>
+
+          {/* RECENT ACTIVITIES - Timeline Style */}
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl border-2 border-white/20">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl md:text-2xl font-black text-white drop-shadow-lg">Recent Activities 📊</h2>
+              <Link href="/history" className="text-sm md:text-base font-bold text-[#00FFF0] hover:text-[#ACFFFC] transition-colors">
+                View All →
               </Link>
             </div>
 
-            {/* Recent Activities */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
-              <h2 className="text-2xl font-black text-[#0A4A7C] mb-6">Recent Activities</h2>
-              <div className="space-y-4">
-                {recentActivities.map((activity) => (
-                  <div key={activity.id} className="flex items-start gap-3 p-4 hover:bg-gray-50 rounded-xl transition-colors">
-                    <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                      {activity.type === 'deposit' ? (
-                        <ArrowUpRight className="w-5 h-5 text-green-500" />
-                      ) : activity.type === 'yield' ? (
-                        <TrendingUp className="w-5 h-5 text-[#00FFF0]" />
-                      ) : (
-                        <ArrowUpRight className="w-5 h-5 text-red-500" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-bold text-[#0A4A7C]">{activity.action}</p>
-                      <p className="text-sm text-gray-500">{activity.date}</p>
-                    </div>
-                    <p
-                      className={`text-sm font-bold ${activity.type === 'withdraw' ? 'text-red-500' : 'text-green-600'
-                        }`}
-                    >
-                      {activity.type === 'withdraw' ? '-' : '+'}
-                      Rp {(activity.amount / 1000).toFixed(0)}rb
+            <div className="space-y-3">
+              {recentActivities.map((activity, index) => (
+                <div key={activity.id} className="relative flex items-center gap-4 p-4 bg-white/5 backdrop-blur-sm rounded-xl md:rounded-2xl hover:bg-white/10 transition-all border border-white/10">
+                  {/* Timeline dot */}
+                  {index !== recentActivities.length - 1 && (
+                    <div className="absolute left-8 top-16 w-0.5 h-6 bg-white/20" />
+                  )}
+
+                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg ${
+                    activity.type === 'deposit' ? 'bg-gradient-to-br from-green-400 to-green-600' :
+                    activity.type === 'yield' ? 'bg-gradient-to-br from-[#00FFF0] to-[#0A98FF]' :
+                    'bg-gradient-to-br from-red-400 to-red-600'
+                  }`}>
+                    {activity.type === 'deposit' ? (
+                      <ArrowUpRight className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    ) : activity.type === 'yield' ? (
+                      <TrendingUp className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    ) : (
+                      <ArrowDownRight className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-white text-sm md:text-base">{activity.action}</p>
+                    <p className="text-xs md:text-sm text-white/70">{activity.date}</p>
+                  </div>
+
+                  <div className="text-right flex-shrink-0">
+                    <p className={`font-black text-base md:text-lg ${
+                      activity.type === 'withdraw' ? 'text-red-400' : 'text-green-300'
+                    }`}>
+                      {activity.type === 'withdraw' ? '-' : '+'}Rp {(activity.amount / 1000).toFixed(0)}rb
                     </p>
                   </div>
-                ))}
-              </div>
-              <Link href="/history" className="block w-full mt-6 py-4 bg-gray-100 text-[#0A4A7C] rounded-xl hover:bg-gray-200 transition-all text-center font-bold">
-                View History
-              </Link>
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -129,38 +129,40 @@ export default function NabungBareng() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {benefits.map((benefit, index) => {
-                const Icon = benefit.icon;
-                const gradients = [
-                  { from: '#C15BFF', to: '#0A98FF', shadow: 'rgba(193,91,255,0.4)' },
-                  { from: '#00FFF0', to: '#0A98FF', shadow: 'rgba(0,255,240,0.4)' },
-                  { from: '#FFBC57', to: '#FF9500', shadow: 'rgba(255,188,87,0.4)' },
-                  { from: '#FBFF2B', to: '#C15BFF', shadow: 'rgba(251,255,43,0.4)' },
-                ];
-                const gradient = gradients[index % gradients.length];
+            <div className="overflow-hidden -mx-4 md:mx-0">
+              <div className="flex gap-4 px-4 md:px-0 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible">
+                {benefits.map((benefit, index) => {
+                  const Icon = benefit.icon;
+                  const gradients = [
+                    { from: '#C15BFF', to: '#0A98FF', shadow: 'rgba(193,91,255,0.4)' },
+                    { from: '#00FFF0', to: '#0A98FF', shadow: 'rgba(0,255,240,0.4)' },
+                    { from: '#FFBC57', to: '#FF9500', shadow: 'rgba(255,188,87,0.4)' },
+                    { from: '#FBFF2B', to: '#C15BFF', shadow: 'rgba(251,255,43,0.4)' },
+                  ];
+                  const gradient = gradients[index % gradients.length];
 
-                return (
-                  <div
-                    key={index}
-                    className="group bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 hover:scale-105 hover:-translate-y-2 transition-all duration-300"
-                    style={{
-                      boxShadow: `0 20px 60px ${gradient.shadow}`
-                    }}
-                  >
+                  return (
                     <div
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform"
+                      key={index}
+                      className="group w-[240px] min-w-[240px] md:w-auto md:min-w-0 flex-shrink-0 snap-start bg-white/95 backdrop-blur-sm rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl md:shadow-2xl border-2 md:border-4 border-white/50 hover:scale-105 hover:-translate-y-2 transition-all duration-300"
                       style={{
-                        background: `linear-gradient(135deg, ${gradient.from}, ${gradient.to})`
+                        boxShadow: `0 20px 60px ${gradient.shadow}`
                       }}
                     >
-                      <Icon className="w-8 h-8 text-white" />
+                      <div
+                        className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform"
+                        style={{
+                          background: `linear-gradient(135deg, ${gradient.from}, ${gradient.to})`
+                        }}
+                      >
+                        <Icon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                      </div>
+                      <h3 className="text-lg md:text-xl font-black text-[#0A4A7C] mb-1 md:mb-2 text-center">{benefit.title}</h3>
+                      <p className="text-sm md:text-base text-gray-700 text-center leading-relaxed">{benefit.description}</p>
                     </div>
-                    <h3 className="text-xl font-black text-[#0A4A7C] mb-2 text-center">{benefit.title}</h3>
-                    <p className="text-gray-700 text-center leading-relaxed">{benefit.description}</p>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </section>
 
