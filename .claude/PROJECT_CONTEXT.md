@@ -1,4 +1,4 @@
-# NUNGGU - Project Context
+# KITA - Project Context
 
 ## Hackathon Details
 - **Event:** Base Indonesia Hackathon + Thetanuts Track
@@ -50,7 +50,7 @@ Target amount (in IDRX)
 Risk tolerance (Konservatif/Moderat/Agresif)
 Timeline (6 bulan/1 tahun/2 tahun)
 Capabilities:
-Proactive Suggestions (via WhatsApp):
+Proactive Suggestions (via Telegram):
  "Bro, premi NUNGGU lagi tinggi (1.5%). Mau pasang antrian ETH? Cashback 850k instant!"
 
 Strategy Explainer:
@@ -64,7 +64,7 @@ Agresif: Suggest high-premium strikes (ATM -10%)
 Technical:
 Rule-based (bukan ML) untuk MVP
 CDP AgentKit framework
-WhatsApp API integration
+Telegram API integration
 Context-aware (remembers user profile & history)
 
 4.2 Nabung Bareng (Social Investing)
@@ -72,7 +72,7 @@ Purpose: Pooled investing dengan teman/keluarga untuk capital yang lebih besar =
 Flow:
 Create Group
 Input: Nama grup, target amount, invite members (5-10 orang)
-Generate shareable link (via WA)
+Generate shareable link (via Telegram)
 Member Join & Deposit
 Each member deposit IDRX (tracked proportionally)
 Pool auto-deposited ke Aave (earn interest while waiting)
@@ -92,8 +92,8 @@ Kontribusi per member (%)
 Total profit grup
 Active positions
 Voting history
-WhatsApp Integration:
-Notifikasi ke grup WA:
+Telegram Integration:
+Notifikasi ke grup Telegram:
  "✅ Andi deposit 5 juta. Total pool: 25 juta (5/10 orang)""💸 Cashback 850k masuk! Total: 25,850,000 IDRX""📊 Voting: Withdraw? (Yes: 6/10, No: 2/10) ✅ APPROVED"
 Streak Badge (Shareable):
 Visual card showing:
@@ -177,7 +177,7 @@ Premium → "Harga Tiket Taruhan"
 Expiry → "Berlaku Sampai Kapan?"
 Payout → "Potensi Cuan (Jika ETH < 35 Juta)"
 
-4.4 WhatsApp Integration
+4.4 Telegram Integration
 Purpose: Bring DeFi to messaging app (Indonesian behavior)
 Notification Types:
 Individual:
@@ -192,7 +192,7 @@ Deposit: "💰 Citra deposit 5 juta. Total: 30 juta"
 Profit: "💸 Cashback 1.2 juta masuk! Total: 31.2M"
 Voting: "📊 Proposal withdraw. Vote sekarang! (6 Yes, 2 No, 2 pending)"
 Achievement: "🏆 Streak 5 minggu! Fire badge unlocked 🔥🔥🔥"
-Chatbot Commands (via WA):
+Chatbot Commands (via Telegram):
 User: "Pasang antrian ETH 39 juta"
 Bot: "Processing... ✅ Done! Cashback 720k masuk."
 
@@ -320,7 +320,7 @@ Shareable Card (Auto-generated):
 Post to:
 Instagram Story (auto-sized)
 Twitter (image tweet)
-WhatsApp Status
+Telegram Status
 Technical:
 Canvas API (generate image)
 Dynamic data injection
@@ -330,7 +330,7 @@ Share API (native mobile)
 5. User Flows
 Flow 1: Onboarding
 Open app → Connect wallet (biometric)
-Link WhatsApp number
+Link Telegram number
 AI profiling (4 questions)
 Choose: Nabung Bareng atau Solo
 Done → Dashboard
@@ -342,11 +342,11 @@ Input jumlah (10M IDRX)
 System show: "Cashback 620k"
 Confirm → Execute
 Toast: "✅ Position created! +20 XP"
-WA notif: "Antrian aktif!"
+Telegram notif: "Antrian aktif!"
 Flow 3: Create Group & Nabung Bareng
 Dashboard → "Nabung Bareng"
 Create grup (nama, target, invite)
-Share link ke WA
+Share link ke Telegram
 Friends join (notif per join)
 Members deposit (tracked %)
 Admin propose strategy (voting)
@@ -365,7 +365,7 @@ Reach threshold (500 XP)
 Full-screen: "LEVEL UP! 2→3"
 Show unlocked features
 Update profile badge
-WA notif: "Congrats Level 3!"
+Telegram notif: "Congrats Level 3!"
 
 6. Success Metrics
 User Engagement:

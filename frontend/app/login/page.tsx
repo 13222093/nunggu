@@ -1,39 +1,48 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Alert, AlertDescription } from "@/components/ui/Alert";
+import { Sparkles, TrendingUp, Phone, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function Login() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    phoneNumber: '',
-    countryCode: '+62',
+    phoneNumber: "",
+    countryCode: "+62",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setIsLoading(true);
 
     if (!formData.phoneNumber || formData.phoneNumber.length < 8) {
-      setError('Mohon masukkan nomor telepon yang valid');
+      setError("Mohon masukkan nomor telepon yang valid");
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/auth/request-otp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          phoneNumber: formData.phoneNumber,
-          countryCode: formData.countryCode,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/auth/request-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phoneNumber: formData.phoneNumber,
+            countryCode: formData.countryCode,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -44,99 +53,226 @@ export default function Login() {
         localStorage.setItem('isLoginFlow', 'true');
         router.push('/login/otp');
       } else {
-        setError(data.error || 'Terjadi kesalahan. Silakan coba lagi.');
+        setError(data.error || "Terjadi kesalahan. Silakan coba lagi.");
       }
     } catch (err) {
-      setError('Gagal menghubungi server. Periksa koneksi internet Anda.');
+      setError("Gagal menghubungi server. Periksa koneksi internet Anda.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8">
-        <div className="mb-8 text-center">
-          <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center mb-4">
-            <span className="text-white text-3xl font-bold">K</span>
+    <div className="min-h-screen flex bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f] overflow-hidden">
+      {/* Left Panel - Decorative (Hidden on Mobile) */}
+      <div className="hidden lg:flex lg:w-1/2 p-12 flex-col justify-between relative">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(10,152,255,0.3),transparent_50%)] animate-pulse" />
+
+        {/* Floating orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-30 animate-float" />
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#FBFF2B] rounded-full blur-3xl opacity-20 animate-float-delayed" />
+        </div>
+
+        {/* Logo */}
+        <div className="relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm shadow-xl border-2 border-white/30">
+              <TrendingUp className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-black text-white drop-shadow-lg">KITA</h1>
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
+                <Sparkles className="h-4 w-4 text-[#FBFF2B]" />
+                <span className="text-sm font-bold text-white">DeFi Options</span>
+              </div>
+            </div>
           </div>
-          <h1 className="text-heading text-gray-800 mb-2">
-            Selamat Datang Kembali
-          </h1>
-          <p className="text-body text-gray-600">
-            Masuk ke akun KITA kamu
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10 space-y-8">
+          <h2 className="text-5xl font-black text-white leading-tight drop-shadow-2xl">
+            Selamat Datang<br />
+            Kembali ke<br />
+            <span className="text-[#FBFF2B]">Platform DeFi Kamu!</span>
+          </h2>
+          <p className="text-xl text-white/90 font-medium max-w-md leading-relaxed">
+            Monetisasi limit orders dengan DeFi options. Nabung sendiri atau bareng temen, sambil
+            kumpulin XP dan unlock badges!
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-body text-gray-700 mb-2">
-              Nomor Telepon
-            </label>
-            <div className="flex gap-2">
-              <select
-                value={formData.countryCode}
-                onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
-                className="w-24 px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
-              >
-                <option value="+62">🇮🇩 +62</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+65">🇸🇬 +65</option>
-              </select>
-              <input
-                type="tel"
-                value={formData.phoneNumber}
-                onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value.replace(/\D/g, '') })}
-                placeholder="812345678"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
-                disabled={isLoading}
-              />
+        {/* Features */}
+        <div className="relative z-10 space-y-4">
+          {[
+            "Cash Secured Put & Covered Call",
+            "Gamifikasi Seru - XP & Badges",
+            "Nabung Bareng di Group Vault"
+          ].map((feature, i) => (
+            <div key={i} className="flex items-center gap-4 bg-white/10 p-3 rounded-2xl backdrop-blur-sm w-fit border border-white/10 hover:bg-white/20 transition-colors">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
+                <CheckCircle2 className="h-6 w-6 text-[#0A98FF]" />
+              </div>
+              <span className="text-white font-bold text-lg">{feature}</span>
             </div>
-            {error && (
-              <p className="text-red-500 text-body mt-2">{error}</p>
-            )}
+          ))}
+        </div>
+      </div>
+
+      {/* Right Panel - Login Form */}
+      <div className="flex-1 flex items-center justify-center p-8 relative">
+        {/* Mobile Background Elements */}
+        <div className="absolute inset-0 lg:hidden overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-20" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#00FFF0] rounded-full blur-3xl opacity-20" />
+        </div>
+
+        <div className="w-full max-w-md relative z-10">
+          {/* Mobile Logo */}
+          <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm shadow-xl border border-white/30">
+              <TrendingUp className="h-7 w-7 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-black text-white drop-shadow-lg">KITA</h1>
+              <div className="flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full">
+                <Sparkles className="h-3 w-3 text-[#FBFF2B]" />
+                <span className="text-xs font-bold text-white">DeFi Options</span>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-start">
-              <p className="text-body text-blue-800">
-                Kami akan mengirim kode verifikasi via WhatsApp untuk konfirmasi identitas kamu.
+          {/* Card */}
+          <div className="bg-white/95 backdrop-blur-sm rounded-[2.5rem] p-8 shadow-2xl border-4 border-white/50">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-black text-[#0A4A7C] mb-2">
+                Selamat Datang! 👋
+              </h2>
+              <p className="text-gray-500 font-bold">
+                Masuk ke akun KITA kamu untuk lanjut
               </p>
             </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <Alert variant="destructive" className="bg-red-50 border-red-200 text-red-600 font-medium rounded-xl">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="phoneNumber" className="text-[#0A4A7C] font-bold">Nomor Telepon</Label>
+                <div className="flex gap-3">
+                  {/* Country Code Select */}
+                  <div className="relative">
+                    <select
+                      value={formData.countryCode}
+                      onChange={(e) =>
+                        setFormData({ ...formData, countryCode: e.target.value })
+                      }
+                      className="h-14 w-28 px-3 rounded-xl border-2 border-gray-200 bg-white
+                                 text-lg font-bold text-[#0A4A7C] shadow-sm
+                                 focus:border-[#0A98FF] focus:outline-none focus:ring-4 focus:ring-[#0A98FF]/10
+                                 disabled:cursor-not-allowed disabled:opacity-50 transition-all appearance-none cursor-pointer"
+                      disabled={isLoading}
+                    >
+                      <option value="+62">🇮🇩 +62</option>
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+44">🇬🇧 +44</option>
+                      <option value="+65">🇸🇬 +65</option>
+                    </select>
+                  </div>
+
+                  {/* Phone Number Input */}
+                  <div className="relative flex-1">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Input
+                      id="phoneNumber"
+                      type="tel"
+                      placeholder="812345678"
+                      value={formData.phoneNumber}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          phoneNumber: e.target.value.replace(/\D/g, ""),
+                        })
+                      }
+                      required
+                      disabled={isLoading}
+                      className="pl-12 h-14 rounded-xl border-2 border-gray-200 text-lg font-bold text-[#0A4A7C] 
+                               focus:border-[#0A98FF] focus:ring-4 focus:ring-[#0A98FF]/10 transition-all placeholder:font-medium"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Info Box */}
+              <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex items-start gap-3">
+                <div className="flex-shrink-0 mt-0.5">
+                  <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs">ℹ️</span>
+                  </div>
+                </div>
+                <p className="text-sm text-blue-800 font-medium leading-relaxed">
+                  Kami akan mengirim kode verifikasi via WhatsApp untuk konfirmasi
+                  identitas kamu.
+                </p>
+              </div>
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white font-black py-6 text-lg rounded-2xl shadow-[0_6px_0_0_#D97706] hover:shadow-[0_8px_0_0_#D97706] hover:-translate-y-1 active:translate-y-0 active:shadow-[0_4px_0_0_#D97706] transition-all border-b-0"
+                size="lg"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Memeriksa...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-2">
+                    <span>Kirim Kode Verifikasi</span>
+                    <ArrowRight className="h-6 w-6" />
+                  </div>
+                )}
+              </Button>
+
+              {/* Divider */}
+              <div className="text-center pt-4 border-t-2 border-gray-100">
+                <p className="text-gray-500 font-medium">
+                  Belum punya akun?{" "}
+                  <Link
+                    href="/onboarding"
+                    className="text-[#0A4A7C] hover:text-[#0A98FF] font-black underline underline-offset-4 decoration-2 decoration-[#00FFF0] hover:decoration-[#0A98FF] transition-all"
+                  >
+                    Daftar sekarang
+                  </Link>
+                </p>
+              </div>
+            </form>
           </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-button py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-          >
-            {isLoading ? 'Memeriksa...' : 'Kirim Kode Verifikasi'}
-          </button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <p className="text-body text-gray-600 mb-2">
-            Belum punya akun?
+          {/* Footer */}
+          <p className="text-center text-sm text-white/60 font-medium mt-8">
+            © 2026 KITA - Kolektif Investasi Tanpa Ambyar
           </p>
-          <button
-            onClick={() => router.push('/onboarding')}
-            className="text-blue-600 text-button hover:underline"
-          >
-            Daftar Sekarang
-          </button>
-        </div>
 
-        <p className="text-body text-gray-500 mt-6 text-center">
-          Dengan melanjutkan, kamu menyetujui{' '}
-          <a href="#" className="text-blue-600 hover:underline">
-            Syarat & Ketentuan
-          </a>{' '}
-          dan{' '}
-          <a href="#" className="text-blue-600 hover:underline">
-            Kebijakan Privasi
-          </a>
-        </p>
+          {/* Terms */}
+          <p className="text-xs text-white/40 mt-4 text-center">
+            Dengan melanjutkan, kamu menyetujui{" "}
+            <a href="#" className="text-white/80 hover:text-white hover:underline font-bold transition-colors">
+              Syarat & Ketentuan
+            </a>{" "}
+            dan{" "}
+            <a href="#" className="text-white/80 hover:text-white hover:underline font-bold transition-colors">
+              Kebijakan Privasi
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

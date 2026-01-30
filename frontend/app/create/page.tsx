@@ -72,73 +72,83 @@ export default function CreatePosition() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-dark-gray text-white pt-32 px-4 pb-20">
-        <div className="max-w-xl mx-auto">
+      <main className="relative min-h-screen bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f] pt-32 px-4 pb-20">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(10,152,255,0.3),transparent_50%)] animate-pulse pointer-events-none" />
+
+        {/* Floating orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-20 animate-float" />
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#FBFF2B] rounded-full blur-3xl opacity-10 animate-float-delayed" />
+        </div>
+
+        <div className="relative z-10 max-w-xl mx-auto">
 
           <div className="mb-10 text-center">
-            <h1 className="heading text-4xl mb-3 text-indigo">Mulai Nabung Solo</h1>
-            <p className="body-text text-light-gray max-w-md mx-auto">
-              Pilih aset, tentukan harga beli, dan dapatkan <span className="text-mint font-bold">cashback instan</span>.
+            <h1 className="text-4xl font-black text-white drop-shadow-lg mb-3">Mulai Nabung Solo</h1>
+            <p className="text-lg text-white/90 font-medium max-w-md mx-auto">
+              Pilih aset, tentukan harga beli, dan dapatkan <span className="text-[#00FFF0] font-bold">cashback instan</span>.
             </p>
           </div>
 
-          <div className="bg-light-gray/5 border border-light-gray/10 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
 
             {/* Input Aset (Static ETH) */}
             <div className="mb-8">
-              <label className="block subheading text-sm mb-3 text-light-gray">Aset yang mau dibeli</label>
-              <div className="p-4 bg-dark-gray/50 rounded-2xl border border-light-gray/20 flex justify-between items-center group cursor-not-allowed opacity-80">
+              <label className="block text-[#0A4A7C] font-bold text-sm mb-3">Aset yang mau dibeli</label>
+              <div className="p-4 bg-gray-50 rounded-2xl border-2 border-gray-200 flex justify-between items-center group shadow-sm">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-indigo/20 flex items-center justify-center text-xl">💎</div>
-                  <span className="font-bold text-lg">Ethereum (ETH)</span>
+                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-2xl shadow-inner">💎</div>
+                  <span className="font-bold text-lg text-gray-800">Ethereum (ETH)</span>
                 </div>
                 <div className="text-right">
-                  <div className="text-mint text-sm font-bold">Rp 42.000.000</div>
-                  <div className="text-xs text-light-gray">Harga Pasar</div>
+                  <div className="text-[#00B4D8] text-sm font-bold">Rp 42.000.000</div>
+                  <div className="text-xs text-gray-500 font-medium">Harga Pasar</div>
                 </div>
               </div>
             </div>
 
             {/* Input Harga Target */}
             <div className="mb-8">
-              <label className="block subheading text-sm mb-3 text-light-gray">Mau beli di harga berapa? (Target)</label>
+              <label className="block text-[#0A4A7C] font-bold text-sm mb-3">Mau beli di harga berapa? (Target)</label>
               <div className="relative group">
                 <input
                   type="number"
                   value={targetPrice}
                   onChange={(e) => setTargetPrice(e.target.value)}
                   placeholder="Contoh: 38000000"
-                  className="w-full bg-dark-gray/50 border border-light-gray/20 rounded-2xl p-4 pl-4 pr-16 text-white text-lg font-bold focus:border-indigo focus:ring-1 focus:ring-indigo focus:outline-none transition-all placeholder:text-light-gray/30"
+                  className="w-full bg-gray-50 border-2 border-gray-200 rounded-2xl p-4 pl-4 pr-16 text-[#0A4A7C] text-xl font-bold focus:border-[#0A98FF] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#0A98FF]/10 transition-all placeholder:text-gray-300"
                 />
-                <span className="absolute right-6 top-1/2 -translate-y-1/2 text-light-gray font-semibold">IDRX</span>
+                <span className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 font-bold">IDRX</span>
               </div>
-              <p className="text-xs text-light-gray mt-2 ml-1">
+              <p className="text-xs text-gray-500 font-medium mt-2 ml-1">
                 *Posisi tereksekusi otomatis jika harga ETH turun ke angka ini.
               </p>
             </div>
 
             {/* Input Modal */}
             <div className="mb-10">
-              <label className="block subheading text-sm mb-3 text-light-gray">Modal Nabung (Deposit)</label>
+              <label className="block text-[#0A4A7C] font-bold text-sm mb-3">Modal Nabung (Deposit)</label>
               <div className="relative">
                 <input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="Min. 1000000"
-                  className="w-full bg-dark-gray/50 border border-light-gray/20 rounded-2xl p-4 pl-4 pr-16 text-white text-lg font-bold focus:border-indigo focus:ring-1 focus:ring-indigo focus:outline-none transition-all placeholder:text-light-gray/30"
+                  className="w-full bg-gray-50 border-2 border-gray-200 rounded-2xl p-4 pl-4 pr-16 text-[#0A4A7C] text-xl font-bold focus:border-[#0A98FF] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#0A98FF]/10 transition-all placeholder:text-gray-300"
                 />
-                <span className="absolute right-6 top-1/2 -translate-y-1/2 text-light-gray font-semibold">IDRX</span>
+                <span className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 font-bold">IDRX</span>
               </div>
             </div>
 
             {/* Summary Box */}
-            <div className="bg-gradient-to-r from-indigo/20 to-indigo/10 border border-indigo/30 rounded-2xl p-5 mb-8 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#0A4A7C] to-[#0A98FF] rounded-2xl p-6 mb-8 relative overflow-hidden shadow-lg border border-white/20">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
               <div className="flex justify-between items-end mb-2 relative z-10">
-                <span className="text-indigo/80 font-semibold text-sm">Estimasi Cashback Instan</span>
-                <span className="text-mint font-bold text-2xl">Rp {estimatedCashback}</span>
+                <span className="text-blue-100 font-bold text-sm">Estimasi Cashback Instan</span>
+                <span className="text-[#00FFF0] font-black text-3xl">Rp {estimatedCashback}</span>
               </div>
-              <p className="text-xs text-indigo/60 relative z-10">
+              <p className="text-xs text-blue-200 font-medium relative z-10">
                 Langsung masuk wallet lo di depan (Upfront Yield).
               </p>
             </div>
@@ -147,13 +157,12 @@ export default function CreatePosition() {
             <button
               onClick={handleExecute}
               disabled={isPending || isConfirming || !amount || !targetPrice}
-              className={`w-full py-5 rounded-2xl font-bold text-lg transition-all transform active:scale-[0.98] ${
-                !isConnected
-                  ? 'bg-salmon text-white hover:bg-salmon/90'
+              className={`w-full py-5 rounded-2xl font-black text-lg transition-all transform active:scale-[0.98] active:translate-y-1 border-b-4 border-black/10 active:border-b-0 ${!isConnected
+                  ? 'bg-red-500 text-white hover:bg-red-600 shadow-xl'
                   : (isPending || isConfirming)
-                    ? 'bg-light-gray/10 text-light-gray cursor-wait'
-                    : 'bg-indigo hover:bg-indigo/90 text-white shadow-xl shadow-indigo/20'
-              }`}
+                    ? 'bg-gray-200 text-gray-400 cursor-wait'
+                    : 'bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white hover:shadow-[0_8px_0_0_#D97706] shadow-[0_6px_0_0_#D97706]'
+                }`}
             >
               {!isConnected
                 ? 'Connect Wallet Dulu'

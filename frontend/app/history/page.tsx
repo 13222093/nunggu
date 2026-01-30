@@ -23,8 +23,8 @@ export default function History() {
     { id: 10, type: 'yield', action: 'Yield Earned', amount: 95000, date: '12 Jan 2026', time: '00:00', description: 'Daily yield dari DAI Vault' },
   ];
 
-  const filteredActivities = filterType === 'all' 
-    ? activities 
+  const filteredActivities = filterType === 'all'
+    ? activities
     : activities.filter(activity => activity.type === filterType);
 
   const totalDeposits = activities.filter(a => a.type === 'deposit').reduce((sum, a) => sum + a.amount, 0);
@@ -34,149 +34,133 @@ export default function History() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-24 px-4 pb-24">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="relative min-h-screen bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f] pt-24 px-4 pb-24 overflow-hidden">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(10,152,255,0.3),transparent_50%)] animate-pulse" />
+
+        {/* Floating orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-30 animate-float" />
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#FBFF2B] rounded-full blur-3xl opacity-20 animate-float-delayed" />
+          <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-[#00FFF0] rounded-full blur-3xl opacity-25 animate-float-slow" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto space-y-8">
           {/* Header with Back Button */}
           <div className="flex items-center gap-4 mb-4">
             <Link
               href="/dashboard"
-              className="w-10 h-10 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-xl flex items-center justify-center transition-colors"
+              className="group w-12 h-12 bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 hover:-translate-y-1 transition-all duration-300"
             >
-              <ArrowLeft className="w-5 h-5 text-slate-300" />
+              <ArrowLeft className="w-6 h-6 text-[#0A4A7C] group-hover:-translate-x-1 transition-transform" />
             </Link>
             <div>
-              <h1 className="text-ultra-heading text-white">Riwayat Transaksi</h1>
-              <p className="text-body text-slate-300">Semua aktivitas deposit, withdraw, dan yield</p>
+              <div className="inline-block bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] text-white px-3 py-1 rounded-full text-xs font-bold mb-1 shadow-md">
+                HISTORY
+              </div>
+              <h1 className="text-4xl font-black text-white drop-shadow-lg">Riwayat Transaksi</h1>
+              <p className="text-white/90 font-medium">Semua aktivitas deposit, withdraw, dan yield</p>
             </div>
           </div>
 
           {/* Summary Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-                  <ArrowDownRight className="w-6 h-6 text-green-400" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 transform hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center border border-green-200 shadow-md">
+                  <ArrowDownRight className="w-8 h-8 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-slate-400">Total Deposits</p>
-                  <p className="text-heading text-white">Rp {(totalDeposits / 1000000).toFixed(1)}jt</p>
+                  <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Total Deposits</p>
+                  <p className="text-2xl font-black text-[#0A4A7C]">Rp {(totalDeposits / 1000000).toFixed(1)}jt</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
-                  <ArrowUpRight className="w-6 h-6 text-red-400" />
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 transform hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center border border-red-200 shadow-md">
+                  <ArrowUpRight className="w-8 h-8 text-red-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-slate-400">Total Withdraws</p>
-                  <p className="text-heading text-white">Rp {(totalWithdraws / 1000000).toFixed(1)}jt</p>
+                  <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Total Withdraws</p>
+                  <p className="text-2xl font-black text-[#0A4A7C]">Rp {(totalWithdraws / 1000000).toFixed(1)}jt</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-blue-400" />
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 transform hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center border border-blue-200 shadow-md">
+                  <TrendingUp className="w-8 h-8 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-slate-400">Total Yield</p>
-                  <p className="text-heading text-white">Rp {(totalYield / 1000000).toFixed(1)}jt</p>
+                  <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Total Yield</p>
+                  <p className="text-2xl font-black text-[#0A4A7C]">Rp {(totalYield / 1000000).toFixed(1)}jt</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Filter Tabs */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-2">
-            <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5 text-slate-400 ml-2" />
-              <button
-                onClick={() => setFilterType('all')}
-                className={`flex-1 py-2 px-4 rounded-lg transition-all ${
-                  filterType === 'all' 
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
-                    : 'text-slate-400 hover:text-white hover:bg-slate-700/30'
-                }`}
-              >
-                Semua
-              </button>
-              <button
-                onClick={() => setFilterType('deposit')}
-                className={`flex-1 py-2 px-4 rounded-lg transition-all ${
-                  filterType === 'deposit' 
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
-                    : 'text-slate-400 hover:text-white hover:bg-slate-700/30'
-                }`}
-              >
-                Deposit
-              </button>
-              <button
-                onClick={() => setFilterType('withdraw')}
-                className={`flex-1 py-2 px-4 rounded-lg transition-all ${
-                  filterType === 'withdraw' 
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
-                    : 'text-slate-400 hover:text-white hover:bg-slate-700/30'
-                }`}
-              >
-                Withdraw
-              </button>
-              <button
-                onClick={() => setFilterType('yield')}
-                className={`flex-1 py-2 px-4 rounded-lg transition-all ${
-                  filterType === 'yield' 
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
-                    : 'text-slate-400 hover:text-white hover:bg-slate-700/30'
-                }`}
-              >
-                Yield
-              </button>
+          <div className="bg-white/90 backdrop-blur-sm border-2 border-white/50 rounded-2xl p-2 shadow-lg">
+            <div className="flex items-center gap-2 overflow-x-auto">
+              <Filter className="w-6 h-6 text-[#0A4A7C] ml-3 mr-1" />
+              {['all', 'deposit', 'withdraw', 'yield'].map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setFilterType(type as any)}
+                  className={`flex-1 py-3 px-6 rounded-xl transition-all font-bold whitespace-nowrap ${filterType === type
+                      ? 'bg-gradient-to-r from-[#C15BFF] to-[#0A98FF] text-white shadow-md'
+                      : 'text-gray-500 hover:text-[#0A4A7C] hover:bg-white/50'
+                    }`}
+                >
+                  {type === 'all' ? 'Semua' : type.charAt(0).toUpperCase() + type.slice(1)}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Activity List */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
-            <h2 className="text-heading text-white mb-6">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50 min-h-[500px]">
+            <h2 className="text-2xl font-black text-[#0A4A7C] mb-8 flex items-center gap-2">
+              <Calendar className="w-6 h-6" />
               {filterType === 'all' ? 'Semua Aktivitas' : `Aktivitas ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}`}
             </h2>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {filteredActivities.map((activity) => (
                 <div
                   key={activity.id}
-                  className="flex items-center gap-4 p-4 bg-slate-700/30 rounded-xl hover:bg-slate-700/50 transition-colors border border-slate-600/30"
+                  className="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300 border-2 border-gray-100 group"
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                    activity.type === 'deposit' 
-                      ? 'bg-green-500/20' 
-                      : activity.type === 'yield' 
-                      ? 'bg-blue-500/20' 
-                      : 'bg-red-500/20'
-                  }`}>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border shadow-sm group-hover:scale-110 transition-transform ${activity.type === 'deposit'
+                      ? 'bg-green-100 border-green-200'
+                      : activity.type === 'yield'
+                        ? 'bg-blue-100 border-blue-200'
+                        : 'bg-red-100 border-red-200'
+                    }`}>
                     {activity.type === 'deposit' ? (
-                      <ArrowDownRight className="w-6 h-6 text-green-400" />
+                      <ArrowDownRight className="w-6 h-6 text-green-600" />
                     ) : activity.type === 'yield' ? (
-                      <TrendingUp className="w-6 h-6 text-blue-400" />
+                      <TrendingUp className="w-6 h-6 text-blue-600" />
                     ) : (
-                      <ArrowUpRight className="w-6 h-6 text-red-400" />
+                      <ArrowUpRight className="w-6 h-6 text-red-600" />
                     )}
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="text-white font-semibold">{activity.action}</p>
-                      <span className={`px-2 py-0.5 text-xs font-semibold rounded ${
-                        activity.type === 'deposit' 
-                          ? 'bg-green-500/20 text-green-400' 
-                          : activity.type === 'yield' 
-                          ? 'bg-blue-500/20 text-blue-400' 
-                          : 'bg-red-500/20 text-red-400'
-                      }`}>
+                    <div className="flex items-center gap-3 mb-1">
+                      <p className="text-[#0A4A7C] font-bold text-lg">{activity.action}</p>
+                      <span className={`px-3 py-1 text-xs font-bold rounded-lg border uppercase tracking-wider ${activity.type === 'deposit'
+                          ? 'bg-green-100 text-green-700 border-green-200'
+                          : activity.type === 'yield'
+                            ? 'bg-blue-100 text-blue-700 border-blue-200'
+                            : 'bg-red-100 text-red-700 border-red-200'
+                        }`}>
                         {activity.type}
                       </span>
                     </div>
-                    <p className="text-sm text-slate-400">{activity.description}</p>
-                    <div className="flex items-center gap-3 mt-2 text-xs text-slate-500">
+                    <p className="text-sm text-gray-500 font-medium group-hover:text-gray-700 transition-colors">{activity.description}</p>
+                    <div className="flex items-center gap-4 mt-2 text-xs text-gray-400 font-bold">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         {activity.date}
@@ -185,9 +169,8 @@ export default function History() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className={`text-lg font-bold ${
-                      activity.type === 'withdraw' ? 'text-red-400' : 'text-green-400'
-                    }`}>
+                    <p className={`text-xl font-black tracking-tight ${activity.type === 'withdraw' ? 'text-red-500' : 'text-green-500'
+                      }`}>
                       {activity.type === 'withdraw' ? '-' : '+'}Rp {(activity.amount / 1000000).toFixed(1)}jt
                     </p>
                   </div>

@@ -18,7 +18,10 @@
       "Bash(curl:*)",
       "Bash(npx tsc:*)",
       "Bash(cd:*)",
-      "Bash(git show:*)"
+      "Bash(git show:*)",
+      "Bash(dir /s \"C:\\\\Users\\\\Ari Azis\\\\Hackathon2025\" /b)",
+      "Bash(findstr:*)",
+      "Bash(test:*)"
     ]
   }
 }

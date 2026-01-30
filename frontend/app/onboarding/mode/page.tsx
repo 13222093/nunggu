@@ -20,7 +20,7 @@ export default function ChooseModePage() {
 
   const handleContinue = () => {
     if (!selectedMode) return;
-    
+
     router.push('/onboarding/success');
   };
 
@@ -50,11 +50,10 @@ export default function ChooseModePage() {
           {/* Solo Mode */}
           <button
             onClick={() => handleSelectMode('solo')}
-            className={`p-8 rounded-2xl border-2 transition-all duration-300 text-left ${
-              selectedMode === 'solo'
+            className={`p-8 rounded-2xl border-2 transition-all duration-300 text-left ${selectedMode === 'solo'
                 ? 'border-blue-500 bg-blue-50 shadow-lg scale-105'
                 : 'border-gray-200 hover:border-blue-300 hover:shadow-md'
-            }`}
+              }`}
           >
             <div className="mb-6">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-3xl mb-4">
@@ -66,19 +65,19 @@ export default function ChooseModePage() {
 
             <div className="space-y-3">
               <div className="flex items-start gap-2">
-                <span className="text-green-500 mt-1">✓</span>
+                <span className="text-cyan-500 mt-1">✓</span>
                 <span className="text-body text-gray-700">Kontrol penuh atas investasi kamu</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-green-500 mt-1">✓</span>
+                <span className="text-cyan-500 mt-1">✓</span>
                 <span className="text-body text-gray-700">Fleksibel atur strategi sendiri</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-green-500 mt-1">✓</span>
+                <span className="text-cyan-500 mt-1">✓</span>
                 <span className="text-body text-gray-700">Withdraw kapan saja</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-green-500 mt-1">✓</span>
+                <span className="text-cyan-500 mt-1">✓</span>
                 <span className="text-body text-gray-700">Cocok untuk investor mandiri</span>
               </div>
             </div>
@@ -102,11 +101,10 @@ export default function ChooseModePage() {
           {/* Group Mode */}
           <button
             onClick={() => handleSelectMode('group')}
-            className={`p-8 rounded-2xl border-2 transition-all duration-300 text-left relative overflow-hidden ${
-              selectedMode === 'group'
+            className={`p-8 rounded-2xl border-2 transition-all duration-300 text-left relative overflow-hidden ${selectedMode === 'group'
                 ? 'border-purple-500 bg-purple-50 shadow-lg scale-105'
                 : 'border-gray-200 hover:border-purple-300 hover:shadow-md'
-            }`}
+              }`}
           >
             <div className="absolute top-4 right-4">
               <span className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold rounded-full">
@@ -124,19 +122,19 @@ export default function ChooseModePage() {
 
             <div className="space-y-3">
               <div className="flex items-start gap-2">
-                <span className="text-green-500 mt-1">✓</span>
+                <span className="text-cyan-500 mt-1">✓</span>
                 <span className="text-body text-gray-700">Ajak teman untuk gabung vault</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-green-500 mt-1">✓</span>
+                <span className="text-cyan-500 mt-1">✓</span>
                 <span className="text-body text-gray-700">Bonus XP untuk setiap invite</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-green-500 mt-1">✓</span>
+                <span className="text-cyan-500 mt-1">✓</span>
                 <span className="text-body text-gray-700">Kompetisi & leaderboard</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-green-500 mt-1">✓</span>
+                <span className="text-cyan-500 mt-1">✓</span>
                 <span className="text-body text-gray-700">Lebih seru, lebih engaging!</span>
               </div>
             </div>

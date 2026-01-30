@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { useState, useEffect } from 'react';
+import { TrendingUp, Users, Sparkles, ArrowRight, Play, Zap, Shield, Trophy, ChevronDown, Coins, DollarSign } from 'lucide-react';
 
 export default function Home() {
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -23,205 +24,328 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-24">
-        
-        {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center mb-16">
-            <div className="inline-block mb-6 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full border border-blue-500/30">
-              <span className="text-blue-400 text-body">Platform Investasi DeFi Indonesia</span>
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-indigo bg-clip-text text-transparent">
-              KITA
-            </h1>
-            <p className="text-subheading text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Kolektif Investasi Tanpa Ambyar! Nabung sendiri atau bareng temen, sambil main strategi DeFi yang seru.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/onboarding"
-                className="text-button px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:shadow-xl hover:shadow-blue-500/25 transition-all duration-200 transform hover:scale-105"
-              >
-                Mulai Sekarang
-              </Link>
-            </div>
+
+      {/* Hero Section - Mobile-Native, Vibrant Design */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f]">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(10,152,255,0.3),transparent_50%)] animate-pulse" />
+
+        {/* Floating orbs - Split complementary colors */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-30 animate-float" />
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#FBFF2B] rounded-full blur-3xl opacity-20 animate-float-delayed" />
+          <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-[#00FFF0] rounded-full blur-3xl opacity-25 animate-float-slow" />
+        </div>
+
+        {/* Floating icons - Gamified Finance Elements */}
+        {/* Sparkles - Top Right */}
+        <div className="absolute top-24 right-8 md:right-20 animate-bounce">
+          <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#FFBC57] to-[#FF9500] rounded-2xl flex items-center justify-center shadow-2xl rotate-12 backdrop-blur-sm border-2 border-white/30">
+            <Sparkles className="w-7 h-7 md:w-8 md:h-8 text-white drop-shadow-lg" />
+          </div>
+        </div>
+
+        {/* TrendingUp - Bottom Left (Green = Bullish Stock) */}
+        <div className="absolute bottom-32 left-8 md:left-20">
+          <div className="w-12 h-12 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-xl flex items-center justify-center shadow-xl -rotate-12 backdrop-blur-sm border-2 border-white/30">
+            <TrendingUp className="w-6 h-6 text-white drop-shadow-lg" />
+          </div>
+        </div>
+
+        {/* Coins - Top Left (Rotating) */}
+        <div className="absolute top-32 left-12 md:left-24 animate-spin-slow">
+          <div className="w-16 h-16 bg-gradient-to-br from-[#FBBF24] to-[#F59E0B] rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm border-2 border-white/40">
+            <Coins className="w-8 h-8 text-white drop-shadow-lg" />
+          </div>
+        </div>
+
+        {/* Trophy Badge - Middle Left */}
+        <div className="hidden md:block absolute top-1/2 left-16 -translate-y-1/2 animate-bounce" style={{ animationDelay: '0.5s' }}>
+          <div className="w-14 h-14 bg-gradient-to-br from-[#A855F7] to-[#9333EA] rounded-2xl flex items-center justify-center shadow-2xl rotate-6 backdrop-blur-sm border-2 border-white/30">
+            <Trophy className="w-7 h-7 text-white drop-shadow-lg" />
+          </div>
+        </div>
+
+        {/* Dollar Sign - Bottom Right */}
+        <div className="absolute bottom-40 right-12 md:right-32 animate-pulse" style={{ animationDelay: '1s' }}>
+          <div className="w-10 h-10 bg-gradient-to-br from-[#06B6D4] to-[#0284C7] rounded-lg flex items-center justify-center shadow-xl backdrop-blur-sm border-2 border-white/30">
+            <DollarSign className="w-5 h-5 text-white drop-shadow-lg" />
+          </div>
+        </div>
+
+        {/* Percentage Badge - Middle Right */}
+        <div className="hidden lg:block absolute top-1/2 right-16 -translate-y-1/2 animate-bounce" style={{ animationDelay: '0.3s' }}>
+          <div className="px-4 py-2 bg-gradient-to-r from-[#10B981] to-[#059669] rounded-full shadow-2xl backdrop-blur-sm border-2 border-white/40 rotate-12">
+            <span className="text-white font-black text-lg drop-shadow-lg">+15%</span>
+          </div>
+        </div>
+
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center pt-24 sm:pt-32">
+          {/* Badge - Cyan accent */}
+          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border-2 border-[#1fffab]/40 rounded-full px-5 py-2.5 mb-6 shadow-lg">
+            <div className="w-2 h-2 bg-[#1fffab] rounded-full animate-pulse" />
+            <span className="text-white font-semibold text-sm tracking-wide">Powered by Thetanuts V4</span>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700/50">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                  <span className="text-2xl">📈</span>
-                </div>
-                <span className="text-slate-400 text-body">Total Dana Terkunci</span>
-              </div>
-              <div className="text-heading text-white mb-1">$2.4M+</div>
-              <div className="text-body text-green-400">+12% dari minggu lalu</div>
-            </div>
+          {/* Headline - Gradient with complementary colors */}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-[1.1] tracking-tight">
+            KITA<span className="font-serif italic font-light tracking-wide">finance</span>
+            <br />
+            <span className="bg-gradient-to-r from-[#00FFF0] to-[#ACFFFC] bg-clip-text text-transparent">
+              Trading <span className="text-[#FFBC57] bg-clip-border">option</span> jadi seru
+            </span>
+          </h1>
 
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700/50">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                  <span className="text-2xl">💰</span>
-                </div>
-                <span className="text-slate-400 text-body">Rata-rata APY</span>
-              </div>
-              <div className="text-heading text-white mb-1">18.5%</div>
-              <div className="text-body text-slate-400">Dari posisi aktif</div>
-            </div>
+          {/* Subheadline */}
+          <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-3 leading-relaxed font-medium">
+            Monetisasi limit orders dengan DeFi options. Dapat <span className="text-[#FFBC57] font-bold">cashback instant</span> saat "antri beli" crypto di harga target kamu.
+          </p>
 
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700/50">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
-                  <span className="text-2xl">👥</span>
-                </div>
-                <span className="text-slate-400 text-body">Pengguna Aktif</span>
-              </div>
-              <div className="text-heading text-white mb-1">1,250+</div>
-              <div className="text-body text-slate-400">Bertambah setiap hari</div>
+          {/* Tagline - Cyan highlight */}
+          <p className="text-base sm:text-lg text-[#E0FFFF] font-bold mb-10 drop-shadow-lg">
+            💎 Nabung bareng temen, pacar, keluarga, atau sendiri sambil main strategi DeFi yang seru
+          </p>
+
+          {/* CTA Buttons - Complementary amber primary */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <Link
+              href="/onboarding"
+              className="group w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white px-8 py-4 rounded-2xl font-bold text-lg
+                         shadow-[0_8px_0_0_rgba(255,149,0,0.4)] hover:shadow-[0_12px_0_0_rgba(255,149,0,0.4)] hover:-translate-y-1
+                         active:translate-y-2 active:shadow-[0_4px_0_0_rgba(255,149,0,0.4)] transition-all duration-200
+                         border-2 border-white/20"
+            >
+              Mulai Sekarang
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="/login"
+              className="group w-full sm:w-auto flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border-2 border-white/30 text-white px-8 py-4 rounded-2xl font-bold text-lg
+                         hover:bg-white/20 hover:border-white/50 hover:scale-105 transition-all duration-200"
+            >
+              <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              Lihat Demo
+            </Link>
+          </div>
+
+          {/* Stats - Mobile optimized grid */}
+          <div className="grid grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 border-2 border-white/20">
+              <p className="text-3xl sm:text-4xl font-black text-[#00FFF0] drop-shadow-lg">$2.4M+</p>
+              <p className="text-white/80 text-xs sm:text-sm mt-1 font-medium">Total Value Locked</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 border-2 border-white/20">
+              <p className="text-3xl sm:text-4xl font-black text-[#FBFF2B] drop-shadow-lg">18.5%</p>
+              <p className="text-white/80 text-xs sm:text-sm mt-1 font-medium">Avg APY</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 border-2 border-white/20">
+              <p className="text-3xl sm:text-4xl font-black text-[#C15BFF] drop-shadow-lg">1,250+</p>
+              <p className="text-white/80 text-xs sm:text-sm mt-1 font-medium">Active Users</p>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* Features Section */}
-        <section className="py-15">
+        {/* Scroll Indicator - Animated */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+          <div className="flex flex-col items-center gap-2">
+            <ChevronDown className="w-6 h-6 text-white/60" />
+            <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
+              <div className="w-1.5 h-3 bg-[#00FFF0] rounded-full animate-pulse" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main className="min-h-screen bg-gradient-to-br from-white via-[#F0F9FF] to-white">
+
+        {/* Features Section - Mobile-first cards */}
+        <section className="py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-heading text-white mb-4">Cara Kerja KITA</h2>
-              <p className="text-subheading text-slate-400">Mulai investasi dengan mudah, cuan dengan strategi DeFi</p>
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-block bg-gradient-to-r from-[#0A98FF] to-[#00FFF0] text-white px-6 py-2 rounded-full text-sm font-bold mb-4 shadow-lg">
+                ⚡ CARA KERJA
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0A4A7C] mb-4">
+                Mulai Investasi dalam <span className="text-[#0A98FF]">3 Langkah</span>
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+                Mudah, cepat, dan fun! Cuan sambil main strategi DeFi
+              </p>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-slate-800/40 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 hover:border-blue-500/50 transition-all duration-300">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-2xl mb-6">
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              {/* Step 1 - Amber accent */}
+              <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-[#FFBC57]/20 hover:border-[#FFBC57] hover:-translate-y-2 transition-all duration-300">
+                <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-[#FFBC57] to-[#FF9500] rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg rotate-12">
+                  1
+                </div>
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FFBC57] to-[#FF9500] flex items-center justify-center text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform">
                   💰
                 </div>
-                <div className="mb-2 text-blue-400 text-body uppercase tracking-wider">Langkah 1</div>
-                <h3 className="text-subheading text-white mb-3">Pilih Mode Nabung</h3>
-                <p className="text-body text-slate-400 leading-relaxed">
-                  Nabung sendiri atau ajak teman nabung bareng. Pilih strategi yang kamu mau: cash secured put, covered call, dan lainnya!
+                <h3 className="text-xl sm:text-2xl font-black text-[#0A4A7C] mb-3">Pilih Mode Nabung</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Nabung <span className="font-bold text-[#0A98FF]">sendiri</span> atau <span className="font-bold text-[#C15BFF]">ajak teman</span> nabung bareng. Pilih strategi yang kamu mau!
                 </p>
               </div>
 
-              <div className="bg-slate-800/40 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 hover:border-purple-500/50 transition-all duration-300">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-2xl mb-6">
+              {/* Step 2 - Cyan accent */}
+              <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-[#00FFF0]/20 hover:border-[#00FFF0] hover:-translate-y-2 transition-all duration-300">
+                <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg rotate-12">
+                  2
+                </div>
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] flex items-center justify-center text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform">
                   🎯
                 </div>
-                <div className="mb-2 text-purple-400 text-body uppercase tracking-wider">Langkah 2</div>
-                <h3 className="text-subheading text-white mb-3">Atur Target & Deposit</h3>
-                <p className="text-body text-slate-400 leading-relaxed">
-                  Tentukan target harga dan strategi DeFi yang sesuai. Deposit IDRX stablecoin kamu dan mulai dapat cuan.
+                <h3 className="text-xl sm:text-2xl font-black text-[#0A4A7C] mb-3">Atur Target & Deposit</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Tentukan <span className="font-bold text-[#00FFF0]">target harga</span> dan strategi DeFi. Deposit USDC kamu dan mulai dapat cuan.
                 </p>
               </div>
 
-              <div className="bg-slate-800/40 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 hover:border-green-500/50 transition-all duration-300">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-2xl mb-6">
+              {/* Step 3 - Purple/Yellow accent */}
+              <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-[#C15BFF]/20 hover:border-[#C15BFF] hover:-translate-y-2 transition-all duration-300">
+                <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-[#C15BFF] to-[#FBFF2B] rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg rotate-12">
+                  3
+                </div>
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#C15BFF] to-[#FBFF2B] flex items-center justify-center text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform">
                   ⚡
                 </div>
-                <div className="mb-2 text-green-400 text-body uppercase tracking-wider">Langkah 3</div>
-                <h3 className="text-subheading text-white mb-3">Raih Cuan & XP</h3>
-                <p className="text-body text-slate-400 leading-relaxed">
-                  Dapat cashback instant, kumpulin XP dari misi, ajak teman, dan level up untuk unlock badge eksklusif!
+                <h3 className="text-xl sm:text-2xl font-black text-[#0A4A7C] mb-3">Raih Cuan & XP</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Dapat <span className="font-bold text-[#FFBC57]">cashback instant</span>, kumpulin XP, ajak teman, dan <span className="font-bold text-[#C15BFF]">level up</span>!
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Benefits Section */}
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-r from-slate-800/50 to-slate-800/30 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-slate-700/50">
-              <h2 className="text-heading text-white mb-12 text-center">Kenapa Pilih KITA?</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">1</span>
-                  </div>
-                  <div>
-                    <h3 className="text-subheading text-white mb-2">Nabung Sendiri atau Bareng</h3>
-                    <p className="text-body text-slate-400">
-                      Fleksibel! Kamu bisa nabung solo atau ajak teman untuk nabung bareng dalam satu vault.
-                    </p>
-                  </div>
-                </div>
+        {/* Benefits Section - Vibrant gradient background */}
+        <section className="py-16 sm:py-20 bg-gradient-to-br from-[#0A98FF] via-[#00FFF0] to-[#0A98FF] relative overflow-hidden">
+          {/* Decorative elements */}
+          <div className="absolute top-0 left-0 w-full h-full opacity-10">
+            <div className="absolute top-20 left-20 w-64 h-64 bg-white rounded-full blur-3xl" />
+            <div className="absolute bottom-20 right-20 w-80 h-80 bg-[#FFBC57] rounded-full blur-3xl" />
+          </div>
 
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">2</span>
-                  </div>
-                  <div>
-                    <h3 className="text-subheading text-white mb-2">Banyak Strategi DeFi</h3>
-                    <p className="text-body text-slate-400">
-                      Cash secured put, covered call vault, tebak naik, buy put, dan long put - pilih sesuai gaya investasi kamu.
-                    </p>
-                  </div>
-                </div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-block bg-white/20 backdrop-blur-md text-white px-6 py-2 rounded-full text-sm font-bold mb-4 border-2 border-white/30">
+                ✨ KEUNGGULAN
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 drop-shadow-lg">
+                Kenapa Pilih KITA?
+              </h2>
+              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto">
+                Platform DeFi Options Pertama untuk Indonesia 🇮🇩
+              </p>
+            </div>
 
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">3</span>
-                  </div>
-                  <div>
-                    <h3 className="text-subheading text-white mb-2">Gamifikasi Seru</h3>
-                    <p className="text-body text-slate-400">
-                      Kumpulin XP dari misi harian, invite teman, dan streak. Raih 500 XP untuk level up dan unlock badge eksklusif!
-                    </p>
-                  </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Benefit 1 */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-2 border-white/50 hover:scale-105 hover:shadow-[0_20px_60px_rgba(10,152,255,0.4)] transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] flex items-center justify-center mb-4 shadow-lg">
+                  <Users className="w-7 h-7 text-white" />
                 </div>
+                <h3 className="text-xl font-black text-[#0A4A7C] mb-2">Solo atau Bareng</h3>
+                <p className="text-gray-700">
+                  Nabung sendiri atau ajak teman dalam satu vault. <span className="font-bold text-[#0A98FF]">Voting system</span> untuk keputusan grup.
+                </p>
+              </div>
 
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">4</span>
-                  </div>
-                  <div>
-                    <h3 className="text-subheading text-white mb-2">Cepat & Murah</h3>
-                    <p className="text-body text-slate-400">
-                      Dibangun di Base Network dengan biaya transaksi rendah dan kecepatan tinggi.
-                    </p>
-                  </div>
+              {/* Benefit 2 */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-2 border-white/50 hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,255,240,0.4)] transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] flex items-center justify-center mb-4 shadow-lg">
+                  <TrendingUp className="w-7 h-7 text-white" />
                 </div>
+                <h3 className="text-xl font-black text-[#0A4A7C] mb-2">Banyak Strategi</h3>
+                <p className="text-gray-700">
+                  Cash secured put, covered call, buy call, buy put. Pilih sesuai <span className="font-bold text-[#00FFF0]">risk appetite</span>.
+                </p>
+              </div>
 
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">5</span>
-                  </div>
-                  <div>
-                    <h3 className="text-subheading text-white mb-2">Reward & Achievement</h3>
-                    <p className="text-body text-slate-400">
-                      Selesaikan misi seperti buat 3 posisi, maintain streak, dan ajak teman. Makin aktif, makin banyak benefit!
-                    </p>
-                  </div>
+              {/* Benefit 3 */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-2 border-white/50 hover:scale-105 hover:shadow-[0_20px_60px_rgba(251,255,43,0.4)] transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FBFF2B] to-[#FFBC57] flex items-center justify-center mb-4 shadow-lg">
+                  <Sparkles className="w-7 h-7 text-white" />
                 </div>
+                <h3 className="text-xl font-black text-[#0A4A7C] mb-2">Gamifikasi Seru</h3>
+                <p className="text-gray-700">
+                  Kumpulin XP, unlock badges, maintain streaks. <span className="font-bold text-[#FBFF2B]">Investing yang fun!</span>
+                </p>
+              </div>
 
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">6</span>
-                  </div>
-                  <div>
-                    <h3 className="text-subheading text-white mb-2">Aman & Transparan</h3>
-                    <p className="text-body text-slate-400">
-                      Smart contract yang sudah diaudit, on-chain transparency, dan keamanan tingkat institutional.
-                    </p>
-                  </div>
+              {/* Benefit 4 */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-2 border-white/50 hover:scale-105 hover:shadow-[0_20px_60px_rgba(255,188,87,0.4)] transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FFBC57] to-[#FF9500] flex items-center justify-center mb-4 shadow-lg">
+                  <Zap className="w-7 h-7 text-white" />
                 </div>
+                <h3 className="text-xl font-black text-[#0A4A7C] mb-2">Cepat & Murah</h3>
+                <p className="text-gray-700">
+                  Built on <span className="font-bold text-[#FFBC57]">Base Network</span>. Gas fees rendah, settlement cepat.
+                </p>
+              </div>
+
+              {/* Benefit 5 */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-2 border-white/50 hover:scale-105 hover:shadow-[0_20px_60px_rgba(193,91,255,0.4)] transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#C15BFF] to-[#FBFF2B] flex items-center justify-center mb-4 shadow-lg">
+                  <Trophy className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-black text-[#0A4A7C] mb-2">Reward & Achievements</h3>
+                <p className="text-gray-700">
+                  Misi harian, referral bonus, seasonal campaigns. Makin aktif, <span className="font-bold text-[#C15BFF]">makin cuan!</span>
+                </p>
+              </div>
+
+              {/* Benefit 6 */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-2 border-white/50 hover:scale-105 hover:shadow-[0_20px_60px_rgba(10,152,255,0.4)] transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0A98FF] to-[#0A4A7C] flex items-center justify-center mb-4 shadow-lg">
+                  <Shield className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-black text-[#0A4A7C] mb-2">Aman & Transparan</h3>
+                <p className="text-gray-700">
+                  Smart contract audited, on-chain transparency, <span className="font-bold text-[#0A98FF]">security-first</span> design.
+                </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* CTA Section - Final push */}
+        <section className="py-20 bg-gradient-to-r from-[#0A4A7C] via-[#0A98FF] to-[#00FFF0] relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
+          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6">
+              Siap Mulai Investasi <span className="text-[#FBFF2B]">Tanpa Ambyar?</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              Join ribuan investor yang sudah dapat cuan dari DeFi options. Gratis, mudah, dan fun!
+            </p>
+            <Link
+              href="/onboarding"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white px-10 py-5 rounded-2xl font-black text-xl
+                         shadow-[0_10px_0_0_rgba(255,149,0,0.5)] hover:shadow-[0_15px_0_0_rgba(255,149,0,0.5)] hover:-translate-y-1
+                         active:translate-y-2 active:shadow-[0_5px_0_0_rgba(255,149,0,0.5)] transition-all duration-200
+                         border-2 border-white/30"
+            >
+              Mulai Sekarang - Gratis!
+              <ArrowRight className="w-6 h-6" />
+            </Link>
           </div>
         </section>
       </main>
 
-      {/* Scroll to Top Button */}
+      {/* Scroll to Top Button - Vibrant */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-xl hover:shadow-blue-500/25 text-white rounded-full flex items-center justify-center transition-all duration-200 transform hover:scale-110"
+          className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 w-14 h-14 bg-gradient-to-br from-[#0A98FF] to-[#00FFF0] hover:from-[#00FFF0] hover:to-[#0A98FF] text-white rounded-full flex items-center justify-center
+                     shadow-[0_6px_0_0_rgba(10,152,255,0.4)] hover:shadow-[0_10px_0_0_rgba(0,255,240,0.4)] hover:-translate-y-1
+                     active:translate-y-1 active:shadow-[0_3px_0_0_rgba(10,152,255,0.4)] transition-all duration-200
+                     border-2 border-white/30"
           aria-label="Scroll to top"
         >
           <svg
-            className="w-10 h-10"
+            className="w-6 h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -229,17 +353,30 @@ export default function Home() {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
+              strokeWidth={3}
               d="M5 10l7-7m0 0l7 7m-7-7v18"
             />
           </svg>
         </button>
       )}
 
-      {/* Footer */}
-      <footer className="border-t border-slate-800 py-8 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-body text-slate-400">© 2026 KITA. Built on Base Network.</p>
+      {/* Footer - Clean and modern */}
+      <footer className="border-t-4 border-[#0A98FF]/20 py-12 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-center md:text-left">
+              <p className="text-3xl font-black bg-gradient-to-r from-[#0A98FF] via-[#00FFF0] to-[#C15BFF] bg-clip-text text-transparent">
+                KITA
+              </p>
+              <p className="text-sm text-gray-600 mt-1 font-medium">Kolektif Investasi Tanpa Ambyar</p>
+            </div>
+            <div className="text-center md:text-right">
+              <p className="text-gray-700 font-semibold">
+                Built on <span className="text-[#0A98FF] font-black">Base Network</span> ⚡
+              </p>
+              <p className="text-sm text-gray-500 mt-1">© 2026 KITA. All rights reserved.</p>
+            </div>
+          </div>
         </div>
       </footer>
     </>

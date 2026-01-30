@@ -38,10 +38,10 @@ export default function GroupDetail({ params }: { params: { id: string } }) {
   ];
 
   const activities = [
-    { id: 1, type: 'join', member: 'Eka Putri', date: '1 jam lalu' , amount: 0},
-    { id: 2, type: 'join', member: 'Dedi Kurniawan', date: '2 jam lalu', amount: 0},
-    { id: 3, type: 'join', member: 'Citra Dewi', date: '3 jam lalu', amount: 0},
-    { id: 4, type: 'join', member: 'Budi Santoso', date: '5 jam lalu', amount: 0},
+    { id: 1, type: 'join', member: 'Eka Putri', date: '1 jam lalu', amount: 0 },
+    { id: 2, type: 'join', member: 'Dedi Kurniawan', date: '2 jam lalu', amount: 0 },
+    { id: 3, type: 'join', member: 'Citra Dewi', date: '3 jam lalu', amount: 0 },
+    { id: 4, type: 'join', member: 'Budi Santoso', date: '5 jam lalu', amount: 0 },
   ];
 
   // Strategi yang tersedia untuk voting
@@ -88,7 +88,7 @@ export default function GroupDetail({ params }: { params: { id: string } }) {
 
   const progress = (group.currentAmount / group.targetAmount) * 100;
   const contributionPerMember = group.targetAmount / group.members; // Pembagian sama rata
-  
+
   // Check apakah user sudah kontribusi
   const currentUser = members.find(m => m.id === currentUserId);
   const hasUserContributed = currentUser?.hasContributed || false;
@@ -125,154 +125,177 @@ export default function GroupDetail({ params }: { params: { id: string } }) {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-24 px-4 pb-24">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="relative min-h-screen bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f] pt-24 px-4 pb-24 overflow-hidden">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(10,152,255,0.3),transparent_50%)] animate-pulse" />
+
+        {/* Floating orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-30 animate-float" />
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#FBFF2B] rounded-full blur-3xl opacity-20 animate-float-delayed" />
+          <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-[#00FFF0] rounded-full blur-3xl opacity-25 animate-float-slow" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto space-y-8">
           {/* Header with Back Button */}
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-4 mb-8">
             <Link
               href="/nabung-bareng"
-              className="w-10 h-10 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-xl flex items-center justify-center transition-colors"
+              className="group w-12 h-12 bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 hover:-translate-y-1 transition-all duration-300"
             >
-              <ArrowLeft className="w-5 h-5 text-slate-300" />
+              <ArrowLeft className="w-6 h-6 text-[#0A4A7C] group-hover:-translate-x-1 transition-transform" />
             </Link>
             <div className="flex-1">
-              <h1 className="text-ultra-heading text-white">{group.name}</h1>
-              <p className="text-sm text-slate-400">Dibuat pada {group.createdDate}</p>
+              <div className="inline-block bg-gradient-to-r from-[#C15BFF] to-[#0A98FF] text-white px-3 py-1 rounded-full text-xs font-bold mb-1 shadow-md">
+                GROUP
+              </div>
+              <h1 className="text-4xl font-black text-white drop-shadow-lg">{group.name}</h1>
+              <p className="text-white/90 font-medium">Dibuat pada {group.createdDate}</p>
             </div>
             {group.role === 'Creator' && (
-              <button className="w-10 h-10 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-xl flex items-center justify-center transition-colors">
-                <Settings className="w-5 h-5 text-slate-300" />
+              <button className="group w-12 h-12 bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 hover:-translate-y-1 transition-all duration-300">
+                <Settings className="w-6 h-6 text-[#0A4A7C] group-hover:rotate-90 transition-transform duration-500" />
               </button>
             )}
           </div>
 
           {/* Main Stats Card */}
-          <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-2xl p-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
               <div>
-                <p className="text-sm text-slate-400 mb-1">Total Terkumpul</p>
-                <p className="text-heading text-white">Rp {(group.currentAmount / 1000000).toFixed(1)}jt</p>
+                <p className="text-sm font-bold text-gray-500 mb-1">Total Terkumpul</p>
+                <p className="text-3xl font-black text-[#0A4A7C]">Rp {(group.currentAmount / 1000000).toFixed(1)}jt</p>
               </div>
               <div>
-                <p className="text-sm text-slate-400 mb-1">Target Dana</p>
-                <p className="text-heading text-white">Rp {(group.targetAmount / 1000000).toFixed(1)}jt</p>
+                <p className="text-sm font-bold text-gray-500 mb-1">Target Dana</p>
+                <p className="text-3xl font-black text-gray-800">Rp {(group.targetAmount / 1000000).toFixed(1)}jt</p>
               </div>
               <div>
-                <p className="text-sm text-slate-400 mb-1">Progress</p>
-                <p className="text-heading text-white">{Math.round(progress)}%</p>
+                <p className="text-sm font-bold text-gray-500 mb-1">Progress</p>
+                <p className="text-3xl font-black text-[#C15BFF]">{Math.round(progress)}%</p>
               </div>
             </div>
 
             {/* Progress Bar */}
-            <div className="mb-6">
-              <div className="w-full bg-slate-700/50 rounded-full h-4 overflow-hidden">
+            <div className="mb-8 relative">
+              <div className="w-full bg-gray-100 rounded-full h-6 overflow-hidden shadow-inner">
                 <div
-                  className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all"
+                  className="h-full bg-gradient-to-r from-[#C15BFF] via-[#0A98FF] to-[#00FFF0] round-full transition-all duration-1000 ease-out shadow-lg relative"
                   style={{ width: `${progress}%` }}
-                ></div>
+                >
+                  <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                </div>
               </div>
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="flex items-center gap-3 bg-slate-800/30 rounded-xl p-4">
-                <Users className="w-5 h-5 text-purple-400" />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="flex items-center gap-3 bg-gray-50 rounded-2xl p-4 border-2 border-gray-100 transition-transform hover:scale-105">
+                <div className="p-2 bg-purple-100 rounded-xl">
+                  <Users className="w-6 h-6 text-[#A855F7]" />
+                </div>
                 <div>
-                  <p className="text-xs text-slate-400">Members</p>
-                  <p className="text-white font-semibold">{group.members}/{group.maxMembers}</p>
+                  <p className="text-xs font-bold text-gray-500">Members</p>
+                  <p className="text-[#0A4A7C] font-black text-lg">{group.members}/{group.maxMembers}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 bg-slate-800/30 rounded-xl p-4">
-                <Clock className="w-5 h-5 text-blue-400" />
+              <div className="flex items-center gap-3 bg-gray-50 rounded-2xl p-4 border-2 border-gray-100 transition-transform hover:scale-105">
+                <div className="p-2 bg-cyan-100 rounded-xl">
+                  <Clock className="w-6 h-6 text-[#06B6D4]" />
+                </div>
                 <div>
-                  <p className="text-xs text-slate-400">Phase</p>
-                  <p className="text-white font-semibold capitalize">{group.phase.replace('_', ' ')}</p>
+                  <p className="text-xs font-bold text-gray-500">Phase</p>
+                  <p className="text-[#0A4A7C] font-black text-lg capitalize">{group.phase.replace('_', ' ')}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 bg-slate-800/30 rounded-xl p-4">
-                <Calendar className="w-5 h-5 text-yellow-400" />
+              <div className="flex items-center gap-3 bg-gray-50 rounded-2xl p-4 border-2 border-gray-100 transition-transform hover:scale-105">
+                <div className="p-2 bg-amber-100 rounded-xl">
+                  <Calendar className="w-6 h-6 text-[#FFBC57]" />
+                </div>
                 <div>
-                  <p className="text-xs text-slate-400">Created</p>
-                  <p className="text-white font-semibold">{group.createdDate}</p>
+                  <p className="text-xs font-bold text-gray-500">Created</p>
+                  <p className="text-[#0A4A7C] font-black text-lg">{group.createdDate}</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Action Buttons - Based on Phase */}
+          {/* Action Buttons - Based on Phase */}
           {group.phase === 'formation' && (
             <button
               onClick={() => setShowInviteModal(true)}
-              className="w-full flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-xl transition-all text-white font-semibold"
+              className="w-full group flex items-center justify-center gap-3 p-5 bg-gradient-to-r from-[#C15BFF] to-[#0A98FF] hover:from-[#d07eff] hover:to-[#2aaeff] rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 text-white font-bold text-lg border-b-4 border-black/20 active:border-b-0 active:translate-y-1"
             >
-              <Share2 className="w-5 h-5" />
+              <Share2 className="w-6 h-6 group-hover:rotate-12 transition-transform" />
               Ajak Teman Bergabung
             </button>
           )}
 
           {group.phase === 'contributing' && (
-            <button 
+            <button
               disabled={hasUserContributed}
-              className={`w-full flex items-center justify-center gap-3 p-4 rounded-xl transition-all text-white font-semibold ${
-                hasUserContributed 
-                  ? 'bg-slate-700/50 cursor-not-allowed opacity-50' 
-                  : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700'
-              }`}
+              className={`w-full group flex items-center justify-center gap-3 p-5 rounded-2xl shadow-xl transition-all duration-300 text-white font-bold text-lg ${hasUserContributed
+                ? 'bg-gray-400 cursor-not-allowed opacity-70'
+                : 'bg-gradient-to-r from-[#FFBC57] to-[#FF9500] hover:scale-[1.02] hover:shadow-2xl border-b-4 border-black/20 active:border-b-0 active:translate-y-1'
+                }`}
             >
-              <DollarSign className="w-5 h-5" />
+              <DollarSign className="w-6 h-6 group-hover:scale-110 transition-transform" />
               {hasUserContributed ? 'Sudah Berkontribusi' : 'Kontribusi Sekarang'}
             </button>
           )}
 
           {/* Strategy Voting - Phase 1 */}
           {group.phase === 'strategy_voting' && allMembersJoined && (
-            <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-2xl p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                  <Award className="w-6 h-6 text-purple-400" />
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] rounded-2xl flex items-center justify-center shadow-lg">
+                  <Award className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-heading text-white">Pilih Strategi Investasi 🎯</h2>
-                  <p className="text-sm text-slate-400">Semua member sudah bergabung. Voting strategi yang akan digunakan!</p>
+                  <h2 className="text-2xl font-black text-[#0A4A7C] mb-1">Pilih Strategi Investasi 🎯</h2>
+                  <p className="text-gray-600">Semua member sudah bergabung. Voting strategi yang akan digunakan!</p>
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {strategyOptions.map((strategy) => {
                   const isSelected = userSelectedStrategy === strategy.id;
                   const isDisabled = userSelectedStrategy !== null && !isSelected;
-                  
+
                   return (
                     <button
                       key={strategy.id}
                       onClick={() => !isDisabled && handleStrategyVote(strategy.id)}
                       disabled={isDisabled}
-                      className={`w-full text-left p-5 rounded-xl transition-all ${
-                        isSelected 
-                          ? 'bg-purple-500/30 border-2 border-purple-500' 
-                          : isDisabled
-                          ? 'bg-slate-800/30 border border-slate-700/30 opacity-50 cursor-not-allowed'
-                          : 'bg-slate-800/50 hover:bg-slate-800/80 border border-slate-700/50 hover:border-purple-500/50'
-                      }`}
+                      className={`w-full text-left p-6 rounded-2xl transition-all duration-300 border-2 ${isSelected
+                        ? 'bg-purple-50 border-[#C15BFF] shadow-lg scale-[1.02]'
+                        : isDisabled
+                          ? 'bg-gray-50 border-gray-100 opacity-50 cursor-not-allowed grayscale'
+                          : 'bg-white hover:bg-gray-50 border-gray-100 hover:border-[#C15BFF] hover:shadow-md'
+                        }`}
                     >
                       <div className="flex items-start gap-4">
-                        <div className="text-3xl">{strategy.icon}</div>
+                        <div className="text-4xl filter drop-shadow-md">{strategy.icon}</div>
                         <div className="flex-1">
-                          <h3 className="text-subheading text-white mb-1">{strategy.name}</h3>
-                          <p className="text-sm text-slate-400 mb-3">{strategy.description}</p>
+                          <h3 className={`text-xl font-bold mb-1 ${isSelected ? 'text-[#C15BFF]' : 'text-[#0A4A7C]'}`}>{strategy.name}</h3>
+                          <p className="text-sm text-gray-600 mb-3">{strategy.description}</p>
                           <div className="flex items-center gap-3">
-                            <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">APY {strategy.apy}</span>
-                            <span className={`px-2 py-1 text-xs rounded ${
-                              strategy.risk === 'Low' ? 'bg-blue-500/20 text-blue-400' :
-                              strategy.risk === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                              'bg-red-500/20 text-red-400'
-                            }`}>{strategy.risk} Risk</span>
+                            <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-lg border border-green-200">APY {strategy.apy}</span>
+                            <span className={`px-2 py-1 text-xs font-bold rounded-lg border ${strategy.risk === 'Low' ? 'bg-blue-100 text-blue-700 border-blue-200' :
+                              strategy.risk === 'Medium' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                                'bg-red-100 text-red-700 border-red-200'
+                              }`}>{strategy.risk} Risk</span>
                           </div>
                         </div>
                         {isSelected ? (
-                          <CheckCircle className="w-6 h-6 text-purple-400" />
+                          <div className="w-8 h-8 bg-[#C15BFF] rounded-full flex items-center justify-center shadow-lg">
+                            <CheckCircle className="w-5 h-5 text-white" />
+                          </div>
                         ) : (
-                          <ThumbsUp className={`w-5 h-5 ${isDisabled ? 'text-slate-600' : 'text-slate-500'}`} />
+                          <div className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center">
+                            <ThumbsUp className={`w-4 h-4 ${isDisabled ? 'text-gray-300' : 'text-gray-400'}`} />
+                          </div>
                         )}
                       </div>
                     </button>
@@ -283,13 +306,13 @@ export default function GroupDetail({ params }: { params: { id: string } }) {
               {userSelectedStrategy && (
                 <button
                   onClick={handleCancelStrategyVote}
-                  className="w-full mt-4 py-3 border-2 border-slate-600 text-slate-300 rounded-xl hover:bg-slate-700/30 hover:border-slate-500 transition-all font-semibold"
+                  className="w-full mt-6 py-4 border-2 border-gray-300 text-gray-500 rounded-xl hover:bg-gray-50 hover:border-red-400 hover:text-red-500 transition-all font-bold"
                 >
                   Batalkan Pilihan
                 </button>
               )}
 
-              <p className="text-xs text-slate-400 mt-4 text-center">
+              <p className="text-xs text-gray-400 mt-6 text-center font-bold bg-gray-50 py-2 rounded-lg">
                 💡 Voting ditutup otomatis setelah 50%+1 member setuju pada satu strategi
               </p>
             </div>
@@ -348,34 +371,34 @@ export default function GroupDetail({ params }: { params: { id: string } }) {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Members List */}
-            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-heading text-white">Anggota Grup</h2>
-                <span className="text-sm text-slate-400">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl font-black text-[#0A4A7C]">Anggota Grup</h2>
+                <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-bold rounded-full">
                   {group.members}/{group.maxMembers} members
                 </span>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {members.map((member) => (
                   <div
                     key={member.id}
-                    className="flex items-center gap-4 p-4 bg-slate-700/30 rounded-xl"
+                    className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:bg-gray-100 transition-colors"
                   >
-                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#0A98FF] to-[#04877f] rounded-xl flex items-center justify-center text-white font-black shadow-md">
                       {member.avatar}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <p className="text-white font-semibold">{member.name}</p>
+                        <p className="text-[#0A4A7C] font-bold">{member.name}</p>
                         {member.role === 'Creator' && (
-                          <span className="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded">
+                          <span className="px-2 py-0.5 bg-[#C15BFF]/10 text-[#C15BFF] text-xs font-bold rounded shadow-sm border border-[#C15BFF]/20">
                             Creator
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-slate-400">
-                        Kontribusi: Rp {(member.contribution / 1000000).toFixed(1)}jt
-                        <span className="text-xs ml-2">
+                      <p className="text-sm text-gray-500 font-medium">
+                        Kontribusi: <span className="text-[#0A4A7C] font-bold">Rp {(member.contribution / 1000000).toFixed(1)}jt</span>
+                        <span className="text-xs ml-2 text-gray-400">
                           ({((member.contribution / group.targetAmount) * 100).toFixed(0)}%)
                         </span>
                       </p>
@@ -383,65 +406,64 @@ export default function GroupDetail({ params }: { params: { id: string } }) {
                     <div>
                       {group.phase === 'formation' && (
                         member.hasJoined ? (
-                          <CheckCircle className="w-5 h-5 text-green-400" />
+                          <div className="bg-green-100 p-1 rounded-full"><CheckCircle className="w-5 h-5 text-green-500" /></div>
                         ) : (
-                          <Clock className="w-5 h-5 text-yellow-400" />
+                          <div className="bg-yellow-100 p-1 rounded-full"><Clock className="w-5 h-5 text-yellow-500" /></div>
                         )
                       )}
                       {(group.phase === 'contributing' || group.phase === 'invested' || group.phase === 'completed_voting') && (
                         member.hasContributed ? (
-                          <CheckCircle className="w-5 h-5 text-green-400" />
+                          <div className="bg-green-100 p-1 rounded-full"><CheckCircle className="w-5 h-5 text-green-500" /></div>
                         ) : (
-                          <Clock className="w-5 h-5 text-yellow-400" />
+                          <div className="bg-yellow-100 p-1 rounded-full"><Clock className="w-5 h-5 text-yellow-500" /></div>
                         )
                       )}
                     </div>
                   </div>
                 ))}
               </div>
-              
+
               {/* Info pembagian sama rata */}
-              <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
-                <p className="text-sm text-blue-300">
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                <p className="text-sm text-blue-800 font-medium">
                   💡 Kontribusi per orang: <span className="font-bold">Rp {(contributionPerMember / 1000000).toFixed(1)}jt</span>
                 </p>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-blue-500 mt-1 font-semibold">
                   Pembagian sama rata untuk {group.members} anggota
                 </p>
               </div>
             </div>
 
             {/* Recent Activities */}
-            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
-              <h2 className="text-heading text-white mb-6">Aktivitas Terbaru</h2>
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50 h-fit">
+              <h2 className="text-2xl font-black text-[#0A4A7C] mb-8">Aktivitas Terbaru</h2>
               <div className="space-y-4">
                 {activities.map((activity) => (
-                  <div key={activity.id} className="flex items-start gap-3">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      activity.type === 'contribution' ? 'bg-green-500/20' : 'bg-blue-500/20'
-                    }`}>
+                  <div key={activity.id} className="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-xl transition-colors">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${activity.type === 'contribution' ? 'bg-green-100' : 'bg-blue-100'
+                      }`}>
                       {activity.type === 'contribution' ? (
-                        <DollarSign className="w-5 h-5 text-green-400" />
+                        <DollarSign className="w-5 h-5 text-green-600" />
                       ) : (
-                        <Users className="w-5 h-5 text-blue-400" />
+                        <Users className="w-5 h-5 text-blue-600" />
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white">
+                      <p className="text-sm text-gray-700 leading-relaxed text-left">
                         {activity.type === 'contribution' ? (
                           <>
-                            <span className="font-semibold">{activity.member}</span> berkontribusi{' '}
-                            <span className="font-semibold text-green-400">
+                            <span className="font-bold text-[#0A4A7C]">{activity.member}</span> berkontribusi{' '}
+                            <span className="font-bold text-green-600">
                               Rp {(activity.amount! / 1000000).toFixed(1)}jt
                             </span>
                           </>
                         ) : (
                           <>
-                            <span className="font-semibold">{activity.member}</span> bergabung ke grup
+                            <span className="font-bold text-[#0A4A7C]">{activity.member}</span> bergabung ke grup
                           </>
                         )}
                       </p>
-                      <p className="text-xs text-slate-400 mt-1">{activity.date}</p>
+                      <p className="text-xs text-gray-400 mt-1 font-medium">{activity.date}</p>
                     </div>
                   </div>
                 ))}
@@ -460,7 +482,7 @@ export default function GroupDetail({ params }: { params: { id: string } }) {
                 <div className="flex-1">
                   <h3 className="text-subheading text-white mb-2">{group.selectedStrategy}</h3>
                   <p className="text-body text-slate-400 mb-3">
-                    Strategi ini memungkinkan grup untuk mendapatkan premium dengan menjual opsi put. 
+                    Strategi ini memungkinkan grup untuk mendapatkan premium dengan menjual opsi put.
                     Cocok untuk membeli aset di harga lebih murah dengan risiko yang terukur.
                   </p>
                   <div className="flex items-center gap-4 text-sm">

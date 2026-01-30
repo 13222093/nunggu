@@ -28,7 +28,7 @@ export default function OnboardingSuccess() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 text-center">
         <div className="mb-8">
-          <div className="w-24 h-24 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-4 animate-wiggle">
+          <div className="w-24 h-24 bg-cyan-100 rounded-full mx-auto flex items-center justify-center mb-4 animate-wiggle">
             <span className="text-5xl">🎉</span>
           </div>
           <h1 className="text-heading text-gray-800 mb-2">
