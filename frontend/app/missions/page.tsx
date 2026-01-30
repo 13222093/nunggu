@@ -7,7 +7,7 @@ import { AchievementBadge } from '@/components/gamification/AchievementBadge';
 import {
   Award, CheckCircle, Circle, ArrowRight, Trophy, Star,
   Flame, Zap, Gift, Calendar, Target, Rocket, Crown,
-  Medal, Sparkles, TrendingUp, Users, ChevronRight
+  Medal, Sparkles, TrendingUp, Users, ChevronRight, Share2, Heart
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -176,124 +176,179 @@ export default function Missions() {
             Selesaikan misi, kumpulkan badge, dan naik peringkat untuk unlock reward eksklusif! 🚀
           </p>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 border-4 border-white/50 shadow-2xl">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <Award className="w-6 h-6 text-white" />
+          {/* Stats Grid - Gamified Design */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
+            {/* Total XP Card - Tilted Left */}
+            <div className="transform hover:scale-110 transition-all duration-300 hover:-rotate-2">
+              <div className="relative bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] rounded-3xl p-1 shadow-2xl">
+                <div className="bg-white rounded-[22px] p-5">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg transform -rotate-6">
+                    <Award className="w-7 h-7 text-white" />
+                  </div>
+                  <p className="text-4xl font-black bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] bg-clip-text text-transparent mb-1">{userStats.totalXP.toLocaleString()}</p>
+                  <p className="text-xs text-gray-600 font-bold uppercase tracking-wide">Total XP</p>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                    <span className="text-xs">✨</span>
+                  </div>
+                </div>
               </div>
-              <p className="text-3xl font-black text-[#0A4A7C] mb-1">{userStats.totalXP.toLocaleString()}</p>
-              <p className="text-xs text-gray-600 font-bold">Total XP</p>
             </div>
 
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 border-4 border-white/50 shadow-2xl">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#FFBC57] to-[#FF9500] rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <Trophy className="w-6 h-6 text-white" />
+            {/* Rank Card - Tilted Right */}
+            <div className="transform hover:scale-110 transition-all duration-300 hover:rotate-2">
+              <div className="relative bg-gradient-to-br from-[#FFBC57] to-[#FF9500] rounded-3xl p-1 shadow-2xl">
+                <div className="bg-white rounded-[22px] p-5">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#FFBC57] to-[#FF9500] rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg transform rotate-6">
+                    <Trophy className="w-7 h-7 text-white" />
+                  </div>
+                  <p className="text-4xl font-black bg-gradient-to-br from-[#FFBC57] to-[#FF9500] bg-clip-text text-transparent mb-1">#{userStats.currentRank}</p>
+                  <p className="text-xs text-gray-600 font-bold uppercase tracking-wide">Rank</p>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-400 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                    <span className="text-xs">🏆</span>
+                  </div>
+                </div>
               </div>
-              <p className="text-3xl font-black text-[#0A4A7C] mb-1">#{userStats.currentRank}</p>
-              <p className="text-xs text-gray-600 font-bold">Rank</p>
             </div>
 
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 border-4 border-white/50 shadow-2xl">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <CheckCircle className="w-6 h-6 text-white" />
+            {/* Missions Card - Tilted Left */}
+            <div className="transform hover:scale-110 transition-all duration-300 hover:-rotate-2">
+              <div className="relative bg-gradient-to-br from-[#10B981] to-[#059669] rounded-3xl p-1 shadow-2xl">
+                <div className="bg-white rounded-[22px] p-5">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg transform -rotate-6">
+                    <CheckCircle className="w-7 h-7 text-white" />
+                  </div>
+                  <p className="text-4xl font-black bg-gradient-to-br from-[#10B981] to-[#059669] bg-clip-text text-transparent mb-1">{userStats.missionsCompleted}</p>
+                  <p className="text-xs text-gray-600 font-bold uppercase tracking-wide">Missions</p>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-400 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                    <span className="text-xs">✅</span>
+                  </div>
+                </div>
               </div>
-              <p className="text-3xl font-black text-[#0A4A7C] mb-1">{userStats.missionsCompleted}</p>
-              <p className="text-xs text-gray-600 font-bold">Missions</p>
             </div>
 
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 border-4 border-white/50 shadow-2xl">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <Medal className="w-6 h-6 text-white" />
+            {/* Badges Card - Tilted Right */}
+            <div className="transform hover:scale-110 transition-all duration-300 hover:rotate-2">
+              <div className="relative bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] rounded-3xl p-1 shadow-2xl">
+                <div className="bg-white rounded-[22px] p-5">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg transform rotate-6">
+                    <Medal className="w-7 h-7 text-white" />
+                  </div>
+                  <p className="text-4xl font-black bg-gradient-to-br from-[#00FFF0] to-[#0A98FF] bg-clip-text text-transparent mb-1">{userStats.badgesEarned}</p>
+                  <p className="text-xs text-gray-600 font-bold uppercase tracking-wide">Badges</p>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-cyan-400 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                    <span className="text-xs">🎖️</span>
+                  </div>
+                </div>
               </div>
-              <p className="text-3xl font-black text-[#0A4A7C] mb-1">{userStats.badgesEarned}</p>
-              <p className="text-xs text-gray-600 font-bold">Badges</p>
             </div>
           </div>
 
-          {/* Level Progress */}
-          <div className="mt-8 max-w-2xl mx-auto bg-white/95 backdrop-blur-sm rounded-3xl p-6 border-4 border-white/50 shadow-2xl">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-3">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] rounded-2xl flex items-center justify-center shadow-lg">
-                  <span className="text-2xl font-black text-white">{userStats.level}</span>
+          {/* Level Progress - Gamified Design */}
+          <div className="mt-8 max-w-2xl mx-auto transform hover:scale-105 transition-all duration-300">
+            <div className="relative bg-gradient-to-br from-[#C15BFF] via-[#0A98FF] to-[#00FFF0] rounded-3xl p-1 shadow-2xl">
+              <div className="bg-white rounded-[22px] p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <div className="w-16 h-16 bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] rounded-2xl flex items-center justify-center shadow-lg transform -rotate-6">
+                        <span className="text-3xl font-black text-white">{userStats.level}</span>
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center shadow-md border-2 border-white">
+                        <Star className="w-3 h-3 text-white" />
+                      </div>
+                    </div>
+                    <div className="text-left">
+                      <p className="text-sm font-bold text-gray-500">Level {userStats.level}</p>
+                      <p className="text-xs text-gray-400">{userStats.currentXP} / {userStats.levelXP} XP</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-gray-500 mb-1">Next Level</p>
+                    <div className="inline-block bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] rounded-xl px-3 py-1 shadow-lg">
+                      <p className="text-xl font-black text-white">{userStats.level + 1}</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <p className="text-sm font-bold text-gray-500">Level {userStats.level}</p>
-                  <p className="text-xs text-gray-400">{userStats.currentXP} / {userStats.levelXP} XP</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-gray-500">Next Level</p>
-                <p className="text-lg font-black text-[#C15BFF]">{userStats.level + 1}</p>
-              </div>
-            </div>
 
-            <div className="relative h-6 bg-gray-200 rounded-full overflow-hidden shadow-inner">
-              <div
-                className="h-full bg-gradient-to-r from-[#C15BFF] via-[#0A98FF] to-[#00FFF0] rounded-full transition-all duration-500 relative overflow-hidden"
-                style={{ width: `${(userStats.currentXP / userStats.levelXP) * 100}%` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                <div className="relative h-8 bg-gray-200 rounded-full overflow-hidden shadow-inner border-2 border-gray-300">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#C15BFF] via-[#0A98FF] to-[#00FFF0] rounded-full transition-all duration-500 relative overflow-hidden"
+                    style={{ width: `${(userStats.currentXP / userStats.levelXP) * 100}%` }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer"></div>
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IndoaXRlIiBmaWxsLW9wYWNpdHk9IjAuMyIvPjwvc3ZnPg==')] opacity-30"></div>
+                  </div>
+                  {/* Progress percentage badge */}
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 bg-white rounded-full px-2 py-0.5 shadow-lg border-2 border-purple-300 transition-all duration-500"
+                    style={{ left: `calc(${(userStats.currentXP / userStats.levelXP) * 100}% - 20px)` }}
+                  >
+                    <p className="text-xs font-black text-purple-600">{Math.round((userStats.currentXP / userStats.levelXP) * 100)}%</p>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-3 text-center font-semibold">
+                  {userStats.levelXP - userStats.currentXP} XP to level up! 🚀
+                </p>
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-2 text-right font-semibold">
-              {Math.round((userStats.currentXP / userStats.levelXP) * 100)}% to level up
-            </p>
           </div>
         </div>
       </section>
 
-      {/* SEASONAL CAMPAIGN SECTION */}
+      {/* SEASONAL CAMPAIGN SECTION - VALENTINE THEME */}
       {currentCampaign.isActive && (
-        <section className="relative py-16 md:py-20 overflow-hidden bg-gradient-to-br from-[#FFBC57] via-[#FF9500] to-[#F97316]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,188,87,0.3),transparent_50%)] animate-pulse" />
+        <section className="relative py-16 md:py-20 overflow-hidden bg-gradient-to-br from-[#FFB6C1] via-[#FF69B4] to-[#FF1493]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,182,193,0.4),transparent_50%)] animate-pulse" />
 
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-10 right-20 w-64 h-64 bg-[#C15BFF] rounded-full blur-3xl opacity-20 animate-float" />
-            <div className="absolute bottom-10 left-20 w-80 h-80 bg-[#00FFF0] rounded-full blur-3xl opacity-15 animate-float-delayed" />
+            <div className="absolute top-10 right-20 w-64 h-64 bg-[#FFC0CB] rounded-full blur-3xl opacity-30 animate-float" />
+            <div className="absolute bottom-10 left-20 w-80 h-80 bg-[#FFB6D9] rounded-full blur-3xl opacity-25 animate-float-delayed" />
           </div>
 
-          {/* Floating icons */}
+          {/* Floating hearts */}
           <div className="absolute top-20 right-8 md:right-20 animate-bounce">
-            <div className="w-14 h-14 bg-gradient-to-br from-[#EC4899] to-[#DB2777] rounded-2xl flex items-center justify-center shadow-2xl rotate-12 backdrop-blur-sm border-2 border-white/30">
-              <Gift className="w-7 h-7 text-white drop-shadow-lg" />
-            </div>
+            <div className="text-6xl drop-shadow-2xl animate-pulse">💝</div>
           </div>
 
-          <div className="absolute bottom-24 left-8 md:left-16 animate-pulse" style={{ animationDelay: '0.4s' }}>
-            <div className="w-12 h-12 bg-gradient-to-br from-[#A855F7] to-[#9333EA] rounded-xl flex items-center justify-center shadow-xl -rotate-12 backdrop-blur-sm border-2 border-white/30">
-              <Calendar className="w-6 h-6 text-white drop-shadow-lg" />
-            </div>
+          <div className="absolute bottom-24 left-8 md:left-16 animate-bounce" style={{ animationDelay: '0.4s' }}>
+            <div className="text-5xl drop-shadow-2xl animate-pulse">💕</div>
+          </div>
+
+          <div className="absolute top-32 left-1/4 animate-bounce" style={{ animationDelay: '0.2s' }}>
+            <div className="text-4xl drop-shadow-2xl animate-pulse">💖</div>
+          </div>
+
+          <div className="absolute bottom-32 right-1/4 animate-bounce" style={{ animationDelay: '0.6s' }}>
+            <div className="text-5xl drop-shadow-2xl animate-pulse">❤️</div>
           </div>
 
           <div className="relative z-10 max-w-5xl mx-auto px-4">
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-2xl border-4 border-white/50">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-2xl border-4 border-pink-200">
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex-1 text-center md:text-left">
-                  <div className="inline-block bg-gradient-to-r from-[#EC4899] to-[#DB2777] text-white px-4 py-1.5 rounded-full text-xs font-bold mb-3 shadow-md">
-                    🎉 CAMPAIGN AKTIF
+                  <div className="inline-block bg-gradient-to-r from-[#FF1493] to-[#FF69B4] text-white px-4 py-1.5 rounded-full text-xs font-bold mb-3 shadow-md">
+                    💝 VALENTINE SPECIAL
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-black text-[#0A4A7C] mb-2">
+                  <h2 className="text-3xl md:text-4xl font-black text-[#FF1493] mb-2">
                     {currentCampaign.emoji} {currentCampaign.name}
                   </h2>
                   <p className="text-gray-600 mb-4 leading-relaxed">
                     {currentCampaign.description}
                   </p>
                   <div className="flex flex-wrap items-center gap-4 justify-center md:justify-start">
-                    <div className="bg-gray-100 px-4 py-2 rounded-xl border-2 border-gray-200">
-                      <p className="text-xs text-gray-500 font-bold">Reward</p>
-                      <p className="text-sm font-black text-[#0A4A7C]">{currentCampaign.reward}</p>
+                    <div className="bg-pink-50 px-4 py-2 rounded-xl border-2 border-pink-300">
+                      <p className="text-xs text-pink-600 font-bold">Reward</p>
+                      <p className="text-sm font-black text-[#FF1493]">{currentCampaign.reward}</p>
                     </div>
-                    <div className="bg-gray-100 px-4 py-2 rounded-xl border-2 border-gray-200">
-                      <p className="text-xs text-gray-500 font-bold">Participants</p>
-                      <p className="text-sm font-black text-[#0A4A7C]">{currentCampaign.participants.toLocaleString()}</p>
+                    <div className="bg-pink-50 px-4 py-2 rounded-xl border-2 border-pink-300">
+                      <p className="text-xs text-pink-600 font-bold">Participants</p>
+                      <p className="text-sm font-black text-[#FF1493]">{currentCampaign.participants.toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="text-center">
-                  <div className="bg-gradient-to-br from-[#EC4899] to-[#DB2777] rounded-3xl p-6 shadow-2xl border-4 border-white/50 mb-4">
+                  <div className="bg-gradient-to-br from-[#FF1493] to-[#FF69B4] rounded-3xl p-6 shadow-2xl border-4 border-pink-200 mb-4">
                     <p className="text-xs text-white/80 font-bold mb-2">Time Left</p>
                     <div className="flex gap-2 justify-center">
                       <div className="bg-white/20 backdrop-blur-sm rounded-xl px-3 py-2">
@@ -306,9 +361,9 @@ export default function Missions() {
                       </div>
                     </div>
                   </div>
-                  <button className="bg-gradient-to-r from-[#0A4A7C] to-[#0A98FF] text-white px-6 py-3 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2 mx-auto">
+                  <button className="bg-gradient-to-r from-[#FF1493] to-[#FF69B4] text-white px-6 py-3 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2 mx-auto">
                     Join Campaign
-                    <ArrowRight className="w-4 h-4" />
+                    <Heart className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -350,78 +405,265 @@ export default function Missions() {
             </p>
           </div>
 
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-[#F97316] to-[#DC2626] rounded-2xl flex items-center justify-center shadow-lg">
-                    <span className="text-4xl">
-                      {streakData.currentStreak >= 30 ? "🔥🔥🔥" : streakData.currentStreak >= 7 ? "🔥🔥" : streakData.currentStreak >= 1 ? "🔥" : "💨"}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-gray-500 mb-1">CURRENT STREAK</p>
-                    <p className="text-5xl font-black text-[#0A4A7C]">{streakData.currentStreak}</p>
-                    <p className="text-sm text-gray-500 font-semibold">days in a row</p>
+          {/* Horizontal Scrolling Streak Cards */}
+          <div className="relative z-10 max-w-7xl mx-auto px-4">
+            <div className="overflow-x-auto -mx-4 px-4 snap-x snap-mandatory scrollbar-hide">
+              <div className="flex gap-6 pb-4">
+                {/* Solo Streak Card */}
+                <div className="min-w-[90vw] md:min-w-[600px] snap-center">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50 h-full">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#F97316] to-[#DC2626] rounded-xl flex items-center justify-center shadow-lg">
+                        <Flame className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-gray-500">SOLO STREAK</p>
+                        <h3 className="text-xl font-black text-[#0A4A7C]">Personal Progress</h3>
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-20 h-20 bg-gradient-to-br from-[#F97316] to-[#DC2626] rounded-2xl flex items-center justify-center shadow-lg">
+                            <span className="text-4xl">
+                              {streakData.currentStreak >= 30 ? "🔥🔥🔥" : streakData.currentStreak >= 7 ? "🔥🔥" : streakData.currentStreak >= 1 ? "🔥" : "💨"}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-gray-500 mb-1">CURRENT STREAK</p>
+                            <p className="text-5xl font-black text-[#0A4A7C]">{streakData.currentStreak}</p>
+                            <p className="text-sm text-gray-500 font-semibold">days in a row</p>
+                          </div>
+                        </div>
+
+                        <div className="bg-gray-50 rounded-2xl p-4 border-2 border-gray-200">
+                          <p className="text-xs text-gray-500 font-bold mb-2">LONGEST STREAK</p>
+                          <p className="text-3xl font-black text-gray-400">🏆 {streakData.longestStreak} days</p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-sm font-bold text-gray-500 mb-4">STREAK MILESTONES</p>
+                        <div className="space-y-3">
+                          <div className={`p-3 rounded-xl border-2 ${streakData.currentStreak >= 7 ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-200'}`}>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <span className="text-2xl">{streakData.currentStreak >= 7 ? '✅' : '🔒'}</span>
+                                <div>
+                                  <p className="font-bold text-gray-700">7 Days Streak</p>
+                                  <p className="text-xs text-gray-500">+100 XP Bonus</p>
+                                </div>
+                              </div>
+                              <span className="text-xl">🔥🔥</span>
+                            </div>
+                          </div>
+
+                          <div className={`p-3 rounded-xl border-2 ${streakData.currentStreak >= 30 ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-200'}`}>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <span className="text-2xl">{streakData.currentStreak >= 30 ? '✅' : '🔒'}</span>
+                                <div>
+                                  <p className="font-bold text-gray-700">30 Days Streak</p>
+                                  <p className="text-xs text-gray-500">Diamond Hands Badge</p>
+                                </div>
+                              </div>
+                              <span className="text-xl">🔥🔥🔥</span>
+                            </div>
+                          </div>
+
+                          <div className="p-3 rounded-xl border-2 bg-gray-50 border-gray-200">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <span className="text-2xl">🔒</span>
+                                <div>
+                                  <p className="font-bold text-gray-700">100 Days Streak</p>
+                                  <p className="text-xs text-gray-500">Legend Status</p>
+                                </div>
+                              </div>
+                              <span className="text-xl">🔥🔥🔥🔥🔥</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {streakData.currentStreak >= 7 && (
+                          <button className="mt-4 w-full bg-gradient-to-r from-[#EC4899] to-[#DB2777] text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                            Share Streak Card
+                            <Sparkles className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-2xl p-4 border-2 border-gray-200">
-                  <p className="text-xs text-gray-500 font-bold mb-2">LONGEST STREAK</p>
-                  <p className="text-3xl font-black text-gray-400">🏆 {streakData.longestStreak} days</p>
+                {/* Nabung Bareng Streak - Horizontal Scrolling Badges */}
+                <div className="min-w-[90vw] md:min-w-[600px] snap-center">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 h-full">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#EC4899] to-[#DB2777] rounded-xl flex items-center justify-center shadow-lg">
+                        <Users className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-gray-500">NABUNG BARENG STREAK</p>
+                        <h3 className="text-xl font-black text-[#0A4A7C]">Group Progress</h3>
+                      </div>
+                    </div>
+
+                    {/* Horizontal Scrolling Group Badges */}
+                    <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
+                      <div className="flex gap-4 pb-2">
+                        {/* Badge 1: Tim Startup Gaji Pas */}
+                        <div className="min-w-[280px] flex-shrink-0">
+                          <div className="relative bg-gradient-to-br from-[#FF6B9D] via-[#C15BFF] to-[#0A98FF] rounded-3xl p-1 shadow-2xl hover:scale-105 transition-transform">
+                            <div className="bg-white rounded-[22px] p-5">
+                              {/* Header with emoji */}
+                              <div className="text-center mb-4">
+                                <div className="text-5xl mb-2 animate-bounce">💼</div>
+                                <h4 className="text-base font-black text-[#0A4A7C] mb-1">Tim Startup Gaji Pas</h4>
+                                <p className="text-[10px] text-gray-500 font-bold">Cash-Secured Put</p>
+                              </div>
+
+                              {/* Streak Counter - TikTok Style */}
+                              <div className="bg-gradient-to-r from-[#FF6B9D] to-[#C15BFF] rounded-2xl p-4 mb-3 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20"></div>
+                                <div className="relative text-center">
+                                  <p className="text-white/80 text-xs font-bold mb-1">🔥 STREAK</p>
+                                  <p className="text-white text-4xl font-black mb-1">45</p>
+                                  <p className="text-white/90 text-xs font-semibold">DAYS STRONG</p>
+                                </div>
+                              </div>
+
+                              {/* Stats Grid */}
+                              <div className="grid grid-cols-2 gap-2 mb-3">
+                                <div className="bg-green-50 rounded-xl p-2 text-center border-2 border-green-200">
+                                  <p className="text-green-600 text-xl font-black">+8.5%</p>
+                                  <p className="text-[10px] text-gray-500 font-bold">Profit</p>
+                                </div>
+                                <div className="bg-purple-50 rounded-xl p-2 text-center border-2 border-purple-200">
+                                  <p className="text-purple-600 text-xl font-black">5</p>
+                                  <p className="text-[10px] text-gray-500 font-bold">Members</p>
+                                </div>
+                              </div>
+
+                              {/* Members Row */}
+                              <div className="flex items-center justify-center gap-1 mb-3">
+                                <div className="w-7 h-7 bg-gradient-to-br from-[#0A98FF] to-[#C15BFF] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">B</div>
+                                <div className="w-7 h-7 bg-gradient-to-br from-[#FF6B9D] to-[#EC4899] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">S</div>
+                                <div className="w-7 h-7 bg-gradient-to-br from-[#0A98FF] to-[#00FFF0] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">A</div>
+                                <div className="w-7 h-7 bg-gradient-to-br from-[#C15BFF] to-[#9333EA] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">D</div>
+                              </div>
+
+                              {/* Progress Bar */}
+                              <div className="mb-3">
+                                <div className="flex items-center justify-between mb-1">
+                                  <p className="text-[10px] font-black text-gray-500">PROGRESS</p>
+                                  <p className="text-xs font-black text-[#0A4A7C]">50%</p>
+                                </div>
+                                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                  <div className="h-full bg-gradient-to-r from-[#FF6B9D] to-[#C15BFF] rounded-full animate-pulse" style={{ width: '50%' }}></div>
+                                </div>
+                                <p className="text-[10px] text-gray-500 mt-1 text-center font-semibold">Rp 25jt / Rp 50jt</p>
+                              </div>
+
+                              {/* Share Button */}
+                              <button className="w-full bg-gradient-to-r from-[#FF6B9D] to-[#C15BFF] text-white py-2.5 rounded-xl font-black text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                                <Share2 className="w-4 h-4" />
+                                Share Badge
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Badge 2: Keluarga Sukses */}
+                        <div className="min-w-[280px] flex-shrink-0">
+                          <div className="relative bg-gradient-to-br from-[#00FFF0] via-[#0A98FF] to-[#C15BFF] rounded-3xl p-1 shadow-2xl hover:scale-105 transition-transform">
+                            <div className="bg-white rounded-[22px] p-5">
+                              {/* Header with emoji */}
+                              <div className="text-center mb-4">
+                                <div className="text-5xl mb-2 animate-bounce" style={{ animationDelay: '0.2s' }}>👨‍👩‍👧</div>
+                                <h4 className="text-base font-black text-[#0A4A7C] mb-1">Keluarga Sukses</h4>
+                                <p className="text-[10px] text-gray-500 font-bold">Covered Call Vault</p>
+                              </div>
+
+                              {/* Streak Counter - TikTok Style */}
+                              <div className="bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] rounded-2xl p-4 mb-3 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20"></div>
+                                <div className="relative text-center">
+                                  <p className="text-white/80 text-xs font-bold mb-1">🔥 STREAK</p>
+                                  <p className="text-white text-4xl font-black mb-1">62</p>
+                                  <p className="text-white/90 text-xs font-semibold">DAYS STRONG</p>
+                                </div>
+                              </div>
+
+                              {/* Stats Grid */}
+                              <div className="grid grid-cols-2 gap-2 mb-3">
+                                <div className="bg-green-50 rounded-xl p-2 text-center border-2 border-green-200">
+                                  <p className="text-green-600 text-xl font-black">+7.2%</p>
+                                  <p className="text-[10px] text-gray-500 font-bold">Profit</p>
+                                </div>
+                                <div className="bg-cyan-50 rounded-xl p-2 text-center border-2 border-cyan-200">
+                                  <p className="text-cyan-600 text-xl font-black">8</p>
+                                  <p className="text-[10px] text-gray-500 font-bold">Members</p>
+                                </div>
+                              </div>
+
+                              {/* Members Row */}
+                              <div className="flex items-center justify-center gap-1 mb-3">
+                                <div className="w-7 h-7 bg-gradient-to-br from-[#EC4899] to-[#DB2777] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">M</div>
+                                <div className="w-7 h-7 bg-gradient-to-br from-[#0A98FF] to-[#00FFF0] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">D</div>
+                                <div className="w-7 h-7 bg-gradient-to-br from-[#C15BFF] to-[#9333EA] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">S</div>
+                                <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 text-[10px] font-black">+5</div>
+                              </div>
+
+                              {/* Progress Bar */}
+                              <div className="mb-3">
+                                <div className="flex items-center justify-between mb-1">
+                                  <p className="text-[10px] font-black text-gray-500">PROGRESS</p>
+                                  <p className="text-xs font-black text-[#0A4A7C]">45%</p>
+                                </div>
+                                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                  <div className="h-full bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] rounded-full animate-pulse" style={{ width: '45%' }}></div>
+                                </div>
+                                <p className="text-[10px] text-gray-500 mt-1 text-center font-semibold">Rp 45jt / Rp 100jt</p>
+                              </div>
+
+                              {/* Share Button */}
+                              <button className="w-full bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] text-white py-2.5 rounded-xl font-black text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                                <Share2 className="w-4 h-4" />
+                                Share Badge
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* "View All" Card */}
+                        <div className="min-w-[200px] flex-shrink-0">
+                          <Link href="/nabung-bareng">
+                            <div className="h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl p-6 border-4 border-dashed border-gray-300 flex flex-col items-center justify-center gap-3 hover:scale-105 transition-transform cursor-pointer">
+                              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                <ChevronRight className="w-8 h-8 text-[#0A4A7C]" />
+                              </div>
+                              <p className="text-sm font-black text-[#0A4A7C] text-center">View All<br />Groups</p>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Scroll Hint */}
+                    <div className="text-center mt-4">
+                      <p className="text-xs text-gray-400 font-semibold">← Swipe to see more badges →</p>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div>
-                <p className="text-sm font-bold text-gray-500 mb-4">STREAK MILESTONES</p>
-                <div className="space-y-3">
-                  <div className={`p-3 rounded-xl border-2 ${streakData.currentStreak >= 7 ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-200'}`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">{streakData.currentStreak >= 7 ? '✅' : '🔒'}</span>
-                        <div>
-                          <p className="font-bold text-gray-700">7 Days Streak</p>
-                          <p className="text-xs text-gray-500">+100 XP Bonus</p>
-                        </div>
-                      </div>
-                      <span className="text-xl">🔥🔥</span>
-                    </div>
-                  </div>
-
-                  <div className={`p-3 rounded-xl border-2 ${streakData.currentStreak >= 30 ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-200'}`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">{streakData.currentStreak >= 30 ? '✅' : '🔒'}</span>
-                        <div>
-                          <p className="font-bold text-gray-700">30 Days Streak</p>
-                          <p className="text-xs text-gray-500">Diamond Hands Badge</p>
-                        </div>
-                      </div>
-                      <span className="text-xl">🔥🔥🔥</span>
-                    </div>
-                  </div>
-
-                  <div className="p-3 rounded-xl border-2 bg-gray-50 border-gray-200">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">🔒</span>
-                        <div>
-                          <p className="font-bold text-gray-700">100 Days Streak</p>
-                          <p className="text-xs text-gray-500">Legend Status</p>
-                        </div>
-                      </div>
-                      <span className="text-xl">🔥🔥🔥🔥🔥</span>
-                    </div>
-                  </div>
-                </div>
-
-                {streakData.currentStreak >= 7 && (
-                  <button className="mt-4 w-full bg-gradient-to-r from-[#EC4899] to-[#DB2777] text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-                    Share Streak Card
-                    <Sparkles className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
+            {/* Scroll Indicator */}
+            <div className="flex justify-center gap-2 mt-6">
+              <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+              <div className="w-2 h-2 bg-white rounded-full"></div>
             </div>
           </div>
         </div>
@@ -468,16 +710,16 @@ export default function Missions() {
               {badges.map((badge, index) => (
                 <div key={index} className="w-[200px] flex-shrink-0">
                   <div className={`relative p-6 rounded-2xl border-4 transition-all ${badge.unlocked
-                      ? 'bg-white/95 backdrop-blur-sm border-white/50 shadow-2xl hover:-translate-y-2 hover:shadow-3xl cursor-pointer'
-                      : 'bg-gray-800/90 backdrop-blur-sm border-gray-700/50 opacity-60 grayscale'
+                    ? 'bg-white/95 backdrop-blur-sm border-white/50 shadow-2xl hover:-translate-y-2 hover:shadow-3xl cursor-pointer'
+                    : 'bg-gray-800/90 backdrop-blur-sm border-gray-700/50 opacity-60 grayscale'
                     }`}>
                     {/* Icon */}
                     <div className={`w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center text-4xl shadow-lg ${badge.unlocked
-                        ? badge.category === 'trading' ? 'bg-gradient-to-br from-[#0A98FF] to-[#04877f]' :
-                          badge.category === 'social' ? 'bg-gradient-to-br from-[#FFBC57] to-[#FF9500]' :
-                            badge.category === 'streak' ? 'bg-gradient-to-br from-[#F97316] to-[#DC2626]' :
-                              'bg-gradient-to-br from-[#C15BFF] to-[#9333EA]'
-                        : 'bg-gray-700'
+                      ? badge.category === 'trading' ? 'bg-gradient-to-br from-[#0A98FF] to-[#04877f]' :
+                        badge.category === 'social' ? 'bg-gradient-to-br from-[#FFBC57] to-[#FF9500]' :
+                          badge.category === 'streak' ? 'bg-gradient-to-br from-[#F97316] to-[#DC2626]' :
+                            'bg-gradient-to-br from-[#C15BFF] to-[#9333EA]'
+                      : 'bg-gray-700'
                       }`}>
                       {badge.unlocked ? badge.icon : '🔒'}
                     </div>
@@ -672,15 +914,15 @@ export default function Missions() {
                 <div
                   key={entry.rank}
                   className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${entry.rank <= 3
-                      ? 'bg-gradient-to-r from-[#FBBF24]/10 to-transparent border-[#FBBF24]/30 shadow-lg'
-                      : 'bg-gray-50 border-gray-200'
+                    ? 'bg-gradient-to-r from-[#FBBF24]/10 to-transparent border-[#FBBF24]/30 shadow-lg'
+                    : 'bg-gray-50 border-gray-200'
                     } ${entry.username === 'You' ? 'ring-4 ring-[#C15BFF] ring-offset-2' : ''}`}
                 >
                   {/* Rank */}
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 ${entry.rank === 1 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-lg' :
-                      entry.rank === 2 ? 'bg-gradient-to-br from-gray-300 to-gray-400 text-gray-900 shadow-lg' :
-                        entry.rank === 3 ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-lg' :
-                          'bg-gray-200 text-gray-700'
+                    entry.rank === 2 ? 'bg-gradient-to-br from-gray-300 to-gray-400 text-gray-900 shadow-lg' :
+                      entry.rank === 3 ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-lg' :
+                        'bg-gray-200 text-gray-700'
                     }`}>
                     {entry.rank <= 3 ? (entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : '🥉') : entry.rank}
                   </div>
@@ -732,16 +974,16 @@ function MissionCard({ mission, onComplete }: { mission: Mission; onComplete: (i
   return (
     <div
       className={`group bg-white/95 backdrop-blur-sm border-4 border-white/50 rounded-3xl p-6 transition-all duration-300 shadow-xl ${mission.isCompleted
-          ? 'opacity-80 scale-95 grayscale'
-          : 'hover:scale-[1.01] hover:-translate-y-1 hover:shadow-2xl'
+        ? 'opacity-80 scale-95 grayscale'
+        : 'hover:scale-[1.01] hover:-translate-y-1 hover:shadow-2xl'
         }`}
     >
       <div className="flex items-start gap-5">
         <button
           onClick={() => !mission.isCompleted && onComplete(mission.id)}
           className={`mt-1 flex-shrink-0 transition-all duration-300 transform ${mission.isCompleted
-              ? 'text-green-500 scale-110'
-              : 'text-gray-300 hover:text-[#00FFF0] hover:scale-110'
+            ? 'text-green-500 scale-110'
+            : 'text-gray-300 hover:text-[#00FFF0] hover:scale-110'
             }`}
         >
           {mission.isCompleted ? (
