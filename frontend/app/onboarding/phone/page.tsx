@@ -1,102 +1,202 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Sparkles, TrendingUp, Phone, ArrowRight, CheckCircle2, ArrowLeft } from "lucide-react";
 
 export default function PhoneInput() {
   const router = useRouter();
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState('+62');
-  const [error, setError] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [countryCode, setCountryCode] = useState("+62");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!phoneNumber || phoneNumber.length < 8) {
-      setError('Mohon masukkan nomor telepon yang valid');
+      setError("Mohon masukkan nomor telepon yang valid");
       return;
     }
 
-    localStorage.setItem('phoneNumber', countryCode + phoneNumber);
-    
-    router.push('/onboarding/otp');
+    localStorage.setItem("phoneNumber", countryCode + phoneNumber);
+    localStorage.setItem("rawPhoneNumber", phoneNumber);
+
+    router.push("/onboarding/otp");
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8">
-        <button
-          onClick={() => router.back()}
-          className="text-gray-600 hover:text-gray-800 mb-6 flex items-center"
-        >
-          <span className="text-xl mr-2">←</span> Kembali
-        </button>
+    <div className="min-h-screen flex bg-primary-50">
+      {/* Left Panel - Decorative (Hidden on Mobile) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-success-500 to-success-600 p-12 flex-col justify-between relative overflow-hidden">
+        {/* Decorative circles */}
+        <div className="absolute top-20 right-20 w-64 h-64 bg-primary-400/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-secondary-500/20 rounded-full blur-3xl" />
 
-        <div className="mb-8">
-          <h1 className="text-heading text-gray-800 mb-2">
-            Masukkan Nomor Telepon
-          </h1>
-          <p className="text-body text-gray-600">
-            Kami akan mengirim kode verifikasi via WhatsApp
+        {/* Logo */}
+        <div className="relative z-10">
+          <div className="flex items-center gap-3">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm shadow-hard-md">
+              <TrendingUp className="h-7 w-7 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-extrabold text-white">KITA</h1>
+              <div className="flex items-center gap-1">
+                <Sparkles className="h-4 w-4 text-secondary-400" />
+                <span className="text-sm font-bold text-secondary-400">DeFi Options</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10 space-y-6">
+          <h2 className="text-4xl font-extrabold text-white leading-tight">
+            Verifikasi<br />
+            Nomor Telepon<br />
+            <span className="text-secondary-400">Kamu 📱</span>
+          </h2>
+          <p className="text-lg text-green-100 font-medium max-w-md">
+            Kami akan mengirim kode verifikasi via WhatsApp untuk memastikan nomor telepon kamu
+            valid dan aman.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-body text-gray-700 mb-2">
-              Nomor Telepon
-            </label>
-            <div className="flex gap-2">
-              <select
-                value={countryCode}
-                onChange={(e) => setCountryCode(e.target.value)}
-                className="w-24 px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
-              >
-                <option value="+62">🇮🇩 +62</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+65">🇸🇬 +65</option>
-              </select>
-              <input
-                type="tel"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
-                placeholder="812345678"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
-              />
+        {/* Security Features */}
+        <div className="relative z-10 space-y-3">
+          {[
+            "Verifikasi cepat via WhatsApp",
+            "Data pribadi terenkripsi",
+            "Sistem keamanan berlapis"
+          ].map((feature, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-hard-sm">
+                <CheckCircle2 className="h-5 w-5 text-success-500" />
+              </div>
+              <span className="text-white font-semibold">{feature}</span>
             </div>
-            {error && (
-              <p className="text-red-500 text-body mt-2">{error}</p>
-            )}
+          ))}
+        </div>
+      </div>
+
+      {/* Right Panel - Form */}
+      <div className="flex-1 flex items-center justify-center p-8">
+        <div className="w-full max-w-md">
+          {/* Mobile Logo */}
+          <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-success-500 shadow-hard-md">
+              <TrendingUp className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-extrabold text-success-700">KITA</h1>
+              <div className="flex items-center gap-1">
+                <Sparkles className="h-3 w-3 text-secondary-500" />
+                <span className="text-xs font-bold text-secondary-600">DeFi Options</span>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-start">
-              <p className="text-body text-blue-800">
-                Pastikan WhatsApp kamu aktif untuk menerima kode verifikasi.
+          {/* Back Button */}
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-2 text-stone-600 hover:text-stone-800 mb-6 font-medium transition-colors"
+          >
+            <ArrowLeft className="h-5 w-5" />
+            <span>Kembali</span>
+          </button>
+
+          {/* Card */}
+          <div className="bg-white rounded-3xl border-2 border-primary-100 p-8 shadow-[0_8px_0_0_#e0f2fe]">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-extrabold text-success-700 mb-2">
+                Masukkan Nomor Telepon 📱
+              </h2>
+              <p className="text-primary-600 font-medium">
+                Kami akan kirim kode verifikasi via WhatsApp
               </p>
             </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {error && (
+                <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-4">
+                  <p className="text-sm text-red-700 font-medium">{error}</p>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="phoneNumber">Nomor Telepon</Label>
+                <div className="flex gap-2">
+                  {/* Country Code Select */}
+                  <div className="relative">
+                    <select
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      className="h-12 w-24 px-3 rounded-xl border-2 border-primary-100 bg-white
+                                 text-base font-medium text-stone-900 shadow-[0_2px_0_0_#e0f2fe]
+                                 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20
+                                 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <option value="+62">🇮🇩 +62</option>
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+44">🇬🇧 +44</option>
+                      <option value="+65">🇸🇬 +65</option>
+                    </select>
+                  </div>
+
+                  {/* Phone Number Input */}
+                  <div className="relative flex-1">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-300" />
+                    <Input
+                      id="phoneNumber"
+                      type="tel"
+                      placeholder="812345678"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
+                      required
+                      className="pl-12"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Info Box */}
+              <div className="bg-primary-50 border-2 border-primary-100 rounded-2xl p-4">
+                <p className="text-sm text-primary-700 font-medium">
+                  📱 Pastikan WhatsApp kamu aktif untuk menerima kode verifikasi.
+                </p>
+              </div>
+
+              {/* Submit Button */}
+              <Button type="submit" variant="primary" size="lg" fullWidth>
+                <div className="flex items-center gap-2">
+                  <span>Kirim Kode Verifikasi</span>
+                  <ArrowRight className="h-5 w-5" />
+                </div>
+              </Button>
+
+              {/* Terms */}
+              <p className="text-xs text-stone-500 text-center pt-4">
+                Dengan melanjutkan, kamu menyetujui{" "}
+                <a href="#" className="text-primary-600 hover:underline font-medium">
+                  Syarat & Ketentuan
+                </a>{" "}
+                dan{" "}
+                <a href="#" className="text-primary-600 hover:underline font-medium">
+                  Kebijakan Privasi
+                </a>
+              </p>
+            </form>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-button py-4 px-6 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105"
-          >
-            Kirim Kode Verifikasi
-          </button>
-        </form>
-
-        <p className="text-body text-gray-500 mt-6 text-center">
-          Dengan melanjutkan, kamu menyetujui{' '}
-          <a href="#" className="text-blue-600 hover:underline">
-            Syarat & Ketentuan
-          </a>{' '}
-          dan{' '}
-          <a href="#" className="text-blue-600 hover:underline">
-            Kebijakan Privasi
-          </a>
-        </p>
+          {/* Footer */}
+          <p className="text-center text-sm text-primary-400 font-medium mt-6">
+            © 2026 KITA - Kolektif Investasi Tanpa Ambyar
+          </p>
+        </div>
       </div>
     </div>
   );

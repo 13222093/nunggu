@@ -3,38 +3,100 @@
 @tailwind utilities;
 
 :root {
-  --color-white: #F6F9F9;
-  --color-dark-gray: #1A1C22;
-  --color-light-gray: #7D7F9C;
-  --color-indigo: #5072F6;
-  --color-mint: #78F893;
-  --color-salmon: #F9847E;
-  --color-sand: #FFEFB5;
+  /* ExportReadyAI-Inspired Color System (70-20-10 Rule) */
+  /* PRIMARY: Blue-Teal (70% usage) - Trust & Calm */
+  --color-primary: #0284c7;      /* Main blue */
+  --color-primary-dark: #0369a1;
+  --color-primary-light: #38bdf8;
+  --color-accent: #0d9488;       /* Teal accent */
+
+  /* SECONDARY: Amber (10% usage) - Action & Energy (CTAs only) */
+  --color-secondary: #f59e0b;    /* Amber for CTAs */
+  --color-secondary-dark: #d97706;
+  --color-secondary-light: #fbbf24;
+
+  /* NEUTRAL: Stone (20% usage) - Structure */
+  --color-bg-primary: #1c1917;   /* Stone-900 */
+  --color-bg-secondary: #292524; /* Stone-800 */
+  --color-bg-tertiary: #44403c;  /* Stone-700 */
+
+  /* Text */
+  --color-text-primary: #fafaf9;
+  --color-text-secondary: #a8a29e;
+
+  /* Semantic */
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+
+  /* Legacy compatibility */
+  --color-white: #fafaf9;
+  --color-dark-gray: #1c1917;
+  --color-light-gray: #a8a29e;
+  --color-mint: #22c55e;
+  --color-salmon: #ef4444;
+  --color-sand: #fef3c7;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--color-dark-gray);
-  color: var(--color-white);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary); /* Blue instead of amber */
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
 }
 
 @layer components {
   /* Typography System */
   .ultra-heading {
-    @apply text-[32px] font-extrabold leading-snug;
+    @apply text-ultra-heading;
   }
   .heading {
-    @apply text-[23px] font-bold leading-tight;
+    @apply text-heading;
   }
   .subheading {
-    @apply text-[20px] font-semibold leading-snug;
+    @apply text-subheading;
   }
   .body-text {
-    @apply text-[16px] font-normal leading-relaxed;
+    @apply text-body;
   }
   .btn-text {
-    @apply text-[18px] font-semibold leading-none;
+    @apply text-button;
+  }
+
+  /* Button Base with Tactile Feedback */
+  .btn-base {
+    @apply transition-all duration-150;
+    @apply hover:-translate-y-0.5 hover:shadow-hard-lg;
+    @apply active:translate-y-0 active:shadow-none;
+  }
+
+  /* Card Base with Hard Shadow */
+  .card-base {
+    @apply bg-stone-800 border-2 border-stone-700 rounded-2xl;
+    @apply shadow-hard-sm hover:shadow-hard-md;
+    @apply transition-all duration-200;
+  }
+
+  /* Card Interactive (with hover lift) */
+  .card-interactive {
+    @apply card-base hover:-translate-y-1 cursor-pointer;
   }
 }
