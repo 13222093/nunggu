@@ -1,6 +1,7 @@
 -- Users table to store profile and authentication info
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
+    country_code VARCHAR(5) NOT NULL,
     phone_number VARCHAR(20) UNIQUE,
     wallet_address VARCHAR(42) UNIQUE,
     name VARCHAR(100),
