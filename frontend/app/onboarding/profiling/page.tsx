@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from next / navigation';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Sparkles, Zap, TrendingUp, Shield } from 'lucide-react';
 
@@ -230,8 +230,8 @@ export default function AIProfilingPage() {
                   {/* Radio Button */}
                   <div
                     className={`w-5 h-5 md:w-6 md:h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${answers[currentQuestion] === option.value
-                        ? 'border-[#0A98FF] bg-[#0A98FF] shadow-lg'
-                        : 'border-gray-300'
+                      ? 'border-[#0A98FF] bg-[#0A98FF] shadow-lg'
+                      : 'border-gray-300'
                       }`}
                   >
                     {answers[currentQuestion] === option.value && (
