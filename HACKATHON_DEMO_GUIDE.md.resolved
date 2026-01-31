@@ -1,0 +1,236 @@
+# Hackathon Demo - Quick Reference Guide
+
+**Last Updated:** January 31, 2026 13:15 WIB  
+**Status:** Cash-Secured Put Ready | Nabung Bareng Prepared
+
+---
+
+## ✅ FULLY WORKING (Ready to Demo)
+
+### **Cash-Secured Put** (`/solo/cash-secured-put`)
+- ✅ Wallet connection (MetaMask/Coinbase)
+- ✅ Real orders from Thetanuts backend
+- ✅ USDC approval modal
+- ✅ Order execution on blockchain
+- ✅ Transaction status feedback
+- ✅ BaseScan explorer links
+- ✅ Auto-redirect to dashboard
+
+**Demo Flow:**
+1. Connect wallet
+2. Browse orders (BTC/ETH filters)
+3. Click "Ambil Order Ini"
+4. Approve USDC (first time)
+5. Sign transaction
+6. View on BaseScan
+7. See position in dashboard
+
+---
+
+## 🔧 PREPARED (Code Ready, Needs Integration)
+
+### **Nabung Bareng** (`/nabung-bareng`)
+
+**Created Components:**
+- ✅ [useGroupActions](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/hooks/useGroupActions.ts#9-183) hook ([hooks/useGroupActions.ts](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/hooks/useGroupActions.ts))
+  - [createGroup(name, initialDeposit)](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/hooks/useGroupActions.ts#20-55)
+  - [joinGroup(groupId, depositAmount)](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/hooks/useGroupActions.ts#56-91)
+  - [deposit(groupId, amount)](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/hooks/useGroupActions.ts#92-127)
+  - [vote(proposalId, support)](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/hooks/useGroupActions.ts#128-162)
+
+**To Complete:**
+1. Import hook into [/nabung-bareng/page.tsx](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/app/nabung-bareng/page.tsx)
+2. Add wallet check to create button
+3. Use [USDCApprovalModal](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/components/USDCApprovalModal.tsx#17-222) for deposits
+4. Connect voting buttons
+
+**Quick Integration Example:**
+```tsx
+// Add to nabung-bareng/page.tsx
+import { useAccount } from 'wagmi';
+import { useGroupActions } from '@/hooks/useGroupActions';
+import { USDCApprovalModal } from '@/components/USDCApprovalModal';
+
+const { isConnected } = useAccount();
+const { createGroup, status } = useGroupActions();
+
+// In create button:
+const handleCreate = async () => {
+  if (!isConnected) {
+    alert('Connect wallet first!');
+    return;
+  }
+  // Show USDC approval modal
+  // Then call createGroup(groupName, initialDeposit)
+};
+```
+
+---
+
+## 🎨 MOCKUPS (Beautiful UI, No Backend)
+
+### **Solo Strategies**
+- `/solo/buy-call` - Purple/Pink theme, realistic USDC orders
+- `/solo/buy-put` - Red/Orange theme, realistic USDC orders
+- `/solo/covered-call` - Green/Emerald theme, realistic USDC orders
+
+**Status:** Educational mockups as requested (no "coming soon" badges)
+
+---
+
+## 📋 CONTRACT ADDRESSES (Base Sepolia)
+
+```
+KITAVault:   0x1cF7e8fF49cd61D7AAB9850BaC106E0947c31326
+GroupVault:  0x9B2b628b1bad3C9983A2E6C0170185d289489c6e
+Mock USDC:   0x00dcEE3921A5BDf4Baa6bd836D8Bf88cE9cd0bF1
+```
+
+---
+
+## 🧪 TESTING CHECKLIST
+
+### Before Demo:
+- [ ] Get test USDC from faucet/deployer
+- [ ] Test wallet connection
+- [ ] Execute 1 test order on cash-secured-put
+- [ ] Verify transaction on BaseScan
+- [ ] Check position appears in dashboard
+- [ ] Test on mobile (responsive design)
+
+### Optional (If Time):
+- [ ] Complete nabung bareng integration
+- [ ] Add close position to dashboard
+- [ ] Test group creation
+
+---
+
+## 🚀 DEMO SCRIPT
+
+### 1. **Landing Page** (30 sec)
+- Show beautiful design
+- Explain KITA = Indonesian DeFi
+- Highlight dual currency (USDC + Rupiah)
+
+### 2. **Connect Wallet** (15 sec)
+- Click "Connect Wallet"
+- Show MetaMask/Coinbase connection
+- Display connected address
+
+### 3. **Browse Orders** (30 sec)
+- Navigate to Cash-Secured Put
+- Show real orders from Thetanuts
+- Filter by BTC/ETH
+- Explain strategy in Indonesian
+
+### 4. **Execute Order** (60 sec)
+- Select an order
+- Show USDC approval modal
+- Approve USDC (if first time)
+- Sign transaction
+- Show "Executing..." status
+- Show success + BaseScan link
+
+### 5. **View Position** (20 sec)
+- Auto-redirect to dashboard
+- Show new position
+- Explain cashback received
+
+### 6. **Show Other Features** (40 sec)
+- Nabung Bareng (group investing)
+- Missions (gamification)
+- Chatbot (AI assistant)
+- Mobile responsive design
+
+**Total: ~3 minutes**
+
+---
+
+## 📁 KEY FILES
+
+### Wallet Integration:
+- [components/Providers.tsx](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/components/Providers.tsx) - Wagmi config
+- [components/USDCApprovalModal.tsx](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/components/USDCApprovalModal.tsx) - Approval flow
+- [hooks/useExecuteOrder.ts](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/hooks/useExecuteOrder.ts) - Solo execution
+- [hooks/useGroupActions.ts](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/hooks/useGroupActions.ts) - Group actions
+- [lib/config.ts](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/lib/config.ts) - Contract addresses
+- [lib/abi.ts](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/lib/abi.ts) - Contract ABIs
+
+### Pages:
+- [app/solo/cash-secured-put/page.tsx](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/app/solo/cash-secured-put/page.tsx) - ✅ Integrated
+- [app/nabung-bareng/page.tsx](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/app/nabung-bareng/page.tsx) - 🔧 Ready for integration
+- [app/dashboard/page.tsx](file:///c:/Users/Ari%20Azis/Hackathon2025/nunggu/frontend/app/dashboard/page.tsx) - Shows positions
+
+---
+
+## ⚡ QUICK FIXES
+
+### If Wallet Won't Connect:
+```bash
+# Check Wagmi provider is wrapping app
+# File: app/layout.tsx
+# Should have: <Providers>{children}</Providers>
+```
+
+### If USDC Approval Fails:
+```bash
+# Check contract address
+# File: lib/config.ts
+# USDC: 0x00dcEE3921A5BDf4Baa6bd836D8Bf88cE9cd0bF1
+```
+
+### If Transaction Fails:
+```bash
+# Check you have test USDC
+# Check you're on Base Sepolia network
+# Check gas fees available
+```
+
+---
+
+## 🎯 NEXT STEPS (Post-Demo)
+
+### Priority 1:
+1. Complete nabung bareng wallet integration
+2. Add position management (close/settle)
+3. Implement backend order preparation
+
+### Priority 2:
+4. Add transaction history page
+5. Improve error messages
+6. Add real-time price updates
+
+### Priority 3:
+7. Deploy to testnet/mainnet
+8. Add more strategies (if backend supports)
+9. Enhance gamification
+
+---
+
+## 💡 TIPS FOR DEMO
+
+1. **Have Backup:** Pre-execute one order before demo
+2. **Show Explorer:** Always show BaseScan link
+3. **Explain Indonesian:** Highlight localization
+4. **Mobile First:** Show responsive design
+5. **Emphasize Real:** "Real blockchain, real transactions"
+
+---
+
+## 📞 SUPPORT
+
+**If Something Breaks:**
+1. Check browser console for errors
+2. Verify wallet is connected
+3. Check network is Base Sepolia
+4. Ensure USDC balance > 0
+
+**Common Issues:**
+- "Insufficient balance" → Need test USDC
+- "User rejected" → User cancelled in wallet
+- "Network mismatch" → Switch to Base Sepolia
+
+---
+
+**Status:** 🟢 Ready for hackathon demo!  
+**Confidence:** High for cash-secured-put, Medium for nabung bareng

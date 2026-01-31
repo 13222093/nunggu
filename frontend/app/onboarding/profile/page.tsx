@@ -137,7 +137,7 @@ export default function CompleteProfile() {
       };
       localStorage.setItem("userData", JSON.stringify(userData));
 
-      router.push("/onboarding/profiling");
+      router.push("/onboarding/wallet");
 
     } catch (err) {
       console.error(err);
@@ -363,10 +363,10 @@ export default function CompleteProfile() {
               )}
 
               {/* Submit Button */}
-              <Button 
-                type="submit" 
-                variant="primary" 
-                size="lg" 
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
                 fullWidth
                 disabled={isSubmitting}
               >

@@ -5,8 +5,16 @@ import { ChatBot } from '@/components/ChatBot';
 import { ArrowLeft, DollarSign, TrendingUp, CheckCircle, Target, Shield, Loader2, X, ArrowRight, Zap, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useAccount } from 'wagmi';
+import { USDCApprovalModal } from '@/components/USDCApprovalModal';
+import { useExecuteOrder } from '@/hooks/useExecuteOrder';
+import { CONTRACTS } from '@/lib/config';
 
 export default function CashSecuredPut() {
+  // Wallet connection
+  const { isConnected, address } = useAccount();
+  const { executeOrder, status, errorMessage, txHash, isPending, isConfirming, isSuccess } = useExecuteOrder();
+
   // USDC to Rupiah conversion rate (approximate)
   const USDC_TO_IDR = 15800;
 
@@ -14,11 +22,9 @@ export default function CashSecuredPut() {
   const [filterAsset, setFilterAsset] = useState<'all' | 'BTC' | 'ETH'>('all');
   const [orders, setOrders] = useState<any[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
+  const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [showExecuteModal, setShowExecuteModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
-  const [executeStep, setExecuteStep] = useState(1);
-  const [isApproving, setIsApproving] = useState(false);
-  const [isExecuting, setIsExecuting] = useState(false);
 
   // Helper function to convert USDC to Rupiah
   const toRupiah = (usdc: number) => {
@@ -69,28 +75,34 @@ export default function CashSecuredPut() {
     }
   };
 
-  const handleExecuteOrder = (order: any) => {
+  const handleTakeOrder = (order: any) => {
+    if (!isConnected) {
+      alert('Please connect your wallet first!');
+      return;
+    }
     setSelectedOrder(order);
-    setShowExecuteModal(true);
-    setExecuteStep(1);
+    setShowApprovalModal(true);
   };
 
-  const handleApproveUSDC = async () => {
-    setIsApproving(true);
-    setTimeout(() => {
-      setIsApproving(false);
-      setExecuteStep(3);
-    }, 2000);
+  const handleApprovalComplete = async () => {
+    setShowApprovalModal(false);
+    if (selectedOrder) {
+      setShowExecuteModal(true);
+      const success = await executeOrder(selectedOrder);
+      if (!success) {
+        setShowExecuteModal(false);
+      }
+    }
   };
 
-  const handleExecute = async () => {
-    setIsExecuting(true);
-    setTimeout(() => {
-      setIsExecuting(false);
-      setShowExecuteModal(false);
-      window.location.href = '/dashboard';
-    }, 2000);
-  };
+  // Redirect to dashboard on success
+  useEffect(() => {
+    if (isSuccess) {
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 2000);
+    }
+  }, [isSuccess]);
 
   // Filter orders based on selected asset
   const filteredOrders = filterAsset === 'all' ? orders : orders.filter(o => o.asset === filterAsset);
@@ -303,10 +315,10 @@ export default function CashSecuredPut() {
                       </div>
 
                       <button
-                        onClick={() => handleExecuteOrder(order)}
+                        onClick={() => handleTakeOrder(order)}
                         className="w-full bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl text-sm md:text-base font-bold shadow-[0_4px_0_0_rgba(255,149,0,0.4)] md:shadow-[0_6px_0_0_rgba(255,149,0,0.4)] hover:shadow-[0_6px_0_0_rgba(255,149,0,0.4)] md:hover:shadow-[0_8px_0_0_rgba(255,149,0,0.4)] hover:-translate-y-1 active:translate-y-1 active:shadow-[0_2px_0_0_rgba(255,149,0,0.4)] transition-all flex items-center justify-center gap-2"
                       >
-                        Ambil Order Ini
+                        {isConnected ? 'Ambil Order Ini' : 'Connect Wallet'}
                         <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                       </button>
                     </div>
@@ -318,118 +330,69 @@ export default function CashSecuredPut() {
         </div>
       </div>
 
-      {/* EXECUTE ORDER MODAL */}
+      {/* USDC APPROVAL MODAL */}
+      {showApprovalModal && selectedOrder && (
+        <USDCApprovalModal
+          amount={selectedOrder.collateralRequired || selectedOrder.premium}
+          spender={CONTRACTS.KITA_VAULT}
+          onApproved={handleApprovalComplete}
+          onClose={() => setShowApprovalModal(false)}
+        />
+      )}
+
+      {/* TRANSACTION STATUS MODAL */}
       {showExecuteModal && selectedOrder && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowExecuteModal(false)} />
-          <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden">
-            <div className="bg-gradient-to-r from-[#0A4A7C] to-[#0284C7] p-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-black text-white">Konfirmasi Order</h3>
-                <button onClick={() => setShowExecuteModal(false)} className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center hover:bg-white/30 transition-all">
-                  <X className="w-5 h-5 text-white" />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 md:p-8">
+            {status === 'executing' || isPending || isConfirming ? (
+              <div className="text-center space-y-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-[#0A98FF] to-[#00FFF0] rounded-full flex items-center justify-center mx-auto">
+                  <Loader2 className="w-10 h-10 text-white animate-spin" />
+                </div>
+                <h3 className="text-2xl font-black text-[#0A4A7C]">
+                  {isPending ? 'Waiting for Signature...' : 'Executing Order...'}
+                </h3>
+                <p className="text-gray-600 font-semibold">
+                  {isPending ? 'Please sign the transaction in your wallet' : 'Transaction is being confirmed on blockchain'}
+                </p>
+              </div>
+            ) : status === 'success' || isSuccess ? (
+              <div className="text-center space-y-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-black text-green-600">Order Executed!</h3>
+                <p className="text-gray-600 font-semibold">
+                  You received {selectedOrder.premium} USDC cashback!
+                </p>
+                <p className="text-sm text-gray-500">Redirecting to dashboard...</p>
+                {txHash && (
+                  <a
+                    href={`https://sepolia.basescan.org/tx/${txHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-600 hover:text-blue-700 font-semibold"
+                  >
+                    View on Explorer →
+                  </a>
+                )}
+              </div>
+            ) : status === 'error' ? (
+              <div className="text-center space-y-4">
+                <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto">
+                  <X className="w-10 h-10 text-red-600" />
+                </div>
+                <h3 className="text-2xl font-black text-red-600">Transaction Failed</h3>
+                <p className="text-gray-600 font-semibold">{errorMessage}</p>
+                <button
+                  onClick={() => setShowExecuteModal(false)}
+                  className="w-full bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-300 transition-colors"
+                >
+                  Close
                 </button>
               </div>
-              <div className="flex items-center gap-2 mt-6">
-                {[1, 2, 3].map((step) => (
-                  <div key={step} className="flex-1 flex items-center gap-2">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${executeStep >= step ? 'bg-white text-[#0A4A7C]' : 'bg-white/20 text-white/60'}`}>
-                      {executeStep > step ? <CheckCircle className="w-5 h-5" /> : step}
-                    </div>
-                    {step < 3 && <div className={`flex-1 h-1 rounded ${executeStep > step ? 'bg-white' : 'bg-white/20'}`} />}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="p-6 md:p-8">
-              {executeStep === 1 && (
-                <div className="space-y-6">
-                  <h4 className="text-xl font-black text-[#0A4A7C]">Detail Order</h4>
-                  <div className="bg-gray-50 rounded-2xl p-6 space-y-4">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 font-semibold">Aset</span>
-                      <span className="font-black text-[#0A4A7C]">{selectedOrder.asset}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 font-semibold">Harga Target</span>
-                      <div className="text-right">
-                        <span className="font-black text-[#0A4A7C] block">${parseFloat(selectedOrder.strikePrice).toLocaleString()}</span>
-                        <span className="text-xs text-gray-500">≈ Rp {toRupiah(parseFloat(selectedOrder.strikePrice))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 font-semibold">Cashback Kamu</span>
-                      <div className="text-right">
-                        <span className="font-black text-green-600 block">{selectedOrder.premium} USDC</span>
-                        <span className="text-xs text-green-600">≈ Rp {toRupiah(parseFloat(selectedOrder.premium))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 font-semibold">Modal Diperlukan</span>
-                      <div className="text-right">
-                        <span className="font-black text-[#0A4A7C] block">{selectedOrder.collateralRequired} USDC</span>
-                        <span className="text-xs text-gray-500">≈ Rp {toRupiah(parseFloat(selectedOrder.collateralRequired))}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4">
-                    <p className="text-sm text-green-800 font-semibold">
-                      ✅ Kamu akan terima <span className="font-black">{selectedOrder.premium} USDC</span> cashback langsung!
-                    </p>
-                  </div>
-                  <button onClick={() => setExecuteStep(2)} className="w-full bg-gradient-to-r from-[#FFBC57] to-[#FF9500] text-white px-6 py-4 rounded-2xl font-bold shadow-[0_6px_0_0_rgba(255,149,0,0.4)] hover:shadow-[0_8px_0_0_rgba(255,149,0,0.4)] hover:-translate-y-1 active:translate-y-1 active:shadow-[0_2px_0_0_rgba(255,149,0,0.4)] transition-all">
-                    Lanjut: Approve USDC
-                  </button>
-                </div>
-              )}
-              {executeStep === 2 && (
-                <div className="space-y-6">
-                  <h4 className="text-xl font-black text-[#0A4A7C]">Approve USDC</h4>
-                  <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#0A98FF] to-[#00FFF0] rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="w-8 h-8 text-white" />
-                    </div>
-                    <p className="text-sm text-blue-800 font-semibold mb-2">Izinkan KITA Vault pakai USDC kamu</p>
-                    <p className="text-xs text-blue-600">Cukup sekali aja, nggak perlu approve lagi next time</p>
-                  </div>
-                  <button onClick={handleApproveUSDC} disabled={isApproving} className="w-full bg-gradient-to-r from-[#0A98FF] to-[#00FFF0] text-white px-6 py-4 rounded-2xl font-bold shadow-[0_6px_0_0_rgba(10,152,255,0.4)] hover:shadow-[0_8px_0_0_rgba(10,152,255,0.4)] hover:-translate-y-1 active:translate-y-1 active:shadow-[0_2px_0_0_rgba(10,152,255,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                    {isApproving ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        Approving...
-                      </>
-                    ) : (
-                      'Approve USDC'
-                    )}
-                  </button>
-                </div>
-              )}
-              {executeStep === 3 && (
-                <div className="space-y-6">
-                  <h4 className="text-xl font-black text-[#0A4A7C]">Eksekusi Order</h4>
-                  <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Zap className="w-8 h-8 text-white" />
-                    </div>
-                    <p className="text-sm text-green-800 font-semibold mb-2">Siap eksekusi!</p>
-                    <p className="text-xs text-green-600">Kamu akan terima {selectedOrder.premium} USDC cashback instant</p>
-                  </div>
-                  <button onClick={handleExecute} disabled={isExecuting} className="w-full bg-gradient-to-r from-[#10B981] to-[#059669] text-white px-6 py-4 rounded-2xl font-bold shadow-[0_6px_0_0_rgba(5,150,105,0.4)] hover:shadow-[0_8px_0_0_rgba(5,150,105,0.4)] hover:-translate-y-1 active:translate-y-1 active:shadow-[0_2px_0_0_rgba(5,150,105,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                    {isExecuting ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        Executing...
-                      </>
-                    ) : (
-                      <>
-                        Eksekusi Order
-                        <ArrowRight className="w-5 h-5" />
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
-            </div>
+            ) : null}
           </div>
         </div>
       )}
