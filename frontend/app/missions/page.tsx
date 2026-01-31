@@ -7,7 +7,7 @@ import { AchievementBadge } from '@/components/gamification/AchievementBadge';
 import {
   Award, CheckCircle, Circle, ArrowRight, Trophy, Star,
   Flame, Zap, Gift, Calendar, Target, Rocket, Crown,
-  Medal, Sparkles, TrendingUp, Users, ChevronRight, Share2, Heart
+  Medal, Sparkles, TrendingUp, Users, ChevronRight, Share2, Heart, X
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -37,6 +37,7 @@ interface Badge {
 export default function Missions() {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedGroup, setSelectedGroup] = useState<any>(null); // For popup modal
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/missions`)
@@ -72,6 +73,51 @@ export default function Missions() {
     currentStreak: 7,
     longestStreak: 21
   };
+
+  // Nabung Bareng Groups Data
+  const nabungBarengGroups = [
+    {
+      id: 1,
+      name: "Tim Startup Gaji Pas",
+      emoji: "💼",
+      strategy: "Cash-Secured Put",
+      streakDays: 45,
+      profit: "+8.5%",
+      progress: 50,
+      target: "Rp 50jt",
+      current: "Rp 25jt",
+      gradient: "from-[#FF6B9D] via-[#C15BFF] to-[#0A98FF]",
+      members: [
+        { initial: "B", name: "Budi", color: "from-[#0A98FF] to-[#C15BFF]" },
+        { initial: "S", name: "Sari", color: "from-[#FF6B9D] to-[#EC4899]" },
+        { initial: "A", name: "Adi", color: "from-[#0A98FF] to-[#00FFF0]" },
+        { initial: "D", name: "Dewi", color: "from-[#C15BFF] to-[#9333EA]" },
+        { initial: "R", name: "Rudi", color: "from-[#FFBC57] to-[#FF9500]" },
+      ]
+    },
+    {
+      id: 2,
+      name: "Keluarga Sukses",
+      emoji: "👨‍👩‍👧",
+      strategy: "Covered Call Vault",
+      streakDays: 62,
+      profit: "+7.2%",
+      progress: 45,
+      target: "Rp 100jt",
+      current: "Rp 45jt",
+      gradient: "from-[#00FFF0] via-[#0A98FF] to-[#C15BFF]",
+      members: [
+        { initial: "M", name: "Mama", color: "from-[#EC4899] to-[#DB2777]" },
+        { initial: "D", name: "Daddy", color: "from-[#0A98FF] to-[#00FFF0]" },
+        { initial: "S", name: "Sisca", color: "from-[#C15BFF] to-[#9333EA]" },
+        { initial: "A", name: "Andi", color: "from-[#FFBC57] to-[#FF9500]" },
+        { initial: "N", name: "Nana", color: "from-[#10B981] to-[#059669]" },
+        { initial: "O", name: "Oma", color: "from-[#EC4899] to-[#F97316]" },
+        { initial: "O", name: "Opa", color: "from-[#0A98FF] to-[#C15BFF]" },
+        { initial: "T", name: "Tante", color: "from-[#FF6B9D] to-[#EC4899]" },
+      ]
+    },
+  ];
 
   const currentCampaign = {
     name: "Valentine Nabung Bareng",
@@ -497,10 +543,10 @@ export default function Missions() {
                   </div>
                 </div>
 
-                {/* Nabung Bareng Streak - Horizontal Scrolling Badges */}
+                {/* Nabung Bareng Streak - Compact Cards with Modal */}
                 <div className="min-w-[90vw] md:min-w-[600px] snap-center">
                   <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border-4 border-white/50 h-full">
-                    <div className="flex items-center gap-3 mb-6">
+                    <div className="flex items-center gap-3 mb-5">
                       <div className="w-12 h-12 bg-gradient-to-br from-[#EC4899] to-[#DB2777] rounded-xl flex items-center justify-center shadow-lg">
                         <Users className="w-6 h-6 text-white" />
                       </div>
@@ -510,151 +556,46 @@ export default function Missions() {
                       </div>
                     </div>
 
-                    {/* Horizontal Scrolling Group Badges */}
-                    <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
-                      <div className="flex gap-4 pb-2">
-                        {/* Badge 1: Tim Startup Gaji Pas */}
-                        <div className="min-w-[280px] flex-shrink-0">
-                          <div className="relative bg-gradient-to-br from-[#FF6B9D] via-[#C15BFF] to-[#0A98FF] rounded-3xl p-1 shadow-2xl hover:scale-105 transition-transform">
-                            <div className="bg-white rounded-[22px] p-5">
-                              {/* Header with emoji */}
-                              <div className="text-center mb-4">
-                                <div className="text-5xl mb-2 animate-bounce">💼</div>
-                                <h4 className="text-base font-black text-[#0A4A7C] mb-1">Tim Startup Gaji Pas</h4>
-                                <p className="text-[10px] text-gray-500 font-bold">Cash-Secured Put</p>
-                              </div>
+                    {/* Compact Group Cards - Click to expand */}
+                    <div className="space-y-3">
+                      {nabungBarengGroups.map((group) => (
+                        <div
+                          key={group.id}
+                          onClick={() => setSelectedGroup(group)}
+                          className={`relative bg-gradient-to-r ${group.gradient} rounded-2xl p-1 shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all cursor-pointer active:scale-[0.98]`}
+                        >
+                          <div className="bg-white rounded-xl p-4 flex items-center gap-4">
+                            {/* Emoji */}
+                            <div className="text-4xl animate-bounce flex-shrink-0">{group.emoji}</div>
 
-                              {/* Streak Counter - TikTok Style */}
-                              <div className="bg-gradient-to-r from-[#FF6B9D] to-[#C15BFF] rounded-2xl p-4 mb-3 relative overflow-hidden">
-                                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20"></div>
-                                <div className="relative text-center">
-                                  <p className="text-white/80 text-xs font-bold mb-1">🔥 STREAK</p>
-                                  <p className="text-white text-4xl font-black mb-1">45</p>
-                                  <p className="text-white/90 text-xs font-semibold">DAYS STRONG</p>
-                                </div>
+                            {/* Info */}
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-sm font-black text-[#0A4A7C] truncate">{group.name}</h4>
+                              <p className="text-[10px] text-gray-500 font-bold">{group.strategy}</p>
+                              <div className="flex items-center gap-3 mt-1">
+                                <span className="text-xs font-black text-orange-500">🔥 {group.streakDays}d</span>
+                                <span className="text-xs font-black text-green-500">{group.profit}</span>
                               </div>
+                            </div>
 
-                              {/* Stats Grid */}
-                              <div className="grid grid-cols-2 gap-2 mb-3">
-                                <div className="bg-green-50 rounded-xl p-2 text-center border-2 border-green-200">
-                                  <p className="text-green-600 text-xl font-black">+8.5%</p>
-                                  <p className="text-[10px] text-gray-500 font-bold">Profit</p>
-                                </div>
-                                <div className="bg-purple-50 rounded-xl p-2 text-center border-2 border-purple-200">
-                                  <p className="text-purple-600 text-xl font-black">5</p>
-                                  <p className="text-[10px] text-gray-500 font-bold">Members</p>
-                                </div>
-                              </div>
-
-                              {/* Members Row */}
-                              <div className="flex items-center justify-center gap-1 mb-3">
-                                <div className="w-7 h-7 bg-gradient-to-br from-[#0A98FF] to-[#C15BFF] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">B</div>
-                                <div className="w-7 h-7 bg-gradient-to-br from-[#FF6B9D] to-[#EC4899] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">S</div>
-                                <div className="w-7 h-7 bg-gradient-to-br from-[#0A98FF] to-[#00FFF0] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">A</div>
-                                <div className="w-7 h-7 bg-gradient-to-br from-[#C15BFF] to-[#9333EA] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">D</div>
-                              </div>
-
-                              {/* Progress Bar */}
-                              <div className="mb-3">
-                                <div className="flex items-center justify-between mb-1">
-                                  <p className="text-[10px] font-black text-gray-500">PROGRESS</p>
-                                  <p className="text-xs font-black text-[#0A4A7C]">50%</p>
-                                </div>
-                                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                                  <div className="h-full bg-gradient-to-r from-[#FF6B9D] to-[#C15BFF] rounded-full animate-pulse" style={{ width: '50%' }}></div>
-                                </div>
-                                <p className="text-[10px] text-gray-500 mt-1 text-center font-semibold">Rp 25jt / Rp 50jt</p>
-                              </div>
-
-                              {/* Share Button */}
-                              <button className="w-full bg-gradient-to-r from-[#FF6B9D] to-[#C15BFF] text-white py-2.5 rounded-xl font-black text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-                                <Share2 className="w-4 h-4" />
-                                Share Badge
-                              </button>
+                            {/* Arrow */}
+                            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <ChevronRight className="w-5 h-5 text-gray-400" />
                             </div>
                           </div>
                         </div>
+                      ))}
 
-                        {/* Badge 2: Keluarga Sukses */}
-                        <div className="min-w-[280px] flex-shrink-0">
-                          <div className="relative bg-gradient-to-br from-[#00FFF0] via-[#0A98FF] to-[#C15BFF] rounded-3xl p-1 shadow-2xl hover:scale-105 transition-transform">
-                            <div className="bg-white rounded-[22px] p-5">
-                              {/* Header with emoji */}
-                              <div className="text-center mb-4">
-                                <div className="text-5xl mb-2 animate-bounce" style={{ animationDelay: '0.2s' }}>👨‍👩‍👧</div>
-                                <h4 className="text-base font-black text-[#0A4A7C] mb-1">Keluarga Sukses</h4>
-                                <p className="text-[10px] text-gray-500 font-bold">Covered Call Vault</p>
-                              </div>
-
-                              {/* Streak Counter - TikTok Style */}
-                              <div className="bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] rounded-2xl p-4 mb-3 relative overflow-hidden">
-                                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20"></div>
-                                <div className="relative text-center">
-                                  <p className="text-white/80 text-xs font-bold mb-1">🔥 STREAK</p>
-                                  <p className="text-white text-4xl font-black mb-1">62</p>
-                                  <p className="text-white/90 text-xs font-semibold">DAYS STRONG</p>
-                                </div>
-                              </div>
-
-                              {/* Stats Grid */}
-                              <div className="grid grid-cols-2 gap-2 mb-3">
-                                <div className="bg-green-50 rounded-xl p-2 text-center border-2 border-green-200">
-                                  <p className="text-green-600 text-xl font-black">+7.2%</p>
-                                  <p className="text-[10px] text-gray-500 font-bold">Profit</p>
-                                </div>
-                                <div className="bg-cyan-50 rounded-xl p-2 text-center border-2 border-cyan-200">
-                                  <p className="text-cyan-600 text-xl font-black">8</p>
-                                  <p className="text-[10px] text-gray-500 font-bold">Members</p>
-                                </div>
-                              </div>
-
-                              {/* Members Row */}
-                              <div className="flex items-center justify-center gap-1 mb-3">
-                                <div className="w-7 h-7 bg-gradient-to-br from-[#EC4899] to-[#DB2777] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">M</div>
-                                <div className="w-7 h-7 bg-gradient-to-br from-[#0A98FF] to-[#00FFF0] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">D</div>
-                                <div className="w-7 h-7 bg-gradient-to-br from-[#C15BFF] to-[#9333EA] rounded-full flex items-center justify-center text-white text-xs font-black shadow-md">S</div>
-                                <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 text-[10px] font-black">+5</div>
-                              </div>
-
-                              {/* Progress Bar */}
-                              <div className="mb-3">
-                                <div className="flex items-center justify-between mb-1">
-                                  <p className="text-[10px] font-black text-gray-500">PROGRESS</p>
-                                  <p className="text-xs font-black text-[#0A4A7C]">45%</p>
-                                </div>
-                                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                                  <div className="h-full bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] rounded-full animate-pulse" style={{ width: '45%' }}></div>
-                                </div>
-                                <p className="text-[10px] text-gray-500 mt-1 text-center font-semibold">Rp 45jt / Rp 100jt</p>
-                              </div>
-
-                              {/* Share Button */}
-                              <button className="w-full bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] text-white py-2.5 rounded-xl font-black text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-                                <Share2 className="w-4 h-4" />
-                                Share Badge
-                              </button>
-                            </div>
-                          </div>
+                      {/* View All Link */}
+                      <Link href="/nabung-bareng">
+                        <div className="bg-gray-100 rounded-2xl p-4 border-2 border-dashed border-gray-300 flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors cursor-pointer">
+                          <span className="text-sm font-black text-[#0A4A7C]">View All Groups</span>
+                          <ChevronRight className="w-5 h-5 text-[#0A4A7C]" />
                         </div>
-
-                        {/* "View All" Card */}
-                        <div className="min-w-[200px] flex-shrink-0">
-                          <Link href="/nabung-bareng">
-                            <div className="h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl p-6 border-4 border-dashed border-gray-300 flex flex-col items-center justify-center gap-3 hover:scale-105 transition-transform cursor-pointer">
-                              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
-                                <ChevronRight className="w-8 h-8 text-[#0A4A7C]" />
-                              </div>
-                              <p className="text-sm font-black text-[#0A4A7C] text-center">View All<br />Groups</p>
-                            </div>
-                          </Link>
-                        </div>
-                      </div>
+                      </Link>
                     </div>
 
-                    {/* Scroll Hint */}
-                    <div className="text-center mt-4">
-                      <p className="text-xs text-gray-400 font-semibold">← Swipe to see more badges →</p>
-                    </div>
+                    <p className="text-[10px] text-gray-400 text-center mt-3 font-semibold">Tap a group to see details</p>
                   </div>
                 </div>
               </div>
@@ -896,30 +837,30 @@ export default function Missions() {
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <div className="inline-block bg-white/20 backdrop-blur-md text-white px-6 py-2 rounded-full text-sm font-bold mb-4 border-2 border-white/30 shadow-lg">
+          <div className="text-center mb-6 md:mb-10">
+            <div className="inline-block bg-white/20 backdrop-blur-md text-white px-4 md:px-6 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-bold mb-3 md:mb-4 border-2 border-white/30 shadow-lg">
               👑 LEADERBOARD
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-3 drop-shadow-lg">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 md:mb-3 drop-shadow-lg">
               Top Players This Month
             </h2>
-            <p className="text-lg text-white/90 max-w-2xl mx-auto">
+            <p className="text-sm md:text-lg text-white/90 max-w-2xl mx-auto">
               Compete dengan user lain dan raih posisi teratas! 🥇
             </p>
           </div>
 
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border-4 border-white/50 mb-6">
-            <div className="space-y-3">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-2xl border-4 border-white/50 mb-6">
+            <div className="space-y-2 md:space-y-3">
               {leaderboardPreview.map((entry) => (
                 <div
                   key={entry.rank}
-                  className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${entry.rank <= 3
+                  className={`flex items-center gap-2.5 md:gap-4 p-2.5 md:p-4 rounded-xl md:rounded-2xl border-2 transition-all ${entry.rank <= 3
                     ? 'bg-gradient-to-r from-[#FBBF24]/10 to-transparent border-[#FBBF24]/30 shadow-lg'
                     : 'bg-gray-50 border-gray-200'
-                    } ${entry.username === 'You' ? 'ring-4 ring-[#C15BFF] ring-offset-2' : ''}`}
+                    } ${entry.username === 'You' ? 'ring-2 md:ring-4 ring-[#C15BFF] ring-offset-1 md:ring-offset-2' : ''}`}
                 >
                   {/* Rank */}
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 ${entry.rank === 1 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-lg' :
+                  <div className={`w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center font-black text-sm md:text-xl flex-shrink-0 ${entry.rank === 1 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-lg' :
                     entry.rank === 2 ? 'bg-gradient-to-br from-gray-300 to-gray-400 text-gray-900 shadow-lg' :
                       entry.rank === 3 ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-lg' :
                         'bg-gray-200 text-gray-700'
@@ -928,27 +869,27 @@ export default function Missions() {
                   </div>
 
                   {/* Avatar */}
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] flex items-center justify-center text-white font-black text-xl flex-shrink-0 shadow-lg">
+                  <div className="w-9 h-9 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-[#C15BFF] to-[#0A98FF] flex items-center justify-center text-white font-black text-sm md:text-xl flex-shrink-0 shadow-lg">
                     {entry.username[0].toUpperCase()}
                   </div>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="font-black text-[#0A4A7C] truncate text-lg">
+                    <p className="font-black text-[#0A4A7C] truncate text-sm md:text-lg">
                       {entry.username}
                       {entry.username === 'You' && (
-                        <span className="ml-2 text-xs font-bold text-[#C15BFF]">(You)</span>
+                        <span className="ml-1 md:ml-2 text-[10px] md:text-xs font-bold text-[#C15BFF]">(You)</span>
                       )}
                     </p>
-                    <p className="text-sm text-gray-500 font-semibold">Level {entry.level}</p>
+                    <p className="text-xs md:text-sm text-gray-500 font-semibold">Level {entry.level}</p>
                   </div>
 
                   {/* XP */}
                   <div className="text-right flex-shrink-0">
-                    <p className="font-black text-[#0A98FF] text-xl">
+                    <p className="font-black text-[#0A98FF] text-sm md:text-xl">
                       {entry.xp.toLocaleString()}
                     </p>
-                    <p className="text-xs text-gray-500 font-semibold">XP</p>
+                    <p className="text-[10px] md:text-xs text-gray-500 font-semibold">XP</p>
                   </div>
                 </div>
               ))}
@@ -956,13 +897,112 @@ export default function Missions() {
           </div>
 
           <div className="text-center">
-            <Link href="/leaderboard" className="inline-flex items-center gap-2 bg-gradient-to-r from-[#FBBF24] to-[#F59E0B] text-white px-8 py-4 rounded-2xl font-bold shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all border-4 border-white/30">
+            <Link href="/leaderboard" className="inline-flex items-center gap-2 bg-gradient-to-r from-[#FBBF24] to-[#F59E0B] text-white px-5 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-bold text-sm md:text-base shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all border-4 border-white/30">
               View Full Leaderboard
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
             </Link>
           </div>
         </div>
       </section>
+
+      {/* FULLSCREEN GROUP DETAIL MODAL */}
+      {selectedGroup && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end md:items-center justify-center p-0 md:p-4"
+          onClick={() => setSelectedGroup(null)}
+        >
+          <div
+            className={`w-full md:max-w-md bg-gradient-to-br ${selectedGroup.gradient} rounded-t-3xl md:rounded-3xl p-1 max-h-[90vh] overflow-hidden`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-white rounded-t-[22px] md:rounded-[22px] p-6 max-h-[88vh] overflow-y-auto">
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedGroup(null)}
+                className="absolute top-4 right-4 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors z-10"
+              >
+                <X className="w-5 h-5 text-gray-600" />
+              </button>
+
+              {/* Header */}
+              <div className="text-center mb-6">
+                <div className="text-6xl mb-3 animate-bounce">{selectedGroup.emoji}</div>
+                <h3 className="text-xl font-black text-[#0A4A7C] mb-1">{selectedGroup.name}</h3>
+                <p className="text-sm text-gray-500 font-bold">{selectedGroup.strategy}</p>
+              </div>
+
+              {/* Big Streak Counter */}
+              <div className={`bg-gradient-to-r ${selectedGroup.gradient} rounded-2xl p-5 mb-4 text-center relative overflow-hidden`}>
+                <div className="absolute inset-0 bg-white/10"></div>
+                <p className="text-white/80 text-xs font-bold mb-1 relative z-10">🔥 STREAK</p>
+                <p className="text-white text-5xl font-black mb-1 relative z-10">{selectedGroup.streakDays}</p>
+                <p className="text-white/90 text-sm font-semibold relative z-10">DAYS STRONG</p>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="bg-green-50 rounded-xl p-3 text-center border-2 border-green-200">
+                  <p className="text-green-600 text-2xl font-black">{selectedGroup.profit}</p>
+                  <p className="text-xs text-gray-500 font-bold">Profit</p>
+                </div>
+                <div className="bg-purple-50 rounded-xl p-3 text-center border-2 border-purple-200">
+                  <p className="text-purple-600 text-2xl font-black">{selectedGroup.members.length}</p>
+                  <p className="text-xs text-gray-500 font-bold">Members</p>
+                </div>
+              </div>
+
+              {/* Members List - Full Names */}
+              <div className="mb-4">
+                <p className="text-xs font-black text-gray-500 mb-3">SQUAD MEMBERS</p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedGroup.members.map((member: any, idx: number) => (
+                    <div
+                      key={idx}
+                      className={`flex items-center gap-2 bg-gradient-to-r ${member.color.replace('to-', 'to-').replace('from-', 'from-')}/10 px-3 py-2 rounded-full border border-gray-200`}
+                    >
+                      <div className={`w-6 h-6 bg-gradient-to-br ${member.color} rounded-full flex items-center justify-center text-white text-[10px] font-black`}>
+                        {member.initial}
+                      </div>
+                      <span className="text-sm font-bold text-gray-700">{member.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="mb-5">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-black text-gray-500">PROGRESS</p>
+                  <p className="text-sm font-black text-[#0A4A7C]">{selectedGroup.progress}%</p>
+                </div>
+                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full bg-gradient-to-r ${selectedGroup.gradient} rounded-full transition-all duration-500`}
+                    style={{ width: `${selectedGroup.progress}%` }}
+                  ></div>
+                </div>
+                <p className="text-xs text-gray-500 mt-2 text-center font-semibold">
+                  {selectedGroup.current} / {selectedGroup.target}
+                </p>
+              </div>
+
+              {/* Actions */}
+              <div className="space-y-3">
+                <button className={`w-full bg-gradient-to-r ${selectedGroup.gradient} text-white py-3.5 rounded-xl font-black text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2`}>
+                  <Share2 className="w-5 h-5" />
+                  Share Badge
+                </button>
+                <button
+                  onClick={() => setSelectedGroup(null)}
+                  className="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-bold text-sm hover:bg-gray-200 transition-all"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <ChatBot />
     </>

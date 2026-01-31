@@ -88,7 +88,7 @@ export default function Dashboard() {
   }, [router]);
 
   const stats = userData?.stats || defaultStats;
-  const positions = userData?.positions || [];
+  const positions = userData?.positions || MOCK_POSITIONS; // Use centralized mock data as fallback
   // const recentActivities = userData?.history || []; // Backend not sending history yet, keep dummy or empty
 
   const handleClosePosition = async (positionId: number) => {
@@ -207,46 +207,64 @@ export default function Dashboard() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4">
-          {/* HERO CARD - Solid Gradient Card */}
-          <div className="bg-gradient-to-br from-white to-white/95 rounded-3xl md:rounded-[2.5rem] p-6 md:p-8 shadow-2xl border-4 border-white/50">
-            <div className="flex items-center gap-4 md:gap-6">
-              {/* Level Badge/Avatar */}
-              <div className="relative">
-                <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[#FBFF2B] via-[#FFBC57] to-[#FF9500] rounded-2xl md:rounded-3xl flex items-center justify-center shadow-2xl border-4 border-orange-200 transform hover:scale-110 hover:rotate-3 transition-all">
-                  <span className="text-4xl md:text-5xl font-black text-white drop-shadow-lg">8</span>
+          {/* HERO CARD - Mobile-First Stacked Layout */}
+          <div className="bg-gradient-to-br from-white to-white/95 rounded-3xl md:rounded-[2.5rem] p-5 md:p-8 shadow-2xl border-4 border-white/50">
+            {/* Mobile: Stacked | Desktop: Horizontal */}
+            <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+
+              {/* Top Row on Mobile: Avatar + Greeting */}
+              <div className="flex items-center gap-4">
+                {/* Level Badge/Avatar */}
+                <div className="relative flex-shrink-0">
+                  <div className="w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-[#FBFF2B] via-[#FFBC57] to-[#FF9500] rounded-2xl md:rounded-3xl flex items-center justify-center shadow-2xl border-4 border-orange-200 transform hover:scale-110 hover:rotate-3 transition-all">
+                    <span className="text-3xl md:text-5xl font-black text-white drop-shadow-lg">8</span>
+                  </div>
+                  {/* XP Badge */}
+                  <div className="absolute -top-2 -right-2 bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] text-white text-[10px] md:text-xs font-black px-2 py-0.5 md:py-1 rounded-full border-2 border-white shadow-lg">
+                    LVL 8
+                  </div>
                 </div>
-                {/* XP Badge */}
-                <div className="absolute -top-2 -right-2 bg-gradient-to-r from-[#00FFF0] to-[#0A98FF] text-white text-xs font-black px-2 py-1 rounded-full border-2 border-white shadow-lg">
-                  LVL 8
+
+                {/* Greeting - Mobile Only inline, Desktop full row */}
+                <div className="flex-1 md:hidden">
+                  <h1 className="text-xl font-black text-[#0A4A7C] leading-tight">
+                    Hi, {userData?.user?.name || 'Investor'}! 👋
+                  </h1>
+                  <p className="text-xs text-gray-600 font-semibold">Trader Aktif • On Fire!</p>
                 </div>
               </div>
 
-              {/* User Info */}
-              <div className="flex-1 min-w-0">
-                <h1 className="text-2xl md:text-3xl font-black text-[#0A4A7C] mb-1 truncate">
+              {/* Desktop Greeting - Hidden on Mobile */}
+              <div className="hidden md:block flex-1">
+                <h1 className="text-3xl font-black text-[#0A4A7C] mb-1">
                   Hi, {userData?.user?.name || 'Investor'}! 👋
                 </h1>
-                <p className="text-sm md:text-base text-gray-600 mb-3 font-semibold">Trader Aktif • On Fire!</p>
+                <p className="text-base text-gray-600 font-semibold">Trader Aktif • On Fire!</p>
+              </div>
+            </div>
 
-                {/* XP Bar */}
-                <div className="mb-2">
-                  <div className="flex items-center justify-between text-xs md:text-sm text-gray-700 mb-1.5">
-                    <span className="font-bold">XP Progress</span>
-                    <span className="font-bold">2,450 / 3,000 XP</span>
-                  </div>
-                  <div className="relative h-3 md:h-4 bg-gray-200 rounded-full overflow-hidden shadow-inner">
-                    <div
-                      className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#00FFF0] via-[#0A98FF] to-[#C15BFF] rounded-full transition-all duration-500"
-                      style={{ width: '81.67%' }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer" />
-                  </div>
+            {/* XP Section - Full Width on Both */}
+            <div className="mt-4 md:mt-0 md:pt-4">
+              {/* XP Bar */}
+              <div className="mb-3">
+                <div className="flex items-center justify-between text-xs md:text-sm text-gray-700 mb-1.5">
+                  <span className="font-bold">XP Progress</span>
+                  <span className="font-black text-[#0A98FF]">2,450 / 3,000</span>
                 </div>
+                <div className="relative h-3 md:h-4 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                  <div
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#00FFF0] via-[#0A98FF] to-[#C15BFF] rounded-full transition-all duration-500"
+                    style={{ width: '81.67%' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer" />
+                </div>
+              </div>
 
-                {/* Streak Counter */}
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 px-3 py-1.5 rounded-full shadow-lg">
-                  <span className="text-lg md:text-xl">🔥</span>
-                  <span className="text-xs md:text-sm font-black text-white">7 Day Streak!</span>
+              {/* Streak Counter - Centered on Mobile */}
+              <div className="flex justify-center md:justify-start">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 px-4 py-2 rounded-full shadow-lg">
+                  <span className="text-lg">🔥</span>
+                  <span className="text-sm font-black text-white">7 Day Streak!</span>
                 </div>
               </div>
             </div>

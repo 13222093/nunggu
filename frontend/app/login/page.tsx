@@ -19,6 +19,25 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    // Check for bypass mode (for local testing without backend)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('bypass') === 'true') {
+      // Set fake user session for testing
+      localStorage.setItem('userData', JSON.stringify({
+        id: 999,
+        phoneNumber: '81234567890',
+        countryCode: '+62',
+        name: 'Demo User',
+        walletAddress: null
+      }));
+      localStorage.setItem('userSession', JSON.stringify({
+        token: 'bypass-token-demo',
+        userId: 999
+      }));
+      router.push('/dashboard');
+      return;
+    }
+
     // Check if already logged in
     const sessionStr = localStorage.getItem('userSession');
     const guestDataStr = localStorage.getItem('userData');
