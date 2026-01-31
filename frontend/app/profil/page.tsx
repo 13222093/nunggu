@@ -29,12 +29,27 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    const data = localStorage.getItem('userData');
-    if (data) {
-      const user = JSON.parse(data);
+    const localData = localStorage.getItem('userData');
+    const sessionData = localStorage.getItem('userSession');
+
+    if (localData) {
+      const user = JSON.parse(localData);
       setUserData(user);
       setEditedName(user.fullName);
       setProfilePhoto(user.profilePhoto || null);
+    } else if (sessionData) {
+      const session = JSON.parse(sessionData);
+      // Map session to profile data structure
+      const mappedUser = {
+        fullName: session.name || 'User',
+        username: session.name ? session.name.replace(/\s+/g, '').toLowerCase() : 'user',
+        email: 'user@kita.finance', // Placeholder
+        phoneNumber: `${session.countryCode}${session.phoneNumber}`,
+        createdAt: new Date().toISOString(), // Fallback
+        profilePhoto: null
+      };
+      setUserData(mappedUser);
+      setEditedName(mappedUser.fullName);
     } else {
       router.push('/login');
     }
@@ -56,7 +71,11 @@ export default function Profile() {
     if (userData) {
       const updatedUser = { ...userData, fullName: editedName, profilePhoto };
       setUserData(updatedUser);
-      localStorage.setItem('userData', JSON.stringify(updatedUser));
+      // If we are in session mode, we might want to update session or just local state for now
+      // For this MVP, let's update userData in localStorage if it exists, or just state
+      if (localStorage.getItem('userData')) {
+          localStorage.setItem('userData', JSON.stringify(updatedUser));
+      }
       setIsEditing(false);
     }
   };
@@ -69,6 +88,7 @@ export default function Profile() {
 
   const handleLogout = () => {
     localStorage.removeItem('userData');
+    localStorage.removeItem('userSession');
     localStorage.removeItem('phoneNumber');
     localStorage.removeItem('userProfiling');
     setShowLogoutModal(false);

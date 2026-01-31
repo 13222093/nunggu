@@ -49,9 +49,18 @@ export default function AIProfilingPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => { // Make sure user datang dari halaman lengkapi profil
+    // Allow if session OR guest data exists
+    const sessionStr = localStorage.getItem('userSession');
     const userData = localStorage.getItem('userData');
-    if (!userData) {
+    
+    if (!sessionStr && !userData) {
       router.push('/onboarding');
+      return;
+    }
+
+    // If profiling already done, skip
+    if (localStorage.getItem('userProfiling')) {
+        router.push('/onboarding/mode');
     }
   }, [router]);
 
