@@ -1,6 +1,6 @@
-# 🌊 KITA Finance
+# KITAfinance
 
-> **Kolektif Investasi Tanpa Ambyar** - Making DeFi Options Accessible for 270 Million Indonesians
+> Making DeFi Options Accessible for 270 Million Indonesians
 
 [![Built on Base](https://img.shields.io/badge/Built%20on-Base-0052FF?style=for-the-badge&logo=coinbase)](https://base.org)
 [![Powered by Thetanuts](https://img.shields.io/badge/Powered%20by-Thetanuts%20V4-6366F1?style=for-the-badge)](https://thetanuts.finance)
@@ -8,61 +8,34 @@
 
 ---
 
-## 🟩 Thetanuts V4 Track Submission
+## 🎯 The Problem
 
-KITA Finance is built specifically for the **Thetanuts Track** - a DeFi application that makes options simple, accessible, and engaging for everyday Indonesian users.
+Indonesia has **270 million people** and a rapidly growing crypto community of **12+ million users**. But still, the more advanced DeFi strategies—the ones that generate real, sustainable yields—remain locked behind walls of complexity.
 
-### How We Fit Each Criteria:
-
-| Track Requirement | KITA Implementation |
-|-------------------|---------------------|
-| ✅ **Gamified UI** | XP progression system, achievement badges, leaderboards, animated progress bars, emoji-based goal selection |
-| ✅ **Intuitive UI** | "Ocean Blue" design - no jargon, everyday Bahasa Indonesia (e.g., "Beli Murah Dapat Cashback" instead of "Cash-Secured Put") |
-| ✅ **AI-powered Onboarding** | AI chatbot explains complex options concepts in simple Indonesian, personalized risk profiling during signup |
-| ✅ **Personalized Strategy Guidance** | Smart recommendations based on user's risk profile: "Aman" (conservative), "Balance" (moderate), "Agresif" (aggressive) |
-| ✅ **Campaign-driven Engagement** | Daily missions, weekly streaks, instant XP rewards, monthly leaderboard competitions |
-| ✅ **Thetanuts Infrastructure** | Direct integration with Thetanuts V4 `IOptionBook` interface for options execution |
-
-### Technical Integration with Thetanuts V4:
-
-```solidity
-// Our smart contracts integrate directly with Thetanuts V4
-import { IOptionBook } from "thetanuts-v4/interfaces/IOptionBook.sol";
-
-contract KITAVault {
-    IOptionBook public optionBook;
-    
-    function executeStrategy(uint256 orderId, bytes calldata signature) external {
-        optionBook.executeOrder(orderId, signature);
-    }
-}
-```
-
-### Unique Value Proposition:
-
-1. **Indonesian-First Localization** - Full Bahasa Indonesia with culturally relevant metaphors
-2. **Nabung Bareng (Social Saving)** - Groups pool USDC together to access larger options positions, aligned with Indonesian "gotong royong" values
-3. **Mobile-Native Design** - 95% of Indonesian internet users are mobile-first; our entire UX is optimized for 375px screens
+Traditional options platforms present users with intimidating interfaces - complex order books, unfamiliar jargon like *Delta*, *Gamma*, *Theta*, and *Strike Prices*. **Options trading offers 8-15% annual returns**, significantly higher than traditional savings accounts (2-3%), but the technical complexity creates an invisible wall.
 
 ---
 
-## 🎯 The Problem
-
-Traditional DeFi trading apps are filled with intimidating jargon - *"strike price"*, *"theta decay"*, *"implied volatility"* - words that gatekeep regular people from building wealth.
-
-**Options trading could give Indonesians 8-15% annual returns**, but the technical complexity makes it inaccessible.
-
 ## 💡 Our Solution
 
-KITA Finance transforms complex DeFi options into an **intuitive, gamified, mobile-native experience**:
+KITAfinance transforms Thetanuts V4's powerful options infrastructure into an **intuitive, culturally-relevant, and genuinely fun experience**.
 
 | Feature | Description |
 |---------|-------------|
-| 🗣️ **Easy Language** | "Beli Murah Dapat Cashback" instead of "Cash-Secured Put" |
-| 🎮 **Gamification** | XP, badges, leaderboards, daily missions |
-| 👥 **Nabung Bareng** | Social saving groups aligned with gotong royong values |
-| 🤖 **AI Chatbot** | Ask anything in Bahasa Indonesia |
-| 📱 **Mobile-First** | Designed for 375px screens, touch-optimized |
+| 🎮 **Gamified Experience** | XP, badges, leaderboards, daily missions, monthly campaigns |
+| 👥 **Nabung Bareng** | Social saving groups aligned with Indonesian *gotong royong* values |
+| 📲 **Intuitive UI** | "Beli Murah Dapat Cashback" instead of "Cash-Secured Put" |
+| 🤖 **AI Chatbot** | Personalized guidance in Bahasa Indonesia |
+
+---
+
+## � Thetanuts V4 Track
+
+KITAfinance uses **Thetanuts V4** as our core options infrastructure:
+
+- Smart contracts integrate with `IOptionBook.fillOrder()` for options execution
+- Users deposit USDC → our vaults route capital to Thetanuts V4 → earn yield from options premiums
+- Abstraction layers translate complex RFQ flows into simple "Safe/Balance/Agresif" choices
 
 ---
 
@@ -70,7 +43,7 @@ KITA Finance transforms complex DeFi options into an **intuitive, gamified, mobi
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    KITA Frontend                        │
+│                  KITAfinance Frontend                   │
 │              (Next.js 15 + wagmi + Tailwind)            │
 └─────────────────────┬───────────────────────────────────┘
                       │
@@ -78,7 +51,7 @@ KITA Finance transforms complex DeFi options into an **intuitive, gamified, mobi
         │                           │
         ▼                           ▼
 ┌───────────────────┐     ┌───────────────────┐
-│   KITA Backend    │     │   Base Sepolia    │
+│  KITAfinance API  │     │   Base Sepolia    │
 │ (Express + Prisma)│     │    Blockchain     │
 └───────────────────┘     └─────────┬─────────┘
                                     │
@@ -103,24 +76,11 @@ KITA Finance transforms complex DeFi options into an **intuitive, gamified, mobi
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **Next.js 15** - React framework with App Router
-- **wagmi v2** - Ethereum React hooks
-- **Tailwind CSS** - Utility-first styling
-- **Lucide React** - Beautiful icons
-- **TypeScript** - Type safety
-
-### Backend
-- **Express.js** - API server
-- **Prisma** - Database ORM
-- **PostgreSQL** - Primary database
-- **Google Gemini** - AI chatbot
-
-### Smart Contracts
-- **Solidity** - Smart contract language
-- **Foundry** - Development framework
-- **OpenZeppelin** - Security standards
-- **Base Sepolia** - L2 testnet
+| Layer | Technologies |
+|-------|--------------|
+| **Frontend** | Next.js 15, TypeScript, Tailwind CSS, wagmi v2, Lucide React |
+| **Backend** | Express.js, Prisma, PostgreSQL, Google Gemini |
+| **Smart Contracts** | Solidity, Foundry, OpenZeppelin, Base Sepolia |
 
 ---
 
@@ -140,7 +100,7 @@ KITA Finance transforms complex DeFi options into an **intuitive, gamified, mobi
 - PostgreSQL
 - MetaMask wallet
 
-### Frontend Setup
+### Frontend
 ```bash
 cd frontend
 npm install
@@ -148,7 +108,7 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000)
 
-### Backend Setup
+### Backend
 ```bash
 cd backend
 npm install
@@ -170,55 +130,50 @@ forge test
 
 ## 📱 Key Features
 
-### 1. Solo Trading
-Trade options strategies independently with simplified language:
-- **Beli Murah Dapat Cashback** (Cash-Secured Put)
-- **Modal Receh Potensi Jackpot** (Buy Call)
-- **Hold Aset Dapat Bonus** (Covered Call)
+### 1. 🎮 Gamified Experience
+- **XP Progression**: Level up from "Pemula" to "Master Trader"
+- **Monthly Campaigns**: Valentine's Special Nabung Bareng, themed events
+- **Achievement Badges**: Shareable streak badges for social media
+- **Daily Missions**: +100 XP for completing challenges
+- **Leaderboards**: Compete with friends and community
 
-### 2. Nabung Bareng (Social Saving)
-Create or join saving groups with friends:
-- 🎯 Goal-based groups (💍 Wedding, 🏠 House, 🏖️ Vacation)
-- 📊 Smart per-person calculator
-- 📲 Telegram/WhatsApp integration
-- 🏆 Group leaderboards
+### 2. 👥 Nabung Bareng (Social Saving)
+Pool money together for shared life goals:
+- 💍 **Menikah** - Wedding fund
+- � **Beli Rumah** - House down payment
+- 🏖️ **Liburan Bareng** - Group vacation
+- 🎓 **Pendidikan** - Education fund
 
-### 3. Gamification
-- 📈 XP progression system
-- 🏅 Achievement badges
-- 📅 Daily missions
-- 👑 Monthly leaderboards
+Features: Smart per-person calculators, Telegram/WhatsApp sharing, group progress badges
 
-### 4. AI Chatbot
-- 💬 Ask questions in Bahasa Indonesia
-- 🧠 Powered by Google Gemini
-- 📖 Explains complex concepts simply
+### 3. 📲 Intuitive Language & UI
+| Complex Term | KITAfinance Translation |
+|--------------|-------------------------|
+| Cash-Secured Put | **Beli Murah Dapat Cashback** |
+| Covered Call | **Hold Aset Dapat Bonus** |
+| Buy Call | **Modal Receh Potensi Jackpot** |
+
+"Ocean Blue" design system: Mobile-first, 44px touch targets, animated micro-interactions
+
+### 4. 🤖 AI Chatbot
+- Risk profiling: "Aman" / "Balance" / "Agresif" strategies
+- 24/7 available in Bahasa Indonesia
+- Powered by Google Gemini
 
 ---
 
 ## 🎨 Design Philosophy
 
-Our "Ocean Blue" design system prioritizes:
-
 1. **Simplification** - No jargon, everyday Bahasa Indonesia
-2. **Enjoyment** - Gamified elements make finance fun
-3. **Mobile-Native** - 44px touch targets, thumb-friendly layouts
-4. **Intuitive** - Visual metaphors over technical terms
-
----
-
-## 🔒 Security
-
-- OpenZeppelin security standards
-- Role-based access control
-- USDC collateral management
-- Thetanuts V4 RFQ integration
+2. **Gamification** - Finance that feels like a game
+3. **Mobile-Native** - 95% of Indonesian users are mobile-first
+4. **Cultural Relevance** - Gotong royong values embedded in features
 
 ---
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details
+MIT License
 
 ---
 
@@ -231,6 +186,5 @@ Built with ❤️ for the **Base x Thetanuts Hackathon 2025**
 ## 🔗 Links
 
 - **Live Demo**: [https://kita.naufarrel.tech](https://kita.naufarrel.tech)
-- **Frontend Repo**: This repository
 - **Base Network**: [base.org](https://base.org)
 - **Thetanuts Finance**: [thetanuts.finance](https://thetanuts.finance)
