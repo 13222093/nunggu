@@ -1,2 +1,18 @@
 *-cwd
 .env
+
+# Internal development files
+.claude/
+system_alignment_analysis.md
+TESTING_GUIDE.md
+IMPLEMENTATION_REPORT.md
+hackathon_submission.md
+HACKATHON_DEMO_GUIDE.md.resolved
+demo_readiness.md
+Gemini.md
+bash.exe.stackdump
+*.resolved
+
+# Frontend dev files
+frontend/UI_REFACTOR_SUMMARY.md
+frontend/batch-refactor.ps1
