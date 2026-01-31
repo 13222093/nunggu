@@ -12,6 +12,7 @@ export function MobileNav() {
         { name: 'Nabung', href: '/nabung-bareng', icon: Users },
         { name: 'Missions', href: '/missions', icon: Award },
         { name: 'Vaults', href: '/vaults', icon: Wallet },
+        { name: 'Profil', href: '/profil', icon: User },
     ];
 
     const handleChatToggle = () => {

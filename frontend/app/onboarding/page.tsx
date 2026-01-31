@@ -1,12 +1,22 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import Link from "next/link";
 import { Sparkles, TrendingUp, ArrowRight, CheckCircle2, Zap } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export default function OnboardingWelcome() {
   const router = useRouter();
+
+  useEffect(() => {
+    // Check if already logged in
+    const sessionStr = localStorage.getItem('userSession');
+    const guestDataStr = localStorage.getItem('userData');
+    if (sessionStr || guestDataStr) {
+      router.push('/dashboard');
+    }
+  }, [router]);
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-[#0A4A7C] via-[#0A98FF] to-[#04877f] overflow-hidden">

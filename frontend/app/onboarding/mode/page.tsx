@@ -8,6 +8,13 @@ export default function ChooseModePage() {
   const [selectedMode, setSelectedMode] = useState<string | null>(null);
 
   useEffect(() => { // Make sure user datang dari halaman ai profiling
+    // Check if already logged in
+    const sessionStr = localStorage.getItem('userSession');
+    if (sessionStr) {
+      router.push('/dashboard');
+      return;
+    }
+
     const profilingData = localStorage.getItem('userProfiling');
     if (!profilingData) {
       router.push('/onboarding/profiling');

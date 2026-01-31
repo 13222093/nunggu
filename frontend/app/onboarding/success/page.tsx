@@ -8,6 +8,13 @@ export default function OnboardingSuccess() {
   const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
+    // Check if already logged in with session
+    const sessionStr = localStorage.getItem('userSession');
+    if (sessionStr) {
+      router.push('/dashboard');
+      return;
+    }
+
     const data = localStorage.getItem('userData');
     if (data) {
       setUserData(JSON.parse(data));

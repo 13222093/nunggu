@@ -29,6 +29,14 @@ export default function CompleteProfile() {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
+    // Check if already logged in
+    const sessionStr = localStorage.getItem('userSession');
+    const guestDataStr = localStorage.getItem('userData');
+    if (sessionStr || guestDataStr) {
+      router.push('/dashboard');
+      return;
+    }
+
     const phone = localStorage.getItem("phoneNumber");
     if (!phone) {
       router.push("/onboarding/phone");

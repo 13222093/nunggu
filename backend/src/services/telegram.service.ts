@@ -50,6 +50,11 @@ export class TelegramService {
   startPolling() {
     if (!BOT_TOKEN || this.isPolling) return;
     
+    if (BOT_TOKEN === 'your-bot-token' || BOT_TOKEN.includes('your-bot-token')) {
+      console.warn("⚠️ Dummy TELEGRAM_BOT_TOKEN detected. Polling skipped.");
+      return;
+    }
+
     this.isPolling = true;
     console.log("🤖 Telegram Bot polling started...");
     

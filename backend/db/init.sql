@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     wallet_address VARCHAR(42) UNIQUE,
     name VARCHAR(100),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT users_country_code_phone_number_key UNIQUE (country_code, phone_number)
 );

@@ -49,6 +49,13 @@ export default function AIProfilingPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => { // Make sure user datang dari halaman lengkapi profil
+    // Check if already logged in
+    const sessionStr = localStorage.getItem('userSession');
+    if (sessionStr) {
+      router.push('/dashboard');
+      return;
+    }
+
     const userData = localStorage.getItem('userData');
     if (!userData) {
       router.push('/onboarding');
